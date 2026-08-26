@@ -14,7 +14,7 @@
     "sourceManifest": [
       {
         "path": "src/tokens/tokens.mjs",
-        "sha256": "6af903575452e46cbaba480419c36b08d5fc83f189d535c12ed68b4aa00a7585"
+        "sha256": "d6b5ab9d4ad0565e6cb9a2b9af0f002c8d1da882d9b2a54487d638402a5715df"
       },
       {
         "path": "src/blocks/surface.css",
@@ -37,7 +37,7 @@
         "sha256": "b59a59fa7ba2c1ac36b95cfb9a4b209c0c7c50d598809ecc17282dd8e95dea0b"
       }
     ],
-    "sourceManifestHash": "692593b6a3732b2674ff61d39aaba13313921ab1c60cbbb9d590dda8ecd8a080",
+    "sourceManifestHash": "b69247ae87ead73fc157e44301ae58fda33ade32cba79154171787ed8f9b0b91",
     "workspaceState": "clean",
     "node": "v26.5.1",
     "pnpm": "11.24.0",
