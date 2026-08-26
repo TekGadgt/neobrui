@@ -34,10 +34,10 @@
       },
       {
         "path": "scripts/size-spike.mjs",
-        "sha256": "01f169b386a20d5f749f4c39a83ce600eac7f19de1fd081a52fdf77c3e826899"
+        "sha256": "f17987b5ea9f4e33d8be601dcea828a942fbe7e76e27f568a2084efc3273e3ed"
       }
     ],
-    "sourceManifestHash": "ee3e0dd56042b7a864a20d5c85098d11e4e121955c0dd72c1832f4b7d96dacbc",
+    "sourceManifestHash": "e8f5f7fa5d20823ac5f93c2eaa2af06eca5f3b076b5a4300ecd8ae20b3875ac4",
     "workspaceState": "clean",
     "node": "v26.5.1",
     "pnpm": "11.24.0",
