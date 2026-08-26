@@ -250,3 +250,16 @@ test.describe('docs control boundary contrast', () => {
     });
   }
 });
+
+test.describe('static code block accessibility', () => {
+  for (const theme of ['light', 'dark']) {
+    for (const route of routes) {
+      test(`${theme} ${route} has no axe violations`, async ({ page }) => {
+        await page.goto(sitePath(route));
+        await page.evaluate((value) => { document.documentElement.dataset.theme = value; }, theme);
+        const results = await new AxeBuilder({ page }).analyze();
+        expect(results.violations, `${theme} ${route}: ${results.violations.map(({ id }) => id).join(', ')}`).toEqual([]);
+      });
+    }
+  }
+});
