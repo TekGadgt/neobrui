@@ -36,10 +36,53 @@ test.describe('Spike 2 recipes', () => {
     await expect(page.locator('#recipe-disabled')).toBeDisabled();
   });
 
-  test('custom-property override applies without selector override', async ({ page }) => {
+  test('documented fixture theme boundary remaps consumed recipe hooks', async ({ page }) => {
+    const boundary = page.locator('[data-_nb-fixture-theme="overrides"]');
+    await expect(boundary).toHaveCount(1);
+    await expect(boundary.locator('._nb-spike-surface[data-_nb-level="outlined"]')).toHaveCSS('background-color', 'rgb(239, 246, 255)');
+    await expect(boundary.locator('._nb-spike-button').first()).toHaveCSS('background-color', 'rgb(124, 45, 18)');
+    await expect(boundary.locator('._nb-spike-field input').first()).toHaveCSS('background-color', 'rgb(255, 247, 237)');
+    await expect(boundary.locator('._nb-spike-surface[data-_nb-level="outlined"]')).toHaveCSS('border-top-color', 'rgb(30, 64, 175)');
+  });
+
+  test('200% text resize keeps content and controls available without overflow', async ({ page }) => {
+    await page.evaluate(() => { document.documentElement.style.fontSize = '200%'; });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
+    for (const locator of [page.getByRole('button', { name: 'Native button' }), page.locator('#recipe-email'), page.locator('#recipe-disabled')]) {
+      await expect(locator).toBeVisible();
+      const box = await locator.boundingBox();
+      expect(box.x + box.width).toBeLessThanOrEqual(await page.evaluate(() => window.innerWidth));
+    }
+  });
+
+  test('reduced motion removes transitions while retaining the active cue', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    const button = page.getByRole('button', { name: 'Native button' });
+    expect(await button.evaluate(el => getComputedStyle(el).transitionDuration)).toMatch(/0s|0ms/);
+    const restingShadow = await button.evaluate(el => getComputedStyle(el).boxShadow);
+    await button.hover();
+    await page.mouse.down();
+    const activeShadow = await button.evaluate(el => getComputedStyle(el).boxShadow);
+    await page.mouse.up();
+    expect(activeShadow).not.toBe(restingShadow);
+    expect(await button.evaluate(el => getComputedStyle(el).transform)).toBe('none');
+  });
+
+  test('forced colors suppresses shadows and preserves non-color state cues', async ({ page, browserName }) => {
+    await page.emulateMedia({ forcedColors: 'active' });
+    const button = page.getByRole('button', { name: 'Native button' });
     const raised = page.locator('._nb-spike-surface[data-_nb-level="raised"]');
-    await expect(raised).toHaveCSS('background-color', 'rgb(255, 255, 255)');
-    await expect(raised).toHaveCSS('color', 'rgb(23, 21, 18)');
+    if (browserName === 'webkit') {
+      expect(await page.locator('link[href*="fixture"]').count()).toBe(1);
+      expect(await page.evaluate(async () => (await fetch(document.querySelector('link[href*="fixture"]').href)).text()).then(css => css.includes('@media(forced-colors:active)'))).toBe(true);
+    } else {
+      expect(await button.evaluate(el => getComputedStyle(el).boxShadow)).toBe('none');
+      expect(await raised.evaluate(el => getComputedStyle(el).boxShadow)).toBe('none');
+    }
+    await button.focus();
+    expect(await button.evaluate(el => getComputedStyle(el).outlineStyle)).not.toBe('none');
+    expect(await page.locator('#recipe-disabled').evaluate(el => getComputedStyle(el).opacity)).not.toBe('1');
+    expect(await page.locator('#recipe-email').evaluate(el => getComputedStyle(el).borderStyle)).toBe('dashed');
   });
 
   test('fits at 320px with no horizontal overflow and no external requests', async ({ page }) => {

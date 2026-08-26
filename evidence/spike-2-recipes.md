@@ -15,11 +15,15 @@
 
 ## Measurements
 
-Automated browser evidence is recorded by `tests/recipes.spec.js`: native roles/names and tab order, stable button geometry during press, quiet ratio, custom-property override, 320px overflow, reduced-motion and JS-disabled route loading. Axe is dev-only and has no runtime dependency.
+Automated browser evidence is recorded by `tests/recipes.spec.js`: native roles/names and tab order, stable button geometry during press, quiet ratio, fixture theme-boundary remapping of consumed hooks (`--_nb-surface-background`, `--_nb-button-background`, `--_nb-field-background`, and `--_nb-color-border`), 320px overflow, 200% text-size reflow preflight, reduced-motion active-cue behavior, forced-colors shadow suppression/state cues, and JS-disabled route loading. Axe is dev-only and has no runtime dependency.
 
 ## Accessibility limitations
 
-Static automated checks do not replace keyboard-only hardware traversal, screen-reader announcement testing, touch target review, physical forced-colors, or human visual review at true 200% zoom.
+Static automated checks do not replace keyboard-only hardware traversal, screen-reader announcement testing, touch target review, physical forced-colors, or human visual review at true browser 200% zoom. The executable 200% check enlarges root text and is a reflow preflight, not equivalent to browser zoom; true browser zoom remains a residual manual check.
+
+## Shadow deferral
+
+Raised Surface and Button currently use only block-axis (`x=0`) shadow tokens as a temporary Spike 2 baseline. Nonzero horizontal offset, logical RTL mirroring, nested direction, fixed physical escape hatch, and matching press translation are explicitly deferred to Spike 3 and are not implemented here.
 
 ## Stop/narrow assessment
 
