@@ -22,15 +22,20 @@
     "qa:baseline": "node scripts/qa-rehearsal.mjs baseline",
     "qa:seeded": "node scripts/qa-rehearsal.mjs seeded",
     "qa:rehearsal": "node scripts/qa-rehearsal.mjs rehearsal",
-    "build:docs": "pnpm release:local && pnpm --dir apps/docs install --frozen-lockfile --ignore-scripts --config.strict-dep-builds=false && pnpm --dir apps/docs rebuild esbuild && pnpm --dir apps/docs build",
+    "prepare:docs": "node scripts/prepare-docs-package.mjs",
+    "build:docs": "pnpm release:local && pnpm prepare:docs && pnpm exec astro build --root apps/docs",
     "build:docs:pages": "PUBLIC_SITE_BASE=/neobrui/ PUBLIC_SITE_URL=https://example.invalid/neobrui/ pnpm run build:docs",
-    "preview:docs": "pnpm run build:docs && pnpm --dir apps/docs preview",
-    "preview:docs:pages": "pnpm run build:docs:pages && pnpm --dir apps/docs preview:pages"
+    "preview:docs": "pnpm run build:docs && pnpm exec astro preview --root apps/docs",
+    "preview:docs:pages": "pnpm run build:docs:pages && PUBLIC_SITE_BASE=/neobrui/ PUBLIC_SITE_URL=https://example.invalid/neobrui/ pnpm exec astro preview --root apps/docs"
   },
   "devDependencies": {
+    "@astrojs/check": "0.9.10",
+    "@astrojs/starlight": "0.41.9",
     "@axe-core/playwright": "4.13.0",
     "@playwright/test": "1.62.1",
+    "astro": "7.2.7",
     "tar": "7.5.22",
+    "typescript": "5.9.3",
     "vite": "7.3.6"
   }
 }

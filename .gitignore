@@ -8,6 +8,9 @@ evidence/playwright-results.json
 fixtures/*/.astro/
 apps/docs/.astro/
 tmp/
+apps/docs/.generated/
+apps/docs/.cache/
+.astro/
 .qa-rehearsal/
 dist/size-spike/
 dist/size-spike-second/

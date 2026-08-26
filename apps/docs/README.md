@@ -1,17 +1,17 @@
 # Neobrui docs
 
-This is a separate Astro Starlight site consuming the exact local release archive. It is intentionally not part of the root pnpm workspace.
+This is a separate Astro Starlight site consuming an extracted copy of the exact local release archive. It is intentionally not part of the root pnpm workspace; all tooling resolves from the root dependency tree.
 
 ## Local Pages-equivalent build
 
-From the repository root, generate the approved release, install the isolated docs app with its frozen lockfile, then build:
+From the repository root, generate the approved release, prepare its package files, then build with the root dependency tree:
 
 ```sh
-pnpm release:local
-pnpm --dir apps/docs install --frozen-lockfile
-pnpm --dir apps/docs build
-PUBLIC_SITE_BASE=/neobrui/ PUBLIC_SITE_URL=https://example.invalid/neobrui/ pnpm --dir apps/docs build
+pnpm run build:docs
+PUBLIC_SITE_BASE=/neobrui/ PUBLIC_SITE_URL=https://example.invalid/neobrui/ pnpm run build:docs:pages
 ```
+
+The preparation step validates the canonical archive checksum and extracts only its expected public files into ignored `apps/docs/.generated/neobrui/`. Do not create `apps/docs/node_modules`; the repository’s root `node_modules` is the portable workspace dependency volume.
 
 Preview a root-base build from the repository root with:
 

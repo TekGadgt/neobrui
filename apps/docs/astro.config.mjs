@@ -1,5 +1,18 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import { accessSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+
+const generatedRoot = fileURLToPath(new URL('./.generated/neobrui', import.meta.url));
+const cacheRoot = fileURLToPath(new URL('./.cache', import.meta.url));
+const tokensCss = `${generatedRoot}/dist/tokens.css`;
+const blocksCss = `${generatedRoot}/dist/blocks.css`;
+try {
+  accessSync(tokensCss);
+  accessSync(blocksCss);
+} catch {
+  throw new Error('Docs package is not prepared; run `pnpm release:local && pnpm prepare:docs` first');
+}
 
 const base = process.env.PUBLIC_SITE_BASE || '/';
 const site = process.env.PUBLIC_SITE_URL || undefined;
@@ -7,6 +20,8 @@ const site = process.env.PUBLIC_SITE_URL || undefined;
 export default defineConfig({
   base,
   site,
+  cacheDir: `${cacheRoot}/astro`,
+  vite: { cacheDir: `${cacheRoot}/vite`, resolve: { alias: { 'neobrui/tokens': tokensCss, 'neobrui/blocks': blocksCss } } },
   integrations: [starlight({
     title: 'Neobrui',
     description: 'A small, semantic, CSS-only personal-alpha kit.',

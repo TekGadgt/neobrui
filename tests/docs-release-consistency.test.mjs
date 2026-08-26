@@ -57,16 +57,21 @@ test('release checksum verification is documented from repository root', async (
   }
 });
 
-test('docs lock integrity matches the canonical portable release archive', async () => {
+test('prepared docs artifact matches the canonical portable release archive', async () => {
+  execFileSync('pnpm', ['release:local'], { stdio: 'ignore' });
+  execFileSync('pnpm', ['prepare:docs'], { stdio: 'ignore' });
   const archive = await readFile('dist/release/neobrui-0.1.0-alpha.0.tgz');
-  const lock = await read('apps/docs/pnpm-lock.yaml');
-  const integrity = createHash('sha512').update(archive).digest('base64');
-  const resolution = lock.match(/neobrui@file:\.\.\/\.\.\/dist\/release\/neobrui-0\.1\.0-alpha\.0\.tgz:\n\s+resolution: \{integrity: sha512-([^,]+),/);
-  assert.ok(resolution, 'docs lock must contain the local release resolution');
-  assert.equal(resolution[1], integrity, 'docs lock integrity must match the archive bytes');
+  const preparedHash = await read('apps/docs/.generated/neobrui/.archive-sha256');
+  const integrity = createHash('sha256').update(archive).digest('hex');
+  assert.equal(preparedHash.trim(), integrity, 'prepared docs artifact must record the archive bytes');
+  const [tokens, blocks] = await Promise.all([
+    read('apps/docs/.generated/neobrui/dist/tokens.css'),
+    read('apps/docs/.generated/neobrui/dist/blocks.css'),
+  ]);
+  assert.ok(tokens.length > 0 && blocks.length > 0, 'prepared docs aliases must have extracted CSS');
 });
 
-test('Pages docs build leaves tracked files unchanged with the frozen lock', () => {
+test('Pages docs build leaves tracked files unchanged with the root lock', () => {
   const before = execFileSync('git', ['diff', '--name-only'], { encoding: 'utf8' });
   execFileSync('pnpm', ['run', 'build:docs:pages'], { env: { ...process.env, CI: 'true' }, stdio: 'inherit' });
   const after = execFileSync('git', ['diff', '--name-only'], { encoding: 'utf8' });

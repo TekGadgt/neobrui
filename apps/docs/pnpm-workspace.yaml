@@ -1,6 +1,0 @@
-allowBuilds:
-  esbuild: true
-minimumReleaseAgeExclude:
-  # Starlight's pinned release pair is audited by the docs app; revisit on upgrade.
-  - '@astrojs/starlight@0.41.9'
-  - astro@7.2.7
