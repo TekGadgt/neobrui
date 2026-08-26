@@ -137,6 +137,24 @@ const contrast = (foreground, background) => {
   return (Math.max(first, second) + 0.05) / (Math.min(first, second) + 0.05);
 };
 
+const cssColor = (value) => {
+  const channels = value.startsWith('rgb') ? value.slice(value.indexOf('(') + 1, value.lastIndexOf(')')).split(',').slice(0, 3).map((channel) => Number.parseInt(channel, 10)) : null;
+  if (channels) return channels;
+  const hex = value.match(/^#([0-9a-f]{6})$/i);
+  if (hex) return [0, 2, 4].map((offset) => Number.parseInt(hex[1].slice(offset, offset + 2), 16));
+  throw new Error(`Unsupported CSS color: ${value}`);
+};
+
+const contrastFromCss = (foreground, background) => {
+  const toHex = (channels) => `#${channels.map((channel) => channel.toString(16).padStart(2, '0')).join('')}`;
+  return contrast(toHex(cssColor(foreground)), toHex(cssColor(background)));
+};
+
+const controlBoundarySelectors = [
+  'starlight-theme-select select',
+  'starlight-menu-button button',
+];
+
 test.describe('docs theme contrast matrix', () => {
   for (const theme of ['light', 'dark']) {
     test(`${theme} renders every route with passing core token pairs`, async ({ page }) => {
@@ -159,6 +177,51 @@ test.describe('docs theme contrast matrix', () => {
         expect(contrast(tokens.accent, tokens.background), `${theme} ${route} accent`).toBeGreaterThanOrEqual(4.5);
         expect(contrast(tokens.border, tokens.background), `${theme} ${route} boundary`).toBeGreaterThanOrEqual(3);
       }
+    });
+  }
+});
+
+test.describe('docs control boundary contrast', () => {
+  for (const theme of ['light', 'dark']) {
+    test(`${theme} controls keep a 3:1 boundary on page and sidebar`, async ({ page }) => {
+      for (const viewport of [{ width: 1280, height: 800 }, { width: 320, height: 800 }]) {
+        await page.setViewportSize(viewport);
+        await page.goto(sitePath('/examples/'));
+        await page.evaluate((value) => { document.documentElement.dataset.theme = value; }, theme);
+        const controls = await page.evaluate((selectors) => {
+          const styles = getComputedStyle(document.documentElement);
+          const backgrounds = { page: styles.getPropertyValue('--sl-color-bg').trim(), sidebar: styles.getPropertyValue('--sl-color-bg-sidebar').trim() };
+          return selectors.flatMap((selector) => [...document.querySelectorAll(selector)].map((element) => {
+            const control = getComputedStyle(element);
+            return { selector, border: control.borderTopColor || styles.getPropertyValue('--sl-color-gray-5').trim(), backgrounds };
+          }));
+        }, controlBoundarySelectors);
+        expect(controls.length, `${theme} ${viewport.width}px representative controls`).toBeGreaterThanOrEqual(3);
+        for (const control of controls) {
+          for (const [surface, background] of Object.entries(control.backgrounds)) {
+            expect(contrastFromCss(control.border, background), `${theme} ${viewport.width}px ${control.selector} on ${surface}`).toBeGreaterThanOrEqual(3);
+          }
+        }
+        if (viewport.width === 320) {
+          const menu = page.getByRole('button', { name: 'Menu' });
+          await menu.hover();
+          await menu.focus();
+          await menu.click();
+          await expect(page.locator('#starlight__sidebar')).toBeVisible();
+        }
+      }
+      await page.setViewportSize({ width: 1280, height: 800 });
+      await page.goto(sitePath('/examples/'));
+      await page.evaluate((value) => { document.documentElement.dataset.theme = value; }, theme);
+      await page.getByRole('button', { name: 'Search' }).click();
+      const searchInput = page.locator('.pagefind-ui__search-input');
+      await expect(searchInput).toBeVisible();
+      const inputBoundary = await searchInput.evaluate((element) => {
+        const style = getComputedStyle(element);
+        const root = getComputedStyle(document.documentElement);
+        return { border: style.borderTopColor, page: root.getPropertyValue('--sl-color-bg').trim() };
+      });
+      expect(contrastFromCss(inputBoundary.border, inputBoundary.page), `${theme} search dialog input`).toBeGreaterThanOrEqual(3);
     });
   }
 });

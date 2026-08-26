@@ -6,9 +6,19 @@ title: Utilities
 
 `.nbr-u-visually-hidden` preserves non-focusable content in the accessibility tree while removing it from visual flow. It is not `display: none`, and it does not provide a focus-reveal mode.
 
+<div class="showcase nbr-stack">
+  <p><button class="nbr-button" type="button" aria-describedby="hidden-status">Reveal the explanation</button></p>
+  <p id="hidden-status" class="nbr-u-visually-hidden">Status: the explanation is available to assistive technology and remains meaningful when the visual control changes.</p>
+  <p><small>The status has a real accessible relationship; hiding is not used as a visual hide/show gimmick.</small></p>
+</div>
+
 ## Wrapper
 
 `.nbr-u-wrapper` centers content with a readable measure and logical inline padding. Tune `--nbr-wrapper-max-inline-size` or `--nbr-wrapper-padding-inline` from your application when needed.
+
+<div class="showcase">
+  <div class="nbr-u-wrapper wrapper-demo"><strong>Visible measure boundary</strong><p>This region keeps a readable measure at wide sizes and remains padded at 320px.</p></div>
+</div>
 
 ```html
 <main class="nbr-u-wrapper">

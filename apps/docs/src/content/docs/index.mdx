@@ -15,14 +15,16 @@ hero:
 
 import { Card, CardGrid } from '@astrojs/starlight/components';
 
-## A useful surface, not a promise
-
-Neobrui `0.1.0-alpha.0` is validated for controlled local use. It ships CSS and build-time DTCG interchange; it does not ship runtime JavaScript, a reset, identity, or a public support commitment.
-
-<div class="showcase">
-
-**The design principle:** native HTML and the consuming application own semantics, state, routing, validation, and announcements. Neobrui supplies a small, inspectable visual layer.
-
+<div class="showcase nbr-stack" style="--nbr-stack-gap: 1.5rem">
+  <section class="nbr-surface" data-nbr-level="raised" aria-labelledby="home-showcase-title">
+    <h2 id="home-showcase-title">A useful surface, not a promise</h2>
+    <p>Neobrui <code>0.1.0-alpha.0</code> is validated for controlled local use. It ships CSS and build-time DTCG interchange; it does not ship runtime JavaScript, a reset, identity, or a public support commitment.</p>
+    <div class="nbr-cluster" aria-label="Showcase actions">
+      <a class="nbr-button" href="/examples/">See live examples</a>
+      <a class="nbr-button" href="/getting-started/" data-nbr-shadow-direction="fixed">Read the boundary</a>
+    </div>
+  </section>
+  <p><strong>The design principle:</strong> native HTML and the consuming application own semantics, state, routing, validation, and announcements. Neobrui supplies a small, inspectable visual layer.</p>
 </div>
 
 <CardGrid>

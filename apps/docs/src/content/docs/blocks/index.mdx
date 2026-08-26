@@ -6,9 +6,26 @@ title: Blocks
 
 Use `data-nbr-level="quiet|outlined|raised"` on a native section or article. Surface owns visual treatment, not landmarks or content structure.
 
+<div class="showcase surface-grid" aria-label="Surface levels">
+  <section class="nbr-surface" data-nbr-level="quiet"><h3>Quiet</h3><p>Low emphasis content.</p></section>
+  <article class="nbr-surface" data-nbr-level="outlined"><h3>Outlined</h3><p>A named region with a boundary.</p></article>
+  <article class="nbr-surface" data-nbr-level="raised"><h3>Raised</h3><p>A stronger action or result.</p></article>
+</div>
+
 ## Button
 
 The Button block styles native `button` and button-like links. Native disabled behavior, accessible names, busy announcements, and navigation remain application-owned.
+
+<div class="showcase nbr-stack">
+  <div class="nbr-cluster" aria-label="Button states">
+    <button class="nbr-button" type="button">Default</button>
+    <button class="nbr-button" type="button" aria-busy="true">Saving…</button>
+    <button class="nbr-button" type="button" disabled>Disabled</button>
+    <button class="nbr-button" type="button" aria-disabled="true">Aria-disabled</button>
+    <a class="nbr-button" href="/examples/">Native link</a>
+  </div>
+  <p><small>Hover, focus, and press states come from CSS; a real app supplies loading logic and whether an aria-disabled control remains discoverable.</small></p>
+</div>
 
 ```html
 <button class="nbr-button" type="button">Save draft</button>
@@ -18,12 +35,21 @@ The Button block styles native `button` and button-like links. Native disabled b
 
 Pair a label, description, and error with native controls and explicit relationships. CSS can show cues; it cannot validate or announce them.
 
-```html
-<label class="nbr-field">
-  <span>Email</span>
-  <input type="email" aria-describedby="email-help" />
-  <small id="email-help">Used only for local sign-in.</small>
-</label>
-```
+<div class="showcase nbr-stack">
+  <div class="nbr-field">
+    <label for="docs-email">Email (required)</label>
+    <input id="docs-email" type="email" required aria-describedby="docs-email-help" placeholder="you@example.com" />
+    <small id="docs-email-help" data-nbr-description>Used only for local sign-in.</small>
+  </div>
+  <div class="nbr-field">
+    <label for="docs-invalid">Invalid value</label>
+    <input id="docs-invalid" aria-invalid="true" aria-describedby="docs-invalid-error" value="not-an-email" />
+    <small id="docs-invalid-error" data-nbr-error>Enter a valid email address.</small>
+  </div>
+  <div class="nbr-field">
+    <label for="docs-disabled">Disabled field</label>
+    <input id="docs-disabled" disabled value="Unavailable" />
+  </div>
+</div>
 
-Native state and Exception boundaries are intentionally finite; unsupported markup is not implied support.
+Native state and exception boundaries are intentionally finite; unsupported markup is not implied support.
