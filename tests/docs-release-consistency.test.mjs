@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
 
 const read = (path) => readFile(path, 'utf8');
 
@@ -53,4 +55,20 @@ test('release checksum verification is documented from repository root', async (
   for (const doc of [readme, workflow]) {
     assert.match(doc, /\(cd dist\/release && sha256sum -c SHA256SUMS\)/);
   }
+});
+
+test('docs lock integrity matches the canonical portable release archive', async () => {
+  const archive = await readFile('dist/release/neobrui-0.1.0-alpha.0.tgz');
+  const lock = await read('apps/docs/pnpm-lock.yaml');
+  const integrity = createHash('sha512').update(archive).digest('base64');
+  const resolution = lock.match(/neobrui@file:\.\.\/\.\.\/dist\/release\/neobrui-0\.1\.0-alpha\.0\.tgz:\n\s+resolution: \{integrity: sha512-([^,]+),/);
+  assert.ok(resolution, 'docs lock must contain the local release resolution');
+  assert.equal(resolution[1], integrity, 'docs lock integrity must match the archive bytes');
+});
+
+test('Pages docs build leaves tracked files unchanged with the frozen lock', () => {
+  const before = execFileSync('git', ['diff', '--name-only'], { encoding: 'utf8' });
+  execFileSync('pnpm', ['run', 'build:docs:pages'], { env: { ...process.env, CI: 'true' }, stdio: 'inherit' });
+  const after = execFileSync('git', ['diff', '--name-only'], { encoding: 'utf8' });
+  assert.equal(after, before, 'build:docs:pages must not rewrite tracked files');
 });

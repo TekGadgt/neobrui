@@ -1744,7 +1744,7 @@ packages:
     hasBin: true
 
   neobrui@file:../../dist/release/neobrui-0.1.0-alpha.0.tgz:
-    resolution: {integrity: sha512-GbmpBt0zHFc3wvbgqowt9FPohAHx3OR+pix6FEP9tsvvGslTJAw5bjtCV1/71F6io7t7Kt/0icl2bQqhWLAxVA==, tarball: file:../../dist/release/neobrui-0.1.0-alpha.0.tgz}
+    resolution: {integrity: sha512-B4x64TOK/6kxKsmsZDq3+MaO8Gmmj3kJs4TVlNE/1r75HU6GWkML7tmAsRh3dGxHdP/WFtoGdyCKjfCnNKlu2Q==, tarball: file:../../dist/release/neobrui-0.1.0-alpha.0.tgz}
     version: 0.1.0-alpha.0
 
   neotraverse@1.0.1:

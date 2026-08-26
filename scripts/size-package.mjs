@@ -1,4 +1,4 @@
-import { mkdir, readFile, writeFile, rm, readdir, stat, copyFile, cp } from 'node:fs/promises';
+import { mkdir, readFile, writeFile, rm, readdir, stat, copyFile, cp, realpath } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { join, resolve, relative } from 'node:path';
@@ -36,8 +36,9 @@ async function sourceManifest() {
 }
 
 async function measureInstalledConsumer(out, archiveTar) {
-  const viteBin = execFileSync('realpath', [join(root, 'node_modules/vite/bin/vite.js')], { encoding: 'utf8' }).trim();
-  const consumerRoot = join('/tmp', 'neobrui-offline-consumer', relative(root, out).replaceAll('/', '-'));
+  const viteBin = await realpath(join(root, 'node_modules/vite/bin/vite.js'));
+  const outputId = relative(root, out).replaceAll('\\', '/').replaceAll('/', '-').replace(/[^a-zA-Z0-9._-]+/g, '-').replace(/^-+|-+$/g, '') || 'default';
+  const consumerRoot = join(root, 'tmp', 'offline-consumers', outputId);
   await rm(consumerRoot, { recursive: true, force: true });
   await mkdir(join(consumerRoot, 'src'), { recursive: true });
   await copyFile(archiveTar, join(consumerRoot, 'neobrui-private.tgz'));

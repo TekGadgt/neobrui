@@ -62,10 +62,10 @@
       },
       {
         "path": "scripts/size-package.mjs",
-        "sha256": "8830df6aaead82ac5bd4d7e28b6c9c8e59e9b1d2ed55866d7bb2cb623b1ce6d9"
+        "sha256": "0d0ccb8b8da54bfa2ba595985fe2f269714a6f54fb8b1d57b51eebf887b83f90"
       }
     ],
-    "sourceManifestHash": "191ee84dbe4280a80f2122844eff390902e283c26405c6c98d42c6b375de67b9",
+    "sourceManifestHash": "d3959c2d047a59b6a5d9b43380877f975f8528118756874e9b83dbee8f1095ed",
     "workspaceState": "clean",
     "node": "v26.5.1",
     "pnpm": "11.24.0",

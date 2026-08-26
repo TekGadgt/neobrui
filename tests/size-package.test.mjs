@@ -1,6 +1,15 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
 import { buildSizeCandidate, verifySizeReport } from '../scripts/size-package.mjs';
+
+// This contract guards the macOS /tmp -> /private/tmp canonicalization boundary.
+test('offline consumer build stays inside the repository and uses Node realpath resolution', async () => {
+  const source = await readFile('scripts/size-package.mjs', 'utf8');
+  assert.doesNotMatch(source, /join\(['\"]\/tmp['\"]/);
+  assert.doesNotMatch(source, /execFileSync\(['\"]realpath['\"]/);
+  assert.match(source, /realpath/);
+});
 
 test('size candidate reports deterministic CSS artifacts and threshold verdicts', async () => {
   const first = await buildSizeCandidate({ outputRoot: 'tmp/size-test-a' });
