@@ -1,6 +1,6 @@
 /* Disposable Spike 2 recipe: opt-in, reset-free Surface. */
 ._nb-spike-surface { --_nb-surface-level: quiet; background: var(--_nb-surface-background); color: var(--_nb-color-text); border: var(--_nb-border-control); padding: var(--_nb-space-4); }
 ._nb-spike-surface[data-_nb-level="outlined"] { border: var(--_nb-border-region); }
-._nb-spike-surface[data-_nb-level="raised"] { border: var(--_nb-border-region); background: var(--_nb-color-surfaceRaised); box-shadow: var(--_nb-shadow-block); }
+._nb-spike-surface[data-_nb-level="raised"] { border: var(--_nb-border-region); background: var(--_nb-color-surfaceRaised); box-shadow: var(--_nb-shadow-inline-offset, var(--_nb-shadow-inline)) var(--_nb-shadow-block) 0 var(--_nb-color-shadow); }
 ._nb-spike-surface[data-_nb-level="quiet"] { border-inline: 0; border-block: 0 var(--_nb-border-control); box-shadow: none; }
 @media (forced-colors: active) { ._nb-spike-surface[data-_nb-level="raised"], ._nb-spike-surface[data-_nb-level="outlined"] { box-shadow: none; border-color: CanvasText; } }

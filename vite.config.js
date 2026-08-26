@@ -8,6 +8,7 @@ const pages = {
   'nested-theme': 'fixtures/nested-theme/index.html',
   neutralized: 'fixtures/neutralized/index.html',
   recipes: 'fixtures/recipes/index.html',
+  shadows: 'fixtures/shadows/index.html',
 };
 
 const routeOutputPlugin = {

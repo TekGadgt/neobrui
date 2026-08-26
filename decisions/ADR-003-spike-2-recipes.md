@@ -8,7 +8,7 @@ Prove exactly three reset-free, opt-in global CSS recipes under the temporary `_
 
 Native semantic HTML owns accessible names, keyboard behavior, form validation, link navigation, disabled behavior, and event/state logic. Recipes own presentation, focus-visible, non-color state cues, forced-colors resilience, and reduced-motion treatment. Applications own content, semantics, state decisions, palette/type/motifs, and any unsupported behavior.
 
-The current raised Surface and Button shadows consume block-axis-only tokens (`x=0`) and are a temporary, non-final Spike 2 visual baseline. Spike 3 owns nonzero horizontal offset, logical RTL mirroring, nested direction, a fixed physical escape hatch, and matching press translation. This accepted deferral is not a Spike 2 kill signal.
+Spike 2 recorded the raised Surface and Button shadows as a temporary block-axis-only baseline (`x=0`). Spike 3 supersedes that visual detail with nonzero horizontal offset, logical RTL mirroring, nested direction, a fixed physical escape hatch, and matching press translation. This accepted deferral was not a Spike 2 kill signal.
 
 ## Boundaries
 

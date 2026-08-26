@@ -23,7 +23,7 @@ Static automated checks do not replace keyboard-only hardware traversal, screen-
 
 ## Shadow deferral
 
-Raised Surface and Button currently use only block-axis (`x=0`) shadow tokens as a temporary Spike 2 baseline. Nonzero horizontal offset, logical RTL mirroring, nested direction, fixed physical escape hatch, and matching press translation are explicitly deferred to Spike 3 and are not implemented here.
+Raised Surface and Button used only block-axis (`x=0`) shadow tokens as a temporary Spike 2 baseline. Spike 3 replaces that baseline; see `evidence/spike-3-shadows.md` and `decisions/ADR-004-rtl-shadow.md`.
 
 ## Stop/narrow assessment
 

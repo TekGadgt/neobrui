@@ -16,6 +16,7 @@ export const REQUIRED_ROLES = Object.freeze({
 });
 
 const forbidden = /(?:yellow|blue|green|purple|pink|editor|preview|creator|takeaway|portfolio|brand|project)/i;
+const cssLength = /^-?(?:0|(?:\d+(?:\.\d+)?|\.\d+)(?:px|rem|em|ch|ex|vw|vh|vmin|vmax|%))$/;
 
 export function validateTokens(tokens) {
   const errors = [];
@@ -40,6 +41,7 @@ export function validateTokens(tokens) {
     for (const role of roles) {
       const value = tokens[family][role];
       if (typeof value !== 'string' || value.trim() === '') errors.push(`Missing or invalid required role "${family}.${role}"`);
+      if (family === 'shadow' && (typeof value !== 'string' || !cssLength.test(value.trim()))) errors.push(`Invalid shadow axis length "${family}.${role}"`);
       if (forbidden.test(role)) errors.push(`Forbidden project/application name in core role "${family}.${role}"`);
     }
   }

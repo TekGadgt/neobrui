@@ -23,6 +23,13 @@ test.describe('Spike 2 recipes', () => {
     expect(lowNoise).toBeGreaterThanOrEqual(quiet * 2);
   });
 
+  test('raised surface and button use a nonzero inline hard-shadow offset', async ({ page }) => {
+    const raised = page.locator('._nb-spike-surface[data-_nb-level="raised"]');
+    const button = page.getByRole('button', { name: 'Native button' });
+    expect(await raised.evaluate(el => getComputedStyle(el).boxShadow)).toMatch(/3px/);
+    expect(await button.evaluate(el => getComputedStyle(el).boxShadow)).toMatch(/3px/);
+  });
+
   test('button press has stable geometry and field invalid contract', async ({ page }) => {
     const button = page.getByRole('button', { name: 'Native button' });
     const before = await button.boundingBox();
@@ -30,7 +37,8 @@ test.describe('Spike 2 recipes', () => {
     await page.mouse.down();
     const during = await button.boundingBox();
     await page.mouse.up();
-    expect(during).toMatchObject({ width: before.width, height: before.height });
+    expect(during.width).toBeCloseTo(before.width, 3);
+    expect(during.height).toBeCloseTo(before.height, 3);
     expect(await page.locator('#recipe-email').getAttribute('aria-invalid')).toBe('true');
     await expect(page.locator('#recipe-email-error')).toBeVisible();
     await expect(page.locator('#recipe-disabled')).toBeDisabled();

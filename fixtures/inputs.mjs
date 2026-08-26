@@ -1,6 +1,6 @@
 const shared = {
   border: { control:'2px solid var(--_nb-color-border)', region:'3px solid var(--_nb-color-border)' }, radius:{control:'0.15rem'},
-  shadow:{inline:'3px 0 0 var(--_nb-color-shadow)',block:'0 4px 0 var(--_nb-color-shadow)',pressInline:'1px 0 0 var(--_nb-color-shadow)',pressBlock:'0 1px 0 var(--_nb-color-shadow)'},
+  shadow:{inline:'3px',block:'4px',pressInline:'1px',pressBlock:'1px'},
   space:{1:'0.25rem',2:'0.5rem',3:'0.75rem',4:'1rem',5:'1.5rem',6:'2rem'}, control:{padInline:'0.8rem',padBlock:'0.55rem'}, region:{gap:'1rem'},
   font:{body:'system-ui, sans-serif',display:'system-ui, sans-serif',mono:'ui-monospace, monospace'}, text:{body:'1rem',label:'0.8rem',heading:'clamp(1.6rem, 4vw, 3rem)'}, motion:{pressDuration:'120ms'}, focus:{width:'3px',offset:'3px'},
   surface:{background:'var(--_nb-color-surface)',border:'var(--_nb-color-border)',shadow:'none'}, button:{background:'var(--_nb-color-action)'}, field:{background:'var(--_nb-color-surface)'}
