@@ -86,13 +86,16 @@ assert.match(gitignore, /^\.evidence-cache\/$/m);
 // package archives, and runtime fixture output are current contract too.
 const historicalViability = 'evidence/historical/personal-use-viability-and-expansion.md';
 assert.equal((await stat(historicalViability)).isFile(), true);
-await assert.rejects(stat('docs/personal-use-viability-and-expansion.md'));
+const currentViability = 'docs/personal-use-viability-and-expansion.md';
+assert.equal((await stat(currentViability)).isFile(), true);
 const readmeText = await readFile('README.md', 'utf8');
+assert.match(readmeText, /Personal-use viability and expansion.*docs\/personal-use-viability-and-expansion\.md/);
 assert.match(readmeText, /Historical pre-migration viability assessment.*evidence\/historical\/personal-use-viability-and-expansion\.md/);
 const currentRoots = [
   'src', 'scripts', 'fixtures', 'tests',
   'docs/getting-started-personal-use.md', 'docs/expansion-roadmap.md',
   'docs/status-and-support.md',
+  'docs/personal-use-viability-and-expansion.md',
   'docs/manual-accessibility-testing.md',
   'docs/templates/accessibility-test-run.md', 'package.json',
   'dist', 'fixtures/css-modules/dist',

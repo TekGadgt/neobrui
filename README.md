@@ -52,6 +52,7 @@ pnpm verify:clean
 - [ADR-008: personal-use positioning](decisions/ADR-008-personal-use-positioning.md)
 - [Manual accessibility testing procedure](docs/manual-accessibility-testing.md)
 - [Accessibility test-run template](docs/templates/accessibility-test-run.md)
+- [Personal-use viability and expansion](docs/personal-use-viability-and-expansion.md)
 - [Historical pre-migration viability assessment](evidence/historical/personal-use-viability-and-expansion.md)
 
 The manual guide and template define cadence for personal-project adoption, affected behavior changes, release-candidate review, and any future public-support gate. They are procedures, not executed results.
