@@ -7,7 +7,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const apps = {
   css: path.join(root, 'fixtures/css-modules/dist'),
   astro: path.join(root, 'fixtures/astro/dist'),
-  consumer: path.join(root, 'dist/size-package/consumer/out'),
+  consumer: path.join(root, 'tmp/consumer-fixture/out'),
 };
 const port = Number(process.argv[2] ?? 4174);
 const contentTypes = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.map': 'application/json' };

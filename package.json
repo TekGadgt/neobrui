@@ -10,7 +10,7 @@
     "build:tailwind": "pnpm --filter neobrui-cube-tailwind build",
     "validate:tokens": "node tests/token-schema.test.mjs",
     "build": "pnpm build:tokens && pnpm build:tailwind && vite build",
-    "build:fixtures": "pnpm build && pnpm --filter neobrui-cube-css-modules build && pnpm --filter neobrui-cube-astro build && pnpm --filter neobrui-cube-tailwind build",
+    "build:fixtures": "pnpm build && pnpm --filter neobrui-cube-css-modules build && pnpm --filter neobrui-cube-astro build && pnpm --filter neobrui-cube-tailwind build && node scripts/build-consumer-fixture.mjs",
     "test": "node --test tests/*.test.mjs && pnpm validate:tokens && playwright test",
     "verify": "pnpm install --frozen-lockfile && pnpm build:fixtures && pnpm test",
     "capture:chromium": "CAPTURE_EVIDENCE=1 pnpm exec playwright test --project=chromium",
