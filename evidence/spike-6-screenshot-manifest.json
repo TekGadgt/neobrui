@@ -1,0 +1,19 @@
+{
+  "schema": "neobrui.qa-screenshot-manifest/v1",
+  "generatedArtifactsAreIgnored": true,
+  "reviewed": [
+    {
+      "path": ".qa-rehearsal/chromium-combined-chromium.png",
+      "engine": "chromium",
+      "variant": "combined",
+      "review": "320px clipping visible; field has no preceding label text; no visible focus ring in captured state"
+    },
+    {
+      "path": ".qa-rehearsal/firefox-shadow-only-focus-firefox.png",
+      "engine": "firefox",
+      "variant": "shadow-only-focus",
+      "review": "controls render at 320px; no clear visible focus ring around button"
+    }
+  ],
+  "limitations": "Visual inspection is pixel-only and does not establish semantics, AT usability, hardware keyboard behavior, or OS high-contrast behavior."
+}

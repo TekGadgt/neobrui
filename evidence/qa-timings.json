@@ -1,0 +1,108 @@
+{
+  "schema": "neobrui.qa-timings/v1",
+  "task": "Spike 6B timed QA-matrix dry run",
+  "commitBeforeAndAfter": "e7789eece67d7318c3b1f38f10369e004c465d92",
+  "environment": {
+    "os": "Debian GNU/Linux 13.4 (trixie)",
+    "kernel": "6.8.0-117-generic",
+    "architecture": "aarch64",
+    "node": "v26.5.1",
+    "pnpm": "11.24.0",
+    "vite": "7.3.6",
+    "playwright": "1.62.1",
+    "chromium": "bundled chromium-1234; executable version not exposed by installed wrapper",
+    "firefox": "bundled firefox-1538",
+    "webkit": "bundled webkit-2336",
+    "axeCorePlaywright": "4.13.0",
+    "gzip": "1.13",
+    "unavailable": [
+      "Windows",
+      "macOS",
+      "Windows High Contrast",
+      "NVDA",
+      "VoiceOver",
+      "physical keyboard/touch device",
+      "true browser UI zoom at 200%"
+    ]
+  },
+  "commands": {
+    "setup": "pnpm install --frozen-lockfile",
+    "greenBaseline": "pnpm qa:baseline",
+    "seededRehearsal": "pnpm qa:seeded",
+    "canonicalFinal": "pnpm verify:clean"
+  },
+  "timings": {
+    "setupFrozenInstallMs": 1125,
+    "greenBaselineBeforeSeedMs": 11721,
+    "seededRehearsalMs": 23822,
+    "greenBaselineAfterSeedMs": 11028,
+    "canonicalVerificationMs": 46969,
+    "humanInvestigationMs": null,
+    "documentationMs": null,
+    "manualElapsed": "not measured; no interactive hardware session",
+    "note": "Automation timings are wall-clock command timings. Harness report stage timings are retained in the run outputs but generated .qa-rehearsal is ignored and not committed."
+  },
+  "baseline": {
+    "before": { "status": "passed", "engines": { "chromium": 1, "firefox": 1, "webkit": 1 }, "failures": 0 },
+    "after": { "status": "passed", "engines": { "chromium": 1, "firefox": 1, "webkit": 1 }, "failures": 0 }
+  },
+  "seeded": {
+    "status": "passed",
+    "runs": 12,
+    "passes": 12,
+    "failures": 0,
+    "duplicateDetections": 0,
+    "falsePositives": 0,
+    "variants": {
+      "missing-label": { "expected": ["missing-label"], "detected": ["missing-label"], "intendedLayer": "native semantic association plus axe label violation" },
+      "clipping-320": { "expected": ["clipping-320"], "detected": ["clipping-320"], "intendedLayer": "document/main overflow assertion at 320 CSS px" },
+      "shadow-only-focus": { "expected": ["shadow-only-focus"], "detected": ["shadow-only-focus"], "intendedLayer": "computed focus-visible outline/no-shadow assertion plus screenshot" },
+      "combined": { "expected": ["missing-label", "clipping-320", "shadow-only-focus"], "detected": ["missing-label", "clipping-320", "shadow-only-focus"], "intendedLayer": "union of all three detector layers" }
+    },
+    "perEngine": { "chromium": 4, "firefox": 4, "webkit": 4 }
+  },
+  "canonicalVerification": {
+    "status": "passed",
+    "unitTokenChecks": "10 passed, 0 failed",
+    "tokenSchema": "5 passed",
+    "fullPlaywright": "141 passed, 2 skipped, 0 failed",
+    "chromiumCapture": "45 passed, 2 skipped, 0 failed",
+    "fixtureBuilds": "passed",
+    "sizeVerification": "passed",
+    "cleanTree": "passed",
+    "previewProcessTeardown": "passed; no owned preview process",
+    "residualProcesses": "none"
+  },
+  "keyboard": {
+    "automated": "passed",
+    "evidence": "tests/recipes.spec.js keyboard order test presses Tab and asserts button focus; tests/shadows.spec.js keyboard focus test passes across full matrix",
+    "manualHardware": "manual-unavailable"
+  },
+  "checklists": {
+    "PR": {
+      "PR-1": { "status": "passed", "evidence": ".qa-rehearsal/report.json during run; 12/12 seeded and 3/3 baseline engine runs" },
+      "PR-2": { "status": "manual-unavailable", "evidence": "environment.unavailable", "rationale": "No real Windows/macOS AT session" },
+      "PR-3": { "status": "manual-unavailable", "evidence": "environment.unavailable", "rationale": "No physical keyboard/touch device" }
+    },
+    "RC": {
+      "RC-1": { "status": "passed", "evidence": "canonicalVerification" },
+      "RC-2": { "status": "manual-unavailable", "evidence": "environment.unavailable", "rationale": "No Windows High Contrast session" },
+      "RC-3": { "status": "manual-unavailable", "evidence": "environment.unavailable", "rationale": "No true browser UI zoom session" }
+    },
+    "quarterlyFullAudit": {
+      "AUD-1": { "status": "passed", "evidence": "12/12 seeded runs across Chromium, Firefox, WebKit" },
+      "AUD-2": { "status": "manual-unavailable", "evidence": "environment.unavailable", "rationale": "NVDA/VoiceOver unavailable" },
+      "AUD-3": { "status": "manual-unavailable", "evidence": "environment.unavailable", "rationale": "No user-evidence collection session" }
+    },
+    "affectedBehavior": {
+      "SLICE-1": { "status": "passed", "evidence": "all three intended detector layers and combined union" },
+      "SLICE-2": { "status": "manual-unavailable", "evidence": "environment.unavailable", "rationale": "Only automated visual screenshot inspection was possible" }
+    }
+  },
+  "capacityDecision": {
+    "PR": { "measuredAutomation": "11.0-11.7s baseline; 23.8s seeded", "humanTarget": "10-25 minutes", "confidence": "low for human target; no timed human session" },
+    "RC": { "measuredAutomation": "46.97s canonical verification", "humanTarget": "60-120 minutes", "confidence": "low; manual AT/device cells unavailable" },
+    "quarterly": { "measuredAutomation": "not a quarterly estimate", "humanTarget": "3-5 hours", "confidence": "not validated; do not infer from Linux automation" }
+  },
+  "supportDecision": "Keep private three-recipe pilot only. No public package/support promise; no Windows High Contrast, NVDA, VoiceOver, physical-device, or true-zoom claim. Integration-specific claims remain excluded until sustainable manual capacity exists."
+}
