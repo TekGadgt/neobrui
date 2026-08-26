@@ -1,7 +1,13 @@
 packages:
   - "."
+  - "fixtures/css-modules"
+  - "fixtures/astro"
+  - "fixtures/tailwind"
 supportedArchitectures:
   os: [darwin, linux]
   cpu: [arm64, x64]
 allowBuilds:
+  '@parcel/watcher': true
+  '@tailwindcss/oxide': true
   esbuild: true
+  sharp: true

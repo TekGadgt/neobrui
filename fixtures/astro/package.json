@@ -1,0 +1,1 @@
+{"name":"neobrui-spike4-astro","private":true,"version":"0.0.0","type":"module","scripts":{"build":"astro build"},"dependencies":{"astro":"5.13.5"}}

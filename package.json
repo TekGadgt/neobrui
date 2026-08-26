@@ -9,6 +9,7 @@
     "build:tokens": "node scripts/build-tokens.mjs",
     "validate:tokens": "node tests/token-schema.test.mjs",
     "build": "pnpm build:tokens && vite build",
+    "build:fixtures": "pnpm build && pnpm --filter neobrui-spike4-css-modules build && pnpm --filter neobrui-spike4-astro build && pnpm --filter neobrui-spike4-tailwind build",
     "test": "pnpm validate:tokens && playwright test",
     "verify": "pnpm install --frozen-lockfile && pnpm build && pnpm test"
   },

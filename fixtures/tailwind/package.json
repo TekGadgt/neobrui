@@ -1,0 +1,1 @@
+{"name":"neobrui-spike4-tailwind","private":true,"version":"0.0.0","type":"module","scripts":{"build":"tailwindcss -i ./input.css -o ./dist/output.css --minify"},"devDependencies":{"@tailwindcss/cli":"4.1.13","tailwindcss":"4.1.13"}}

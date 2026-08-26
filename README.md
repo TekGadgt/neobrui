@@ -6,7 +6,7 @@ The existing `/workspace/personal_site` and `/workspace/htmlday-lite` repositori
 
 ## Scope boundary
 
-Spike 1 adds a finite semantic token schema, build-time CSS generator, and five isolated fixture inputs/routes: personal-light, personal-dark, workshop, nested-theme, and neutralized. Spike 2 adds only disposable, reset-free Surface, Button, and Field CSS recipes under `src/recipes/`, demonstrated at `/recipes/`; native HTML owns behavior and the `_nb-spike` hooks are not public API. Values and content remain fixture-owned. It still does not include a public package/API, runtime JavaScript, DTCG output, adapters, Storybook, Tailwind, Astro, CSS Modules, or a component library implementation.
+Spike 4 adds a temporary, explicit cascade-layer contract and isolated coexistence evidence under `fixtures/coexistence`, `fixtures/css-modules`, `fixtures/astro`, and `fixtures/tailwind`. These are fixture-only integrations: no public package/API, runtime core JavaScript, adapter, or plugin is introduced. Astro and Tailwind remain separate packages.
 
 Temporary class/custom-property naming, if needed in this spike, uses the documented `_nb-spike` prefix. The prefix is disposable and is not a public naming decision.
 

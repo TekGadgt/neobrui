@@ -1,4 +1,8 @@
-/* Private aggregate entry for Spike 2 only; not a public package surface. */
-@import './surface.css';
-@import './button.css';
-@import './field.css';
+/* Private aggregate entry for Spike 4 only; not a public package surface.
+ * Import generated token CSS before this file. Consumers may predeclare the
+ * names, then put their own layers after `neobrui.recipes` or use unlayered CSS.
+ */
+@layer neobrui.tokens, neobrui.recipes;
+@import './surface.css' layer(neobrui.recipes);
+@import './button.css' layer(neobrui.recipes);
+@import './field.css' layer(neobrui.recipes);

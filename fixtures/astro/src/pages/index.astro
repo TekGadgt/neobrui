@@ -1,0 +1,9 @@
+---
+import '../../../../src/recipes/index.css';
+import '../../../../fixtures/plain/generated-tokens.css';
+---
+<html lang="en" data-_nb-theme="personal-light"><head><meta charset="UTF-8" /><title>Astro coexistence</title></head><body><main class="_nb-spike-surface" data-_nb-level="outlined"><h1>Astro global + scoped CSS</h1><button class="_nb-spike-button" type="button">Astro action</button><p class="child">Scoped child content remains application-owned.</p></main></body></html>
+<style>
+  main { --_nb-color-border: rgb(22 101 52); }
+  .child { color: rgb(30 64 175); }
+</style>
