@@ -1,3 +1,4 @@
 @import 'tailwindcss' layer(tailwind);
+@import '../plain/generated-tokens.css' layer(neobrui.tokens);
 @import '../../src/recipes/index.css';
 @layer consumer { .hook { --_nb-button-background: rgb(22 101 52); } }

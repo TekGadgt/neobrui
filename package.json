@@ -7,15 +7,16 @@
   "scripts": {
     "install:frozen": "pnpm install --frozen-lockfile",
     "build:tokens": "node scripts/build-tokens.mjs",
+    "build:tailwind": "pnpm --filter neobrui-spike4-tailwind build",
     "validate:tokens": "node tests/token-schema.test.mjs",
-    "build": "pnpm build:tokens && vite build",
+    "build": "pnpm build:tokens && pnpm build:tailwind && vite build",
     "build:fixtures": "pnpm build && pnpm --filter neobrui-spike4-css-modules build && pnpm --filter neobrui-spike4-astro build && pnpm --filter neobrui-spike4-tailwind build",
     "test": "pnpm validate:tokens && playwright test",
     "verify": "pnpm install --frozen-lockfile && pnpm build && pnpm test"
   },
   "devDependencies": {
-    "@axe-core/playwright": "^4.13.0",
-    "@playwright/test": "^1.55.0",
-    "vite": "^7.1.7"
+    "@axe-core/playwright": "4.13.0",
+    "@playwright/test": "1.62.1",
+    "vite": "7.3.6"
   }
 }

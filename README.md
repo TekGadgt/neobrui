@@ -22,7 +22,9 @@ pnpm test
 pnpm verify
 ```
 
-`pnpm test` validates required roles and runs Chromium, Firefox, and WebKit. It checks fixture content, JavaScript-disabled usability, absence of external requests, private/unpublishable project metadata, forbidden cross-project references, the six built HTML entries, and isolated route identity/CSS delivery. Generated CSS is `fixtures/plain/generated-tokens.css`; source and decision/evidence records are under `src/tokens/`, `scripts/`, `decisions/`, and `evidence/`.
+`pnpm test` validates required roles and runs Chromium, Firefox, and WebKit. It checks fixture content, JavaScript-disabled usability, absence of external requests, private/unpublishable project metadata, forbidden cross-project references, the built HTML entries, and isolated route identity/CSS delivery. The Tailwind fixture imports generated tokens as an application-owned input and the `/tailwind/` browser check proves recipe variables and the `p-4` utility resolve together. Generated CSS is `fixtures/plain/generated-tokens.css`; source and decision/evidence records are under `src/tokens/`, `scripts/`, `decisions/`, and `evidence/`.
+
+Normal verification is non-mutating: screenshot capture is gated behind `CAPTURE_EVIDENCE=1` and writes the producing engine into every evidence filename. Fixture `.astro/` metadata is ignored. Root Vite, Playwright, and axe tooling is exactly pinned to 7.3.6, 1.62.1, and 4.13.0 respectively; the frozen lockfile is authoritative.
 
 DTCG export is deliberately deferred: no named consumer or authorized importer/exporter exists for this disposable spike. Core identifiers remain semantic and temporary (`_nb-spike`); application palette, fonts, content, motifs, and behavior stay fixture-owned.
 

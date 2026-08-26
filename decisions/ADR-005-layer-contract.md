@@ -18,4 +18,4 @@ Recipe selectors remain global, temporary, and low specificity. Hooks are custom
 
 Root: pnpm 11.24.0, Vite 7.3.6, Playwright 1.62.1, axe-core/playwright 4.13.0. CSS Modules uses Vite 7.3.6. Astro uses Astro 5.13.5. Tailwind uses Tailwind CSS and @tailwindcss/cli 4.1.13.
 
-See `evidence/spike-4-coexistence.md` for RED→GREEN cycles, computed-style matrix, builds, engine counts, and residual manual checks.
+The Tailwind fixture imports the generated token CSS as an explicit application-owned input and selects `personal-light`; it has no neobrui plugin or adapter. Evidence capture is opt-in via `CAPTURE_EVIDENCE=1`, always uses the producing Playwright engine in the filename, and normal verification is non-mutating. Fixture `.astro/` generated state is ignored. See `evidence/spike-4-coexistence.md` for RED→GREEN cycles, computed-style matrix, builds, engine counts, and residual manual checks.

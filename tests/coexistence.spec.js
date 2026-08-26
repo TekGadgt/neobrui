@@ -6,6 +6,15 @@ const cases = [
 ];
 
 test.describe('Spike 4 shared cascade matrix', () => {
+  test('Tailwind utility and neobrui recipe resolve together in production output', async ({ page }) => {
+    await page.goto('/tailwind/');
+    const button = page.locator('button');
+    await expect(button).toHaveCSS('background-color', 'rgb(22, 101, 52)');
+    await expect(page.locator('body')).toHaveCSS('padding-top', '16px');
+    await expect(page.locator('body')).toHaveCSS('padding-left', '16px');
+    await expect(button).toHaveCSS('border-width', '2px');
+  });
+
   for (const [name, color] of cases) {
     test(`${name} consumer contract`, async ({ page }) => {
       await page.goto('/coexistence/');
@@ -22,10 +31,12 @@ test.describe('Spike 4 shared cascade matrix', () => {
     await expect(button).toHaveCSS('display', 'inline');
   });
 
-  test('captures passing and expected-failure evidence', async ({ page }) => {
+  test('captures passing and expected-failure evidence only when explicitly requested', async ({ page, browserName }) => {
     await page.goto('/coexistence/');
-    await page.screenshot({ path: 'evidence/screenshots/coexistence-matrix-chromium.png', fullPage: true });
-    await page.locator('.hostile').screenshot({ path: 'evidence/screenshots/coexistence-hostile-chromium.png' });
+    if (process.env.CAPTURE_EVIDENCE === '1') {
+      await page.screenshot({ path: `evidence/screenshots/coexistence-matrix-${browserName}.png`, fullPage: true });
+      await page.locator('.hostile').screenshot({ path: `evidence/screenshots/coexistence-hostile-${browserName}.png` });
+    }
   });
 
   for (const direction of ['ltr', 'rtl']) {

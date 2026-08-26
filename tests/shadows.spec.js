@@ -80,10 +80,12 @@ test.describe('Spike 3 shadow direction policy', () => {
     expect(requests).toEqual([]);
   });
 
-  test('captures compact policy evidence', async ({ page, browserName }) => {
+  test('captures compact policy evidence only when explicitly requested', async ({ page, browserName }) => {
     await page.setViewportSize({ width: 640, height: 480 });
-    for (const [name, selector] of [['ltr', '#ltr-default'], ['rtl', '#rtl-default'], ['fixed', '#fixed-rtl'], ['disabled', '#shadow-disabled']]) {
-      await page.locator(selector).screenshot({ path: `evidence/screenshots/shadows-${browserName}-${name}.png` });
+    if (process.env.CAPTURE_EVIDENCE === '1') {
+      for (const [name, selector] of [['ltr', '#ltr-default'], ['rtl', '#rtl-default'], ['fixed', '#fixed-rtl'], ['disabled', '#shadow-disabled']]) {
+        await page.locator(selector).screenshot({ path: `evidence/screenshots/shadows-${browserName}-${name}.png` });
+      }
     }
   });
 });

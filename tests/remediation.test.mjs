@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { readFile, readdir } from 'node:fs/promises';
+import packageJson from '../package.json' with { type: 'json' };
 import path from 'node:path';
 import { generateCss } from '../src/tokens/tokens.mjs';
 import { themes } from '../fixtures/inputs.mjs';
@@ -43,5 +44,17 @@ const coreSource = (await Promise.all(boundaryFiles.filter(file => file.startsWi
 assert.doesNotMatch(coreSource, /(?:<|\.)\s*(?:astro|react|storybook|tailwind)(?:[\s.:{>])/i);
 assert.doesNotMatch(source, /(?:editor|preview|creator|takeaway|portfolio|brand)\s*[:=]/i);
 assert.doesNotMatch(source, /\.json\s*['"]?\s*[:=]/i);
+
+// Spike 4 reproducibility contracts: these checks intentionally fail until the
+// fixture owns its generated tokens and verification is non-mutating.
+assert.match(await readFile('fixtures/tailwind/input.css', 'utf8'), /generated-tokens\.css/);
+const tailwindOutput = await readFile('fixtures/tailwind/dist/output.css', 'utf8');
+assert.match(tailwindOutput, /--_nb-(?:color|surface)-/);
+assert.match(tailwindOutput, /--_nb-button-background:var\(--_nb-color-action\)/);
+assert.equal(packageJson.devDependencies.vite, '7.3.6');
+assert.equal(packageJson.devDependencies['@playwright/test'], '1.62.1');
+assert.equal(packageJson.devDependencies['@axe-core/playwright'], '4.13.0');
+assert.match(await readFile('tests/coexistence.spec.js', 'utf8'), /CAPTURE_EVIDENCE/);
+assert.match(await readFile('tests/shadows.spec.js', 'utf8'), /CAPTURE_EVIDENCE/);
 
 console.log(`remediation tests: ${boundaryFiles.length} files, ${Object.keys(REQUIRED_ROLES).length} families`);
