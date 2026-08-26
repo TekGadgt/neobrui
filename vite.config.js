@@ -7,6 +7,7 @@ const pages = {
   workshop: 'fixtures/workshop/index.html',
   'nested-theme': 'fixtures/nested-theme/index.html',
   neutralized: 'fixtures/neutralized/index.html',
+  recipes: 'fixtures/recipes/index.html',
 };
 
 const routeOutputPlugin = {

@@ -1,0 +1,11 @@
+/* Disposable Spike 2 recipe: native label/input semantics are required. */
+._nb-spike-field { display: grid; gap: var(--_nb-space-2); max-inline-size: 32rem; color: var(--_nb-color-text); }
+._nb-spike-field label { font-size: var(--_nb-text-label); font-weight: 700; }
+._nb-spike-field input, ._nb-spike-field textarea, ._nb-spike-field select { inline-size: 100%; min-block-size: 2.75rem; padding: var(--_nb-control-pad-block) var(--_nb-control-pad-inline); border: var(--_nb-border-control); border-radius: var(--_nb-radius-control); background: var(--_nb-field-background); color: inherit; font: inherit; }
+._nb-spike-field input:focus-visible, ._nb-spike-field textarea:focus-visible, ._nb-spike-field select:focus-visible { outline: var(--_nb-focus-width) solid var(--_nb-color-focus); outline-offset: var(--_nb-focus-offset); }
+._nb-spike-field input:disabled, ._nb-spike-field textarea:disabled, ._nb-spike-field select:disabled { opacity: .6; cursor: not-allowed; }
+._nb-spike-field [data-_nb-description] { color: var(--_nb-color-textMuted); font-size: .9rem; }
+._nb-spike-field [aria-invalid="true"] { border: 3px dashed var(--_nb-color-negative); font-weight: 600; }
+._nb-spike-field [aria-invalid="true"] + [data-_nb-error] { display: block; border-inline-start: .3rem solid currentColor; padding-inline-start: var(--_nb-space-2); font-weight: 700; }
+._nb-spike-field [data-_nb-error] { display: none; }
+@media (forced-colors: active) { ._nb-spike-field input[aria-invalid="true"], ._nb-spike-field textarea[aria-invalid="true"], ._nb-spike-field select[aria-invalid="true"] { border-color: CanvasText; } ._nb-spike-field [data-_nb-error] { border-inline-start-color: CanvasText; } }
