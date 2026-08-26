@@ -17,7 +17,10 @@
     "build:package-spike": "node scripts/size-spike.mjs",
     "measure:size": "node scripts/size-spike.mjs",
     "verify:size": "node scripts/verify-size.mjs",
-    "verify:clean": "node scripts/verify-clean.mjs"
+    "verify:clean": "node scripts/verify-clean.mjs",
+    "qa:baseline": "node scripts/qa-rehearsal.mjs baseline",
+    "qa:seeded": "node scripts/qa-rehearsal.mjs seeded",
+    "qa:rehearsal": "node scripts/qa-rehearsal.mjs rehearsal"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",
