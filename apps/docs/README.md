@@ -13,7 +13,23 @@ pnpm --dir apps/docs build
 PUBLIC_SITE_BASE=/neobrui/ PUBLIC_SITE_URL=https://example.invalid/neobrui/ pnpm --dir apps/docs build
 ```
 
-Preview with `pnpm --dir apps/docs preview`. The output is static and includes Starlight’s Pagefind index.
+Preview a root-base build from the repository root with:
+
+```sh
+pnpm preview:docs
+```
+
+Preview the GitHub Project Pages-equivalent build with:
+
+```sh
+pnpm preview:docs:pages
+```
+
+Then open `http://localhost:4321/neobrui/`.
+
+The build and preview commands must use the same `PUBLIC_SITE_BASE`. A Pages build emits browser URLs such as `/neobrui/_astro/...`, while the deploy host mounts the artifact root at `/neobrui/`. A plain static server that mounts `apps/docs/dist` at `/` does not emulate GitHub Project Pages and will look for a nonexistent `dist/neobrui/_astro/` directory. To serve `apps/docs/dist` at `/`, first make a root-base build with `pnpm build:docs`.
+
+The static output includes Starlight’s Pagefind index.
 
 ## Pagefind search accessibility guard
 

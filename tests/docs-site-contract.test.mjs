@@ -17,11 +17,18 @@ test('docs app consumes the exact local release archive without source imports',
 
 test('docs app pins Starlight and Astro and supports configurable project base', async () => {
   const manifest = JSON.parse(await text('apps/docs/package.json'));
+  const rootManifest = JSON.parse(await text('package.json'));
   assert.equal(manifest.dependencies['@astrojs/starlight'], '0.41.9');
   assert.equal(manifest.dependencies.astro, '7.2.7');
   const config = await text('apps/docs/astro.config.mjs');
   assert.match(config, /PUBLIC_SITE_BASE/);
   assert.match(config, /PUBLIC_SITE_URL/);
+  assert.match(manifest.scripts['preview:pages'], /PUBLIC_SITE_BASE=\/neobrui\//);
+  assert.match(rootManifest.scripts['preview:docs:pages'], /build:docs:pages/);
+  assert.match(rootManifest.scripts['preview:docs:pages'], /preview:pages/);
+  const readme = await text('apps/docs/README.md');
+  assert.match(readme, /build and preview commands must use the same `PUBLIC_SITE_BASE`/);
+  assert.match(readme, /http:\/\/localhost:4321\/neobrui\//);
 });
 
 test('docs app owns its browser and axe tooling with a narrow install policy exception', async () => {
