@@ -38,7 +38,7 @@
       }
     ],
     "sourceManifestHash": "b9a55256a43eb1d3c6f03f95bb6525f886d14fb390b665a1897cc34b9631eac3",
-    "workspaceState": "dirty",
+    "workspaceState": "clean",
     "node": "v26.5.1",
     "pnpm": "11.24.0",
     "minifier": "deterministic in-repo CSS minifier (comment/whitespace normalization)",
