@@ -1,0 +1,42 @@
+import { test, expect } from '@playwright/test';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+
+const root = process.cwd();
+
+test('plain fixture exposes semantic heading and content', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.getByRole('heading', { name: 'Plain fixture', level: 1 })).toBeVisible();
+  await expect(page.getByText('meaningful without JavaScript or a network connection')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Spike 0 harness', level: 2 })).toBeVisible();
+});
+
+test('plain fixture remains usable with JavaScript disabled', async ({ browser }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  const page = await context.newPage();
+  await page.goto('/');
+  await expect(page.getByRole('heading', { name: 'Plain fixture' })).toBeVisible();
+  await expect(page.locator('main')).toContainText('neutral semantic baseline');
+  await context.close();
+});
+
+test('fixture makes no external network requests', async ({ page }) => {
+  const external = [];
+  page.on('request', request => {
+    if (!['http://127.0.0.1:4173', 'http://localhost:4173'].some(origin => request.url().startsWith(origin))) external.push(request.url());
+  });
+  await page.goto('/');
+  await expect(page.locator('main')).toBeVisible();
+  expect(external).toEqual([]);
+});
+
+test('repository metadata and references satisfy Spike 0 boundaries', async () => {
+  const packageJson = JSON.parse(await fs.readFile(path.join(root, 'package.json'), 'utf8'));
+  expect(packageJson.private).toBe(true);
+  expect(packageJson.publishConfig).toBeUndefined();
+  const sourceFiles = ['fixtures/plain/index.html', 'vite.config.js', 'playwright.config.js'];
+  const source = await Promise.all(sourceFiles.map(file => fs.readFile(path.join(root, file), 'utf8')));
+  expect(source.join('\n')).not.toMatch(/(?:personal_site|htmlday-lite)/);
+  expect(source.join('\n')).toContain('_nb-spike');
+  await expect(fs.readFile(path.join(root, 'README.md'), 'utf8')).resolves.toContain('read-only evidence');
+});
