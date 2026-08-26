@@ -6,7 +6,7 @@ The existing `/workspace/personal_site` and `/workspace/htmlday-lite` repositori
 
 ## Scope boundary
 
-Spike 1 adds a finite semantic token source, build-time CSS generator, schema validation, and three identity-isolated theme relationships (including a nested remap). Native fixture elements demonstrate states but are not reusable Surface/Button/Field recipes. It still does not include a public package/API, runtime JavaScript, DTCG output, adapters, Storybook, Tailwind, Astro, CSS Modules, or a component library implementation.
+Spike 1 adds a finite semantic token schema, build-time CSS generator, and five isolated fixture inputs/routes: personal-light, personal-dark, workshop, nested-theme, and neutralized. Values and content remain fixture-owned. Native fixture elements demonstrate states but are not reusable Surface/Button/Field recipes. It still does not include a public package/API, runtime JavaScript, DTCG output, adapters, Storybook, Tailwind, Astro, CSS Modules, or a component library implementation.
 
 Temporary class/custom-property naming, if needed in this spike, uses the documented `_nb-spike` prefix. The prefix is disposable and is not a public naming decision.
 

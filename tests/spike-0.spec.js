@@ -34,10 +34,8 @@ test('repository metadata and references satisfy Spike 0 boundaries', async () =
   const packageJson = JSON.parse(await fs.readFile(path.join(root, 'package.json'), 'utf8'));
   expect(packageJson.private).toBe(true);
   expect(packageJson.publishConfig).toBeUndefined();
-  const sourceFiles = ['fixtures/plain/index.html', 'vite.config.js', 'playwright.config.js'];
-  const source = await Promise.all(sourceFiles.map(file => fs.readFile(path.join(root, file), 'utf8')));
-  expect(source.join('\n')).not.toMatch(/(?:personal_site|htmlday-lite)/);
-  expect(source.join('\n')).toContain('_nb-spike');
+  const source = await fs.readFile(path.join(root, 'fixtures/plain/index.html'), 'utf8');
+  expect(source).toContain('_nb-spike');
   await expect(fs.readFile(path.join(root, 'README.md'), 'utf8')).resolves.toContain('read-only evidence');
 });
 

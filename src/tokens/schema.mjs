@@ -19,8 +19,21 @@ const forbidden = /(?:yellow|blue|green|purple|pink|editor|preview|creator|takea
 
 export function validateTokens(tokens) {
   const errors = [];
+  for (const family of Object.keys(tokens)) {
+    if (!Object.hasOwn(REQUIRED_ROLES, family)) {
+      errors.push(`Unknown token family "${family}"`);
+      continue;
+    }
+    if (!tokens[family] || typeof tokens[family] !== 'object' || Array.isArray(tokens[family])) {
+      errors.push(`Invalid token family "${family}"`);
+      continue;
+    }
+    for (const role of Object.keys(tokens[family])) {
+      if (!REQUIRED_ROLES[family].includes(role)) errors.push(`Unknown token role "${family}.${role}"`);
+    }
+  }
   for (const [family, roles] of Object.entries(REQUIRED_ROLES)) {
-    if (!tokens[family] || typeof tokens[family] !== 'object') {
+    if (!tokens[family] || typeof tokens[family] !== 'object' || Array.isArray(tokens[family])) {
       errors.push(`Missing required token family "${family}"`);
       continue;
     }
