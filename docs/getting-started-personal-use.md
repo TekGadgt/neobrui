@@ -26,18 +26,18 @@ Plain CSS:
 
 ```html
 <link rel="stylesheet" href="./generated-tokens.css">
-<link rel="stylesheet" href="./recipes.css">
-<section data-_nb-level="raised">...</section>
-<button class="_nb-button">Save</button>
+<link rel="stylesheet" href="./blocks.css">
+<section data-nbr-level="raised">...</section>
+<button class="nbr-button">Save</button>
 ```
 
 Astro: import the aggregate CSS once from the application entry/layout, keep Astro scoped styles for local composition, and preserve native HTML semantics.
 
-CSS Modules: import the global recipe entry separately; use module classes for local composition and do not assume a hashed module class is a Neobrui selector.
+CSS Modules: import the global block entry separately; use module classes for local composition and do not assume a hashed module class is a Neobrui selector.
 
-Tailwind: treat generated tokens/recipes as application-owned CSS input. Tailwind preflight and utility order remain consumer-owned; the fixture proves coexistence, not universal Tailwind support.
+Tailwind: treat generated tokens/blocks as application-owned CSS input. Tailwind preflight and utility order remain consumer-owned; the fixture proves coexistence, not universal Tailwind support.
 
-Standalone versus aggregate: use the aggregate entry when all three recipes are needed; use standalone Surface, Button, or Field entries when the consumer needs a narrower CSS graph. The private archive's explicit CSS subpaths and zero-runtime-JS contents are measured in `size-report.json`.
+Standalone versus aggregate: use the aggregate entry when all three blocks are needed; use standalone Surface, Button, or Field entries when the consumer needs a narrower CSS graph. The private archive's explicit CSS subpaths and zero-runtime-JS contents are measured in `size-report.json`.
 
 ## Before actual project adoption
 

@@ -17,7 +17,7 @@ test.describe('isolated fixture delivery', () => {
       const response = await page.goto(`/${route}/`);
       expect(response?.status()).toBe(200);
       await expect(page).toHaveTitle(`${heading} fixture`);
-      await expect(page.locator('html')).toHaveAttribute('data-_nb-theme', theme);
+      await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
       await expect(page.getByRole('heading', { name: heading, level: 1 })).toBeVisible();
       await expect(page.locator('main')).not.toContainText('Plain fixture');
       await expect(page.locator('link[rel="stylesheet"]')).toHaveCount(2);
@@ -54,7 +54,7 @@ test.describe('isolated fixture delivery', () => {
     for (const [route, heading, theme] of fixtures) {
       const html = await fs.readFile(path.join(root, 'dist', route, 'index.html'), 'utf8');
       expect(html).toContain(`<title>${heading} fixture</title>`);
-      expect(html).toContain(`data-_nb-theme="${theme}"`);
+      expect(html).toContain(`data-theme="${theme}"`);
       expect(html).not.toContain('Plain fixture');
     }
   });

@@ -5,7 +5,7 @@ Neobrui is a validated, private, CSS-only personal-use pilot for Ryan's projects
 ## What exists today
 
 - Semantic token schema and deterministic generated CSS; themes, palettes, fonts, content, and motifs stay product-owned.
-- Opt-in `Surface`, `Button`, and `Field` recipes, with standalone and aggregate CSS entries.
+- Opt-in `Surface`, `Button`, and `Field` blocks, with standalone and aggregate CSS entries.
 - Native HTML contracts, RTL/nested/fixed shadow behavior, no-shadow safety cues, and explicit cascade-layer coexistence.
 - Plain CSS, CSS Modules, Astro, and Tailwind integration fixtures (evidence, not adapters or blanket compatibility).
 - Zero runtime JavaScript/assets/dependencies in the private CSS candidate.
@@ -15,7 +15,7 @@ The current evidence is intentionally narrow. Standalone Button has a provisiona
 
 ## Provisional boundaries
 
-`_nb-spike` classes, data attributes, custom properties, layer names, and the private package/archive name are disposable evidence. No stable CSS namespace, npm scope, license, public repository posture, registry distribution, semver, or support policy has been selected. Do not expose the selectors to another project or publish the archive without a later decision.
+The `nbr` classes, data attributes, custom properties, and five-layer names are the accepted stable Phase 1 contract. The package remains private and unpublished; no npm scope, license, registry distribution, semver, or adopter migration is authorized by this phase.
 
 Native HTML and the application own semantics, keyboard behavior, link navigation, validation, disabled behavior, announcements, routing, and state. Automation does not establish manual assistive-technology, OS forced-colors, physical keyboard/touch, or true browser-UI zoom support. Procedures are documented but unexecuted unless a dated run record says otherwise.
 

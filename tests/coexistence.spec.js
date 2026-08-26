@@ -7,7 +7,7 @@ const cases = [
 ];
 
 test.describe('Spike 4 shared cascade matrix', () => {
-  test('Tailwind utility and neobrui recipe resolve together in production output', async ({ page }) => {
+  test('Tailwind utility and neobrui block resolve together in production output', async ({ page }) => {
     await page.goto('/tailwind/');
     const button = page.locator('button');
     await expect(button).toHaveCSS('background-color', 'rgb(22, 101, 52)');
@@ -19,7 +19,7 @@ test.describe('Spike 4 shared cascade matrix', () => {
   for (const [name, color] of cases) {
     test(`${name} consumer contract`, async ({ page }) => {
       await page.goto('/coexistence/');
-      const button = page.locator(`.${name} ._nb-spike-button`);
+      const button = page.locator(`.${name} .nbr-button`);
       await expect(button).toBeVisible();
       await expect(button).toHaveCSS('background-color', color);
     });
@@ -27,7 +27,7 @@ test.describe('Spike 4 shared cascade matrix', () => {
 
   test('hostile high-specificity and important CSS visibly owns failure', async ({ page }) => {
     await page.goto('/coexistence/');
-    const button = page.locator('.hostile ._nb-spike-button');
+    const button = page.locator('.hostile .nbr-button');
     await expect(button).toHaveCSS('background-color', 'rgb(185, 28, 28)');
     await expect(button).toHaveCSS('display', 'inline');
   });

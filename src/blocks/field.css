@@ -1,0 +1,11 @@
+/* Disposable Spike 2 block: native label/input semantics are required. */
+.nbr-field { display: grid; gap: var(--nbr-space-2); max-inline-size: 32rem; color: var(--nbr-color-text); }
+.nbr-field label { font-size: var(--nbr-text-label); font-weight: 700; }
+.nbr-field input, .nbr-field textarea, .nbr-field select { inline-size: 100%; min-block-size: 2.75rem; padding: var(--nbr-control-pad-block) var(--nbr-control-pad-inline); border: var(--nbr-border-control); border-radius: var(--nbr-radius-control); background: var(--nbr-field-background); color: inherit; font: inherit; }
+.nbr-field input:focus-visible, .nbr-field textarea:focus-visible, .nbr-field select:focus-visible { outline: var(--nbr-focus-width) solid var(--nbr-color-focus); outline-offset: var(--nbr-focus-offset); }
+.nbr-field input:disabled, .nbr-field textarea:disabled, .nbr-field select:disabled { opacity: .6; cursor: not-allowed; }
+.nbr-field [data-nbr-description] { color: var(--nbr-color-text-muted); font-size: .9rem; }
+.nbr-field [aria-invalid="true"] { border: 3px dashed var(--nbr-color-negative); font-weight: 600; }
+.nbr-field [aria-invalid="true"] + [data-nbr-error] { display: block; border-inline-start: .3rem solid currentColor; padding-inline-start: var(--nbr-space-2); font-weight: 700; }
+.nbr-field [data-nbr-error] { display: none; }
+@media (forced-colors: active) { .nbr-field input[aria-invalid="true"], .nbr-field textarea[aria-invalid="true"], .nbr-field select[aria-invalid="true"] { border-color: CanvasText; } .nbr-field [data-nbr-error] { border-inline-start-color: CanvasText; } }

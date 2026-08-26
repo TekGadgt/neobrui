@@ -1,7 +1,7 @@
 /* Consumer-owned evidence: this file is intentionally outside neobrui layers. */
 @layer consumer {
-  .explicit ._nb-spike-button { --_nb-button-background: rgb(22 101 52); }
+  .explicit .nbr-button { --nbr-button-background: rgb(22 101 52); }
 }
-.normal ._nb-spike-button { background: rgb(30 64 175); }
-.hostile ._nb-spike-button { all: unset; color: rgb(185 28 28); }
-.hostile ._nb-spike-button { background: rgb(185 28 28) !important; }
+.normal .nbr-button { background: rgb(30 64 175); }
+.hostile .nbr-button { all: unset; color: rgb(185 28 28); }
+.hostile .nbr-button { background: rgb(185 28 28) !important; }

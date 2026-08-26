@@ -20,8 +20,8 @@ for (const invalidLength of ['3%','3px 0 0 red','#000','NaN','Infinity','calc(1p
   assert.ok(errorsForLength.some(error => error === 'Invalid shadow axis length "shadow.inline"'), `expected rejected shadow length: ${invalidLength}`);
 }
 const css = generateCss(themes);
-assert.ok(css.indexOf('[data-_nb-theme="personal-light"]') < css.indexOf('[data-_nb-theme="personal-dark"]'));
-assert.ok(css.includes('--_nb-surface-background'));
+assert.ok(css.indexOf('[data-theme="personal-light"]') < css.indexOf('[data-theme="personal-dark"]'));
+assert.ok(css.includes('--nbr-surface-background'));
 assert.ok(!css.includes('dtcg'));
 for (const [family, roles] of Object.entries(themes['personal-light'])) {
   for (const role of Object.keys(roles)) assert.ok(`${family}.${role}`.includes('.'));

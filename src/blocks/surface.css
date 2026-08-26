@@ -1,0 +1,6 @@
+/* Disposable Spike 2 block: opt-in, reset-free Surface. */
+.nbr-surface { --nbr-surface-level: quiet; background: var(--nbr-surface-background); color: var(--nbr-color-text); border: var(--nbr-border-control); padding: var(--nbr-space-4); }
+.nbr-surface[data-nbr-level="outlined"] { border: var(--nbr-border-region); }
+.nbr-surface[data-nbr-level="raised"] { border: var(--nbr-border-region); background: var(--nbr-color-surface-raised); box-shadow: var(--nbr-shadow-inline-offset, var(--nbr-shadow-inline)) var(--nbr-shadow-block) 0 var(--nbr-color-shadow); }
+.nbr-surface[data-nbr-level="quiet"] { border-inline: 0; border-block: 0 var(--nbr-border-control); box-shadow: none; }
+@media (forced-colors: active) { .nbr-surface[data-nbr-level="raised"], .nbr-surface[data-nbr-level="outlined"] { box-shadow: none; border-color: CanvasText; } }

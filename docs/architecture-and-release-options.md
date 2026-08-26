@@ -9,8 +9,8 @@ Neobrui (“neobrutalism UI”) is proposed as Ryan’s personal-use CSS kit fir
 ### Accepted decision bundle
 
 1. Keep the working name **neobrui**, subject to a concrete collision, trademark, or search finding.
-2. Use the concise, project-owned `nbr-` namespace family consistently for classes, data attributes, custom properties, and cascade layers. Do not keep `_nb-spike` aliases as a compatibility promise.
-3. Use a small ITCSS/CUBE hybrid: tokens/settings, compositions/layouts, recipes/blocks, and a deliberately tiny utility layer. Do not add a reset or generic element takeover.
+2. Use the concise, project-owned `nbr-` namespace family consistently for classes, data attributes, custom properties, and cascade layers. Do not keep legacy aliases as a compatibility promise.
+3. Use a small ITCSS/CUBE hybrid: tokens/settings, compositions/layouts, blocks, and a deliberately tiny utility layer. Do not add a reset or generic element takeover.
 4. Keep validated JS/TS token and theme maps as the initial canonical authoring source, and add a deterministic DTCG export as a first-class interchange surface. One editable source only.
 5. Keep theme state and selectors in the product. Neobrui emits mappings for configured selectors and never creates a second toggle or state machine.
 6. Model `Stack` and `Cluster` as layout compositions with namespaced custom-property hooks and token defaults, not a broad utility matrix. Add them only after approval and evidence.
@@ -27,11 +27,11 @@ ITCSS is best understood as a dependency/order model: broad, low-specificity rul
 |---|---|---|
 | Full utility-first | Fast composition; consumers need few bespoke selectors; familiar in Tailwind ecosystems. | Large API surface, class-string verbosity, and pressure to generate a matrix before demand exists. Not proposed for the first kit. |
 | BEM/SUIT-style components | Clear ownership and component boundaries; familiar block/element/modifier vocabulary.[3][4] | Can turn every variation into a named selector and encourages component naming decisions before the product contract is settled. Useful as a naming influence, not the whole architecture. |
-| CUBE CSS | Separates layout/composition from blocks, utilities, and exceptions; supports context-aware styling.[2] | Requires discipline about where a rule belongs. Good conceptual fit for compositions plus recipes. |
+| CUBE CSS | Separates layout/composition from blocks, utilities, and exceptions; supports context-aware styling.[2] | Requires discipline about where a rule belongs. Good conceptual fit for compositions plus blocks. |
 | Pure ITCSS | Predictable cascade ordering and low-specificity layering.[1] | Says little about the consumer API, token roles, or primitive ergonomics. Too incomplete alone. |
 | Token-first/custom-property API | Makes roles and overrides explicit; zero runtime JS; easy product-owned theming. | Requires finite-role validation, fallback decisions, and careful output compatibility. This is the current foundation and should remain. |
 
-**Proposed emitted layers:** tokens/settings → layouts/compositions → recipes/blocks → minimal utilities. `Stack` and `Cluster` are compositions. Surface, Button, and Field are recipes. Utilities are demand-driven and intentionally few. Omit reset and generic element rules so host semantics and coexistence remain intact. This is a small ITCSS/CUBE hybrid, not an implementation change made by this ADR.
+**Proposed emitted layers:** tokens/settings → layouts/compositions → blocks/blocks → minimal utilities. `Stack` and `Cluster` are compositions. Surface, Button, and Field are blocks. Utilities are demand-driven and intentionally few. Omit reset and generic element rules so host semantics and coexistence remain intact. This is a small ITCSS/CUBE hybrid, not an implementation change made by this ADR.
 
 ### Namespace proposal (pending)
 
@@ -42,7 +42,7 @@ ITCSS is best understood as a dependency/order model: broad, low-specificity rul
 | `neobrui-` | Maximum readability and searchability. | Verbose in markup and custom properties. | Best fallback if collision evidence outweighs ergonomics. |
 | `neo-` | Familiar and short. | Extremely broad; likely collisions and poor search precision. | Not recommended. |
 
-A selected prefix should cover classes (`.nbr-stack`), data attributes (`[data-nbr-theme]` if selected), custom properties (`--nbr-color-*`), and layers (`@layer nbr.tokens`). `_nb-spike` is disposable evidence, not an alias contract.
+A selected prefix should cover classes (`.nbr-stack`), product-configured data attributes, custom properties (`--nbr-color-*`), and layers (`@layer nbr.tokens`). `nbr` is the accepted Phase 1 contract, not an alias contract.
 
 ## Name and identity options
 
@@ -84,7 +84,7 @@ Default global tokens should be opt-in, not an accidental global theme. Nested t
 | Data attributes | Good for state/configuration and inspectability. | Can blur product state with layout configuration. |
 | Generic gap utilities | Familiar and composable. | Broad matrix, inconsistent semantics, and more collision surface. |
 
-Recommendation: one class per primitive plus namespaced custom-property hooks and token defaults; no broad gap/alignment utility matrix initially. Document logical properties and writing-mode behavior rather than assuming left-to-right: use `inline-size`, logical alignment, and wrapping that remains usable in RTL. QA must cover 320px, long unbroken content, nesting, local override precedence, keyboard/focus visibility in surrounding recipes, and both directions. This API is proposed, not implemented here.
+Recommendation: one class per primitive plus namespaced custom-property hooks and token defaults; no broad gap/alignment utility matrix initially. Document logical properties and writing-mode behavior rather than assuming left-to-right: use `inline-size`, logical alignment, and wrapping that remains usable in RTL. QA must cover 320px, long unbroken content, nesting, local override precedence, keyboard/focus visibility in surrounding blocks, and both directions. This API is proposed, not implemented here.
 
 ## Package, source, release, and support posture
 
@@ -92,7 +92,7 @@ Recommendation: one class per primitive plus namespaced custom-property hooks an
 
 GitHub visibility is a separate decision: source may later be public or remain private. If source becomes public, that still does not promise compatibility, issue response, accessibility coverage, or maintenance. A supported-library gate needs its own browser/version policy, manual accessibility evidence, security path, issue policy, and capacity.
 
-**Proposed GitHub-first contract:** create no repository as part of this task. When authorized, use Git tags and GitHub Releases with deterministic CSS archive assets and checksums.[6] Release assets should be consumable without Git dependency installs; a Git dependency is a development escape hatch, not the primary contract. Use semantic `0.x` versions: patch for corrected output/docs without intended API change, minor for additive tokens/recipes/export capabilities, and a new minor or explicitly documented breaking pre-1.0 release for contract changes. Tag the exact source, retain the previous asset, and roll back by selecting the prior release/tag rather than rewriting history. MIT is acceptable if Ryan later chooses public source and adds the license.[7]
+**Proposed GitHub-first contract:** create no repository as part of this task. When authorized, use Git tags and GitHub Releases with deterministic CSS archive assets and checksums.[6] Release assets should be consumable without Git dependency installs; a Git dependency is a development escape hatch, not the primary contract. Use semantic `0.x` versions: patch for corrected output/docs without intended API change, minor for additive tokens/blocks/export capabilities, and a new minor or explicitly documented breaking pre-1.0 release for contract changes. Tag the exact source, retain the previous asset, and roll back by selecting the prior release/tag rather than rewriting history. MIT is acceptable if Ryan later chooses public source and adds the license.[7]
 
 ## First-adopter path and gates
 

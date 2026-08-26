@@ -25,7 +25,7 @@ Public source governance (license, CONTRIBUTING, security/support and issue poli
 
 ## Reject or defer
 
-Defer runtime component JavaScript, framework adapters/plugins while CSS coexistence works, global resets/hostile specificity, bundled identity, product/editor/QR/hosting abstractions, arbitrary recipe-count targets, and indefinite `_nb-spike` compatibility aliases. DTCG is no longer deferred: its bounded interchange surface is part of the proposed personal-use MVP, subject to Ryan’s canonical-authority and format/version decisions.
+Defer runtime component JavaScript, framework adapters/plugins while CSS coexistence works, global resets/hostile specificity, bundled identity, product/editor/QR/hosting abstractions, arbitrary block-count targets, and indefinite `nbr` compatibility aliases. DTCG is no longer deferred: its bounded interchange surface is part of the proposed personal-use MVP, subject to Ryan’s canonical-authority and format/version decisions.
 
 ## Current implementation gates
 

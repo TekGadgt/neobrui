@@ -2,7 +2,7 @@
 
 Status: Accepted
 Date: 2026-08-26
-Acceptance scope: Neobrui's pre-consumer namespace, cascade, token interchange, composition, utility, package, evidence, and phased migration contract. This records architecture and API decisions only; implementation is pending and adopter work is not authorized.
+Acceptance scope: Neobrui's pre-consumer namespace, cascade, token interchange, composition, utility, package, evidence, and phased migration contract. Phase 1 namespace/layer/Block implementation is complete locally; later phases remain pending and adopter work is not authorized.
 
 ## Decision
 
@@ -182,4 +182,4 @@ Only after all four phases pass may adopter work begin: first the neutral site (
 
 Normative docs, tests, fixtures, package exports, and current-surface references must use stable `nbr` names and accepted CUBE vocabulary. Historical evidence may retain `_nb-spike` names only when clearly labeled as historical and not presented as a current selector or contract. Links should point to ADR-010 for accepted decisions and explicitly distinguish accepted-but-unimplemented work from observed behavior.
 
-This ADR changes documentation only. It does not change CSS, selectors, tokens, package behavior, generated artifacts, or adopter projects.
+Phase 1 implementation is recorded in [`docs/cube-phase1-migration.md`](../docs/cube-phase1-migration.md). This ADR remains the contract for later phases; it does not authorize package publication or adopter projects.

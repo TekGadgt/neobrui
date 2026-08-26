@@ -35,7 +35,7 @@ test('repository metadata and references satisfy Spike 0 boundaries', async () =
   expect(packageJson.private).toBe(true);
   expect(packageJson.publishConfig).toBeUndefined();
   const source = await fs.readFile(path.join(root, 'fixtures/plain/index.html'), 'utf8');
-  expect(source).toContain('_nb-spike');
+  expect(source).toContain('nbr');
   await expect(fs.readFile(path.join(root, 'README.md'), 'utf8')).resolves.toContain('read-only evidence');
 });
 

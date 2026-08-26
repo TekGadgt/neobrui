@@ -9,8 +9,8 @@ test.describe('Spike 3 shadow direction policy', () => {
   test.beforeEach(async ({ page }) => { await page.goto('/shadows/'); });
 
   test('logical LTR and RTL offsets are nonzero, with block positive', async ({ page }) => {
-    const ltr = page.locator('#ltr-default ._nb-spike-button');
-    const rtl = page.locator('#rtl-default ._nb-spike-button');
+    const ltr = page.locator('#ltr-default .nbr-button');
+    const rtl = page.locator('#rtl-default .nbr-button');
     expect(inlineOffset(await shadow(ltr))).toBe(3);
     expect(inlineOffset(await shadow(rtl))).toBe(-3);
     expect(await shadow(ltr)).toContain('4px');
@@ -18,14 +18,14 @@ test.describe('Spike 3 shadow direction policy', () => {
   });
 
   test('nested direction follows nearest root and fixed policy stays down-right', async ({ page }) => {
-    expect(inlineOffset(await shadow(page.locator('#nested-ltr-in-rtl ._nb-spike-button')))).toBe(3);
-    expect(inlineOffset(await shadow(page.locator('#nested-rtl-in-ltr ._nb-spike-button')))).toBe(-3);
-    expect(inlineOffset(await shadow(page.locator('#fixed-ltr ._nb-spike-button')))).toBe(3);
-    expect(inlineOffset(await shadow(page.locator('#fixed-rtl ._nb-spike-button')))).toBe(3);
+    expect(inlineOffset(await shadow(page.locator('#nested-ltr-in-rtl .nbr-button')))).toBe(3);
+    expect(inlineOffset(await shadow(page.locator('#nested-rtl-in-ltr .nbr-button')))).toBe(-3);
+    expect(inlineOffset(await shadow(page.locator('#fixed-ltr .nbr-button')))).toBe(3);
+    expect(inlineOffset(await shadow(page.locator('#fixed-rtl .nbr-button')))).toBe(3);
   });
 
   test('active translation matches collapsed shadow and dimensions remain stable', async ({ page }) => {
-    const button = page.locator('#ltr-default ._nb-spike-button');
+    const button = page.locator('#ltr-default .nbr-button');
     const before = await button.boundingBox();
     await button.hover();
     await page.mouse.down();
@@ -42,7 +42,7 @@ test.describe('Spike 3 shadow direction policy', () => {
   test('keyboard focus does not trigger pointer translation and remains visible at 320px', async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 200 });
     await page.evaluate(() => { document.documentElement.style.fontSize = '200%'; });
-    const button = page.locator('#ltr-default ._nb-spike-button');
+    const button = page.locator('#ltr-default .nbr-button');
     await button.focus();
     expect(await button.evaluate(el => getComputedStyle(el).transform)).toBe('none');
     expect(await button.evaluate(el => getComputedStyle(el).outlineStyle)).not.toBe('none');
@@ -61,17 +61,17 @@ test.describe('Spike 3 shadow direction policy', () => {
 
   test('shadow-disabled and forced-colors preserve non-shadow state cues', async ({ page, browserName }) => {
     const disabled = page.locator('#shadow-disabled');
-    expect(await shadow(disabled.locator('._nb-spike-button').first())).toBe('none');
-    expect(await disabled.locator('._nb-spike-button').nth(1).evaluate(el => getComputedStyle(el).opacity)).not.toBe('1');
+    expect(await shadow(disabled.locator('.nbr-button').first())).toBe('none');
+    expect(await disabled.locator('.nbr-button').nth(1).evaluate(el => getComputedStyle(el).opacity)).not.toBe('1');
     expect(await disabled.locator('#shadow-invalid').evaluate(el => getComputedStyle(el).borderStyle)).toBe('dashed');
     await page.emulateMedia({ forcedColors: 'active' });
     if (browserName === 'webkit') {
       expect(await page.evaluate(() => [...document.styleSheets].some(sheet => { try { return [...sheet.cssRules].some(rule => rule.cssText.includes('forced-colors')); } catch { return false; } }))).toBe(true);
     } else {
-      expect(await page.locator('#ltr-default ._nb-spike-button').evaluate(el => getComputedStyle(el).boxShadow)).toBe('none');
+      expect(await page.locator('#ltr-default .nbr-button').evaluate(el => getComputedStyle(el).boxShadow)).toBe('none');
     }
-    await page.locator('#ltr-default ._nb-spike-button').focus();
-    expect(await page.locator('#ltr-default ._nb-spike-button').evaluate(el => getComputedStyle(el).outlineStyle)).not.toBe('none');
+    await page.locator('#ltr-default .nbr-button').focus();
+    expect(await page.locator('#ltr-default .nbr-button').evaluate(el => getComputedStyle(el).outlineStyle)).not.toBe('none');
   });
 
   test('has no axe violations and loads without external requests', async ({ page }) => {

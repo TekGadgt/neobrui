@@ -16,7 +16,7 @@ export const REQUIRED_ROLES = Object.freeze({
 });
 
 const forbidden = /(?:yellow|blue|green|purple|pink|editor|preview|creator|takeaway|portfolio|brand|project)/i;
-// Temporary Spike 3 contract: finite lengths supported by the recipe. CSS
+// Phase 1 contract: finite lengths supported by the Block. CSS
 // percentages and computed/function syntax are not valid box-shadow offsets.
 const shadowAxisLength = /^-?(?:0|(?:\d+(?:\.\d+)?|\.\d+)(?:px|rem|em|ch|ex|vw|vh|vmin|vmax))$/;
 
