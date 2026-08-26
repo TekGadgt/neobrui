@@ -14,7 +14,15 @@
     "sourceManifest": [
       {
         "path": "src/tokens/tokens.mjs",
-        "sha256": "d6b5ab9d4ad0565e6cb9a2b9af0f002c8d1da882d9b2a54487d638402a5715df"
+        "sha256": "6cc2ac4ee2516661776afab4f4dbfed313fa08181ed32126c0b6d4513ce0e12d"
+      },
+      {
+        "path": "src/tokens/schema.mjs",
+        "sha256": "ee517cc4b944dbbe8fa7a80ad41225c052b2e3a78fa4e95796341afafa4e4505"
+      },
+      {
+        "path": "src/tokens/dtcg.mjs",
+        "sha256": "b3403e8df2a88e696c6cae21ab12603cb436ac57f3769bcf94ec0682672867f5"
       },
       {
         "path": "src/blocks/surface.css",
@@ -33,12 +41,16 @@
         "sha256": "8fd6eaf2283fdd75f86eac339fa9fc4d7519becfc280ab78edb0595a46664136"
       },
       {
+        "path": "fixtures/theme-manifest.mjs",
+        "sha256": "7f2056eb64c99e98fbee722dfc00a28f6cb92cdec46feb8f2eab25b7563b8e09"
+      },
+      {
         "path": "scripts/size-package.mjs",
-        "sha256": "b59a59fa7ba2c1ac36b95cfb9a4b209c0c7c50d598809ecc17282dd8e95dea0b"
+        "sha256": "7d92527dfe3804c63b516c2493f713c04dc91782d80247f524038ad208574c22"
       }
     ],
-    "sourceManifestHash": "b69247ae87ead73fc157e44301ae58fda33ade32cba79154171787ed8f9b0b91",
-    "workspaceState": "clean",
+    "sourceManifestHash": "07c31c7064cb635f1bda7764f6514675be7a5ee361f17ded6ff776eeb45ba8a9",
+    "workspaceState": "dirty",
     "node": "v26.5.1",
     "pnpm": "11.24.0",
     "minifier": "deterministic in-repo CSS minifier (comment/whitespace normalization)",
@@ -76,8 +88,8 @@
       "path": "dist/size-package/dist/foundations.css",
       "rawBytes": 1596,
       "minifiedBytes": 1413,
-      "gzipBytes": 531,
-      "sha256": "7ff86d8dd8f92e18f838052c06e0a5e75e4860ff281633eb1afd8d3b85dfad38",
+      "gzipBytes": 539,
+      "sha256": "f7a75f6c173e55c1a373f225419e78d30c0ad2ebd140ba9798513f1f048022be",
       "comments": "raw source comments excluded from minified artifact; no maps or licenses included",
       "budget": {
         "raw": 6000,
@@ -157,8 +169,8 @@
       "path": "dist/size-package/dist/consumer.css",
       "rawBytes": 6561,
       "minifiedBytes": 5949,
-      "gzipBytes": 1450,
-      "sha256": "c7df7c4d629246f14cb4ab9c109fdeea359fd2c369434021c931213afa226a59",
+      "gzipBytes": 1457,
+      "sha256": "724c062c7b7a5fffb2213569918976b2408c3bb4c65d2792080f47107d1fc010",
       "comments": "raw source comments excluded from minified artifact; no maps or licenses included",
       "budget": {
         "raw": 14000,
@@ -170,12 +182,44 @@
       "verdict": "success"
     }
   ],
+  "interchange": {
+    "formatVersion": "2025.10",
+    "artifacts": [
+      {
+        "name": "nested-theme",
+        "bytes": 3879
+      },
+      {
+        "name": "neutralized",
+        "bytes": 3881
+      },
+      {
+        "name": "personal-dark",
+        "bytes": 3878
+      },
+      {
+        "name": "personal-light",
+        "bytes": 3883
+      },
+      {
+        "name": "workshop",
+        "bytes": 3871
+      },
+      {
+        "name": "manifest",
+        "bytes": 458
+      }
+    ],
+    "totalBytes": 19850,
+    "runtimeLoadedBytes": 0,
+    "note": "build-time DTCG/manifest interchange; CSS runtime loads no JSON"
+  },
   "excludedFixtureThemes": {
     "themeCount": 5,
     "rawBytes": 7600,
     "minifiedBytes": 6709,
-    "gzipBytes": 844,
-    "sha256": "86705aafd56fcfbcce29be9c832e3a15921baf748519aa9a4fe17947dbd1cad6",
+    "gzipBytes": 856,
+    "sha256": "95ef88f2d7f5433e9638b89520c0ee1fa4b58c5c23bd92d51bb08a2d1e55c4f6",
     "packaged": false,
     "rationale": "fixture-only multi-theme output is not a core package entry"
   },
@@ -222,7 +266,7 @@
     "runtimeJavaScriptBytes": 0,
     "runtimeAssetBytes": 0,
     "dependencies": [],
-    "tarBytes": 1997
+    "tarBytes": 2002
   },
   "consumer": {
     "fixture": "isolated local archive consumer",
@@ -240,7 +284,7 @@
       "sha256": "eaa050b2958bc22e56d17bb4d1dfbdaae9d31760a4c479b4bc277dbe8c7134bc",
       "contentEncoding": "identity",
       "packageJsonSha256": "216be6adc98e34ce755b3e2b25f474a59179ab5358553b47a25cff07e0517084",
-      "lockfileSha256": "b2f3d16db2e499a0b13237dfe57c8d3d34ec2d3829bb25da99e7ec48130acb6e",
+      "lockfileSha256": "f709034e6a54cade3fa19a3159c88bc14d723ff3f7361292a838b822231085c1",
       "runtimeDependency": "file:neobrui-private.tgz",
       "tooling": "root-harness Vite 7.3.6"
     },

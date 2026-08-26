@@ -22,19 +22,30 @@ export function normalizeTokenPath(path) {
   return segments.join('-');
 }
 
-export function generateCss(themeMap) {
+function resolveValue(value, all, path, stack = []) {
+  const raw = value && typeof value === 'object' && '$value' in value ? value.$value : value;
+  if (typeof raw !== 'string') throw new Error(`Invalid token value "${path}"`);
+  const ref = raw.match(/^\{([^{}]+)\}$/)?.[1];
+  if (!ref) return raw;
+  if (stack.includes(ref)) throw new Error(`Token reference cycle at "${path}"`);
+  if (!all.has(ref)) throw new Error(`Unresolved token reference "${path}" -> "${ref}"`);
+  return resolveValue(all.get(ref), all, ref, [...stack, ref]);
+}
+
+export function generateCss(themeMap, { selectors = {} } = {}) {
   if (!themeMap || typeof themeMap !== 'object') throw new TypeError('A fixture-owned theme map is required');
   const themes = Object.entries(themeMap).map(([name, tokens]) => {
-    const errors = validateTokens(tokens);
+    const errors = validateTokens(tokens, { allowObjects: true });
     if (errors.length) throw new Error(`${name}: ${errors.join('; ')}`);
     const seen = new Set();
-    const lines = flattenTokens(tokens).map(([key, value]) => {
+    const all = new Map(flattenTokens(tokens));
+    const lines = [...all.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([key, value]) => {
       const normalized = normalizeTokenPath(key);
       if (seen.has(normalized)) throw new Error(`Token path collision after normalization "${key}"`);
       seen.add(normalized);
-      return `  --nbr-${normalized}: ${value};`;
+      return `  --nbr-${normalized}: ${resolveValue(value, all, key)};`;
     });
-    return `[data-theme="${name}"] {\n${lines.join('\n')}\n}`;
+    return `${selectors[name] ?? `[data-theme="${name}"]`} {\n${lines.join('\n')}\n}`;
   }).join('\n\n');
   return `@layer nbr.tokens, nbr.compositions, nbr.utilities, nbr.blocks, nbr.exceptions;\n@layer nbr.tokens {\n${themes}\n}\n`;
 }

@@ -1,0 +1,48 @@
+/* Generated token CSS; source: fixtures/inputs.mjs */
+@layer nbr.tokens, nbr.compositions, nbr.utilities, nbr.blocks, nbr.exceptions;
+@layer nbr.tokens {
+[data-theme="workshop"] {
+  --nbr-border-control: 2px solid var(--nbr-color-border);
+  --nbr-border-region: 3px solid var(--nbr-color-border);
+  --nbr-button-background: var(--nbr-color-action);
+  --nbr-color-action: #d5a900;
+  --nbr-color-border: #211d19;
+  --nbr-color-canvas: #f2eadc;
+  --nbr-color-focus: #ad3d75;
+  --nbr-color-negative: #a13c32;
+  --nbr-color-on-action: #211d19;
+  --nbr-color-positive: #397246;
+  --nbr-color-shadow: #211d19;
+  --nbr-color-surface: #fffdf5;
+  --nbr-color-surface-raised: #fffdf5;
+  --nbr-color-text: #211d19;
+  --nbr-color-text-muted: #665e54;
+  --nbr-control-pad-block: 0.55rem;
+  --nbr-control-pad-inline: 0.8rem;
+  --nbr-field-background: var(--nbr-color-surface);
+  --nbr-focus-offset: 3px;
+  --nbr-focus-width: 3px;
+  --nbr-font-body: system-ui, sans-serif;
+  --nbr-font-display: system-ui, sans-serif;
+  --nbr-font-mono: ui-monospace, monospace;
+  --nbr-motion-press-duration: 120ms;
+  --nbr-radius-control: 0.15rem;
+  --nbr-region-gap: 1rem;
+  --nbr-shadow-block: 4px;
+  --nbr-shadow-inline: 3px;
+  --nbr-shadow-press-block: 1px;
+  --nbr-shadow-press-inline: 1px;
+  --nbr-space-1: 0.25rem;
+  --nbr-space-2: 0.5rem;
+  --nbr-space-3: 0.75rem;
+  --nbr-space-4: 1rem;
+  --nbr-space-5: 1.5rem;
+  --nbr-space-6: 2rem;
+  --nbr-surface-background: var(--nbr-color-surface);
+  --nbr-surface-border: var(--nbr-color-border);
+  --nbr-surface-shadow: none;
+  --nbr-text-body: 1rem;
+  --nbr-text-heading: clamp(1.6rem, 4vw, 3rem);
+  --nbr-text-label: 0.8rem;
+}
+}

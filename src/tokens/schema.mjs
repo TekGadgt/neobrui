@@ -20,7 +20,7 @@ const forbidden = /(?:yellow|blue|green|purple|pink|editor|preview|creator|takea
 // percentages and computed/function syntax are not valid box-shadow offsets.
 const shadowAxisLength = /^-?(?:0|(?:\d+(?:\.\d+)?|\.\d+)(?:px|rem|em|ch|ex|vw|vh|vmin|vmax))$/;
 
-export function validateTokens(tokens) {
+export function validateTokens(tokens, { allowObjects = false } = {}) {
   const errors = [];
   for (const family of Object.keys(tokens)) {
     if (!Object.hasOwn(REQUIRED_ROLES, family)) {
@@ -42,8 +42,9 @@ export function validateTokens(tokens) {
     }
     for (const role of roles) {
       const value = tokens[family][role];
-      if (typeof value !== 'string' || value.trim() === '') errors.push(`Missing or invalid required role "${family}.${role}"`);
-      if (family === 'shadow' && (typeof value !== 'string' || !shadowAxisLength.test(value.trim()))) errors.push(`Invalid shadow axis length "${family}.${role}"`);
+      const raw = allowObjects && value && typeof value === 'object' && '$value' in value ? value.$value : value;
+      if (typeof raw !== 'string' || raw.trim() === '') errors.push(`Missing or invalid required role "${family}.${role}"`);
+      if (family === 'shadow' && (typeof raw !== 'string' || !shadowAxisLength.test(raw.trim()))) errors.push(`Invalid shadow axis length "${family}.${role}"`);
       if (forbidden.test(role)) errors.push(`Forbidden project/application name in core role "${family}.${role}"`);
     }
   }

@@ -4,6 +4,8 @@ import { execFileSync } from 'node:child_process';
 import { join, resolve, relative } from 'node:path';
 import { themes } from '../fixtures/inputs.mjs';
 import { generateCss } from '../src/tokens/tokens.mjs';
+import { exportDtcg, generateThemeManifest } from '../src/tokens/dtcg.mjs';
+import { themeSelectors } from '../fixtures/theme-manifest.mjs';
 
 const root = resolve(new URL('..', import.meta.url).pathname);
 const thresholds = {
@@ -26,7 +28,7 @@ function verdict(entry, budget) {
 async function bytes(path) { return (await stat(path)).size; }
 
 async function sourceManifest() {
-  const files = ['src/tokens/tokens.mjs', 'src/blocks/surface.css', 'src/blocks/button.css', 'src/blocks/field.css', 'fixtures/inputs.mjs', 'scripts/size-package.mjs'];
+  const files = ['src/tokens/tokens.mjs', 'src/tokens/schema.mjs', 'src/tokens/dtcg.mjs', 'src/blocks/surface.css', 'src/blocks/button.css', 'src/blocks/field.css', 'fixtures/inputs.mjs', 'fixtures/theme-manifest.mjs', 'scripts/size-package.mjs'];
   const manifest = [];
   for (const file of files) manifest.push({ path: file, sha256: digest(await readFile(join(root, file))) });
   return { files: manifest, hash: digest(Buffer.from(JSON.stringify(manifest))) };
@@ -112,8 +114,10 @@ export async function buildSizeCandidate({ outputRoot = 'dist/size-package' } = 
   const fixtureRaw = Buffer.from(generateCss(themes));
   const fixtureMin = Buffer.from(minifyCss(fixtureRaw.toString()));
   const fixtureGzip = gzipBytes(fixtureMin);
+  const interchange = Object.keys(themes).sort().map((name) => ({ name, bytes: Buffer.byteLength(exportDtcg({ [name]: themes[name] }, { selectors: themeSelectors })) }));
+  interchange.push({ name: 'manifest', bytes: Buffer.byteLength(`${JSON.stringify(generateThemeManifest(themes, { selectors: themeSelectors }), null, 2)}\n`) });
   const dirty = execFileSync('git', ['status', '--porcelain'], { cwd: root, encoding: 'utf8' }).split('\n').some((line) => line.trim() && !line.endsWith('size-report.json'));
-  return { schemaVersion: 1, candidateSurface: { core: 'block-only CSS requiring consumer-defined semantic tokens', optionalNeutralTokens: true, fixtureThemes: 'excluded: generated five-theme fixture CSS is not packaged', blocks: ['surface', 'button', 'field'] }, input: { sourceManifest: manifest.files, sourceManifestHash: manifest.hash, workspaceState: dirty ? 'dirty' : 'clean', node: process.version, pnpm: execFileSync('pnpm', ['--version'], { cwd: root, encoding: 'utf8' }).trim(), minifier: 'deterministic in-repo CSS minifier (comment/whitespace normalization)', gzipTool: gzipTool() }, formulas: { gzip: 'gzip -9 -n', sha256: 'SHA-256 of minified CSS', consumerTransfer: 'identity response bytes; diagnostic gzip -9 -n is reported separately' }, thresholds, entries, excludedFixtureThemes: { themeCount: Object.keys(themes).length, rawBytes: fixtureRaw.length, minifiedBytes: fixtureMin.length, gzipBytes: fixtureGzip, sha256: digest(fixtureMin), packaged: false, rationale: 'fixture-only multi-theme output is not a core package entry' }, archive: { path: relative(root, archiveTar), files: archiveFiles, exports: packageJson.exports, runtimeJavaScriptBytes, runtimeAssetBytes, dependencies: [], tarBytes: await bytes(archiveTar) }, consumer: { fixture: 'isolated local archive consumer', network: 'none; archive path only', imports: ['neobrui', 'neobrui/button', 'neobrui/foundations'], sourceMinifiedBytes: consumerSourceMinifiedBytes, emitted: consumerEmitted, transferredCssBytes: consumerEmitted.rawBytes, transferEncoding: 'identity', runtimeJavaScriptBytes: 0, build: 'passed with installed local .tgz archive' }, verdict: entries.every((e) => e.verdict === 'success') ? 'success' : 'warning/narrow' };
+  return { schemaVersion: 1, candidateSurface: { core: 'block-only CSS requiring consumer-defined semantic tokens', optionalNeutralTokens: true, fixtureThemes: 'excluded: generated five-theme fixture CSS is not packaged', blocks: ['surface', 'button', 'field'] }, input: { sourceManifest: manifest.files, sourceManifestHash: manifest.hash, workspaceState: dirty ? 'dirty' : 'clean', node: process.version, pnpm: execFileSync('pnpm', ['--version'], { cwd: root, encoding: 'utf8' }).trim(), minifier: 'deterministic in-repo CSS minifier (comment/whitespace normalization)', gzipTool: gzipTool() }, formulas: { gzip: 'gzip -9 -n', sha256: 'SHA-256 of minified CSS', consumerTransfer: 'identity response bytes; diagnostic gzip -9 -n is reported separately' }, thresholds, entries, interchange: { formatVersion: '2025.10', artifacts: interchange, totalBytes: interchange.reduce((sum, item) => sum + item.bytes, 0), runtimeLoadedBytes: 0, note: 'build-time DTCG/manifest interchange; CSS runtime loads no JSON' }, excludedFixtureThemes: { themeCount: Object.keys(themes).length, rawBytes: fixtureRaw.length, minifiedBytes: fixtureMin.length, gzipBytes: fixtureGzip, sha256: digest(fixtureMin), packaged: false, rationale: 'fixture-only multi-theme output is not a core package entry' }, archive: { path: relative(root, archiveTar), files: archiveFiles, exports: packageJson.exports, runtimeJavaScriptBytes, runtimeAssetBytes, dependencies: [], tarBytes: await bytes(archiveTar) }, consumer: { fixture: 'isolated local archive consumer', network: 'none; archive path only', imports: ['neobrui', 'neobrui/button', 'neobrui/foundations'], sourceMinifiedBytes: consumerSourceMinifiedBytes, emitted: consumerEmitted, transferredCssBytes: consumerEmitted.rawBytes, transferEncoding: 'identity', runtimeJavaScriptBytes: 0, build: 'passed with installed local .tgz archive' }, verdict: entries.every((e) => e.verdict === 'success') ? 'success' : 'warning/narrow' };
 }
 
 if (process.argv[1] === new URL(import.meta.url).pathname) {

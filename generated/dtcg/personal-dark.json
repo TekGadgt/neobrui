@@ -1,0 +1,211 @@
+{
+  "border": {
+    "control": {
+      "$value": "2px solid var(--nbr-color-border)",
+      "$type": "border"
+    },
+    "region": {
+      "$value": "3px solid var(--nbr-color-border)",
+      "$type": "border"
+    }
+  },
+  "button": {
+    "background": {
+      "$value": "var(--nbr-color-action)",
+      "$type": "color"
+    }
+  },
+  "color": {
+    "action": {
+      "$value": "#a33b2b",
+      "$type": "color"
+    },
+    "border": {
+      "$value": "#f4f0e8",
+      "$type": "color"
+    },
+    "canvas": {
+      "$value": "#1d2024",
+      "$type": "color"
+    },
+    "focus": {
+      "$value": "#82c7ef",
+      "$type": "color"
+    },
+    "negative": {
+      "$value": "#f28b82",
+      "$type": "color"
+    },
+    "onAction": {
+      "$value": "#fff",
+      "$type": "color"
+    },
+    "positive": {
+      "$value": "#8fd19f",
+      "$type": "color"
+    },
+    "shadow": {
+      "$value": "#090a0b",
+      "$type": "color"
+    },
+    "surface": {
+      "$value": "#262b31",
+      "$type": "color"
+    },
+    "surfaceRaised": {
+      "$value": "#303740",
+      "$type": "color"
+    },
+    "text": {
+      "$value": "#f4f0e8",
+      "$type": "color"
+    },
+    "textMuted": {
+      "$value": "#b3b7b9",
+      "$type": "color"
+    }
+  },
+  "control": {
+    "padBlock": {
+      "$value": "0.55rem",
+      "$type": "dimension"
+    },
+    "padInline": {
+      "$value": "0.8rem",
+      "$type": "dimension"
+    }
+  },
+  "field": {
+    "background": {
+      "$value": "var(--nbr-color-surface)",
+      "$type": "color"
+    }
+  },
+  "focus": {
+    "offset": {
+      "$value": "3px",
+      "$type": "dimension"
+    },
+    "width": {
+      "$value": "3px",
+      "$type": "dimension"
+    }
+  },
+  "font": {
+    "body": {
+      "$value": "system-ui, sans-serif",
+      "$type": "fontFamily"
+    },
+    "display": {
+      "$value": "system-ui, sans-serif",
+      "$type": "fontFamily"
+    },
+    "mono": {
+      "$value": "ui-monospace, monospace",
+      "$type": "fontFamily"
+    }
+  },
+  "motion": {
+    "pressDuration": {
+      "$value": "120ms",
+      "$type": "duration"
+    }
+  },
+  "radius": {
+    "control": {
+      "$value": "0.15rem",
+      "$type": "dimension"
+    }
+  },
+  "region": {
+    "gap": {
+      "$value": "1rem",
+      "$type": "dimension"
+    }
+  },
+  "shadow": {
+    "block": {
+      "$value": "4px",
+      "$type": "shadow"
+    },
+    "inline": {
+      "$value": "3px",
+      "$type": "shadow"
+    },
+    "pressBlock": {
+      "$value": "1px",
+      "$type": "shadow"
+    },
+    "pressInline": {
+      "$value": "1px",
+      "$type": "shadow"
+    }
+  },
+  "space": {
+    "1": {
+      "$value": "0.25rem",
+      "$type": "dimension"
+    },
+    "2": {
+      "$value": "0.5rem",
+      "$type": "dimension"
+    },
+    "3": {
+      "$value": "0.75rem",
+      "$type": "dimension"
+    },
+    "4": {
+      "$value": "1rem",
+      "$type": "dimension"
+    },
+    "5": {
+      "$value": "1.5rem",
+      "$type": "dimension"
+    },
+    "6": {
+      "$value": "2rem",
+      "$type": "dimension"
+    }
+  },
+  "surface": {
+    "background": {
+      "$value": "var(--nbr-color-surface)",
+      "$type": "color"
+    },
+    "border": {
+      "$value": "var(--nbr-color-border)",
+      "$type": "color"
+    },
+    "shadow": {
+      "$value": "none",
+      "$type": "color"
+    }
+  },
+  "text": {
+    "body": {
+      "$value": "1rem",
+      "$type": "dimension"
+    },
+    "heading": {
+      "$value": "clamp(1.6rem, 4vw, 3rem)",
+      "$type": "dimension"
+    },
+    "label": {
+      "$value": "0.8rem",
+      "$type": "dimension"
+    }
+  },
+  "$schema": "https://tr.designtokens.org/format/2025.10",
+  "$extensions": {
+    "org.neobrui": {
+      "formatVersion": "2025.10",
+      "generator": "neobrui-token-exporter/1",
+      "sourceRevision": null,
+      "themes": {
+        "personal-dark": {
+          "selector": "[data-theme=\"personal-dark\"]"
+        }
+      }
+    }
+  }
+}

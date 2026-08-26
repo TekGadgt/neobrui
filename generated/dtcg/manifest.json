@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "formatVersion": "2025.10",
+  "themes": {
+    "nested-theme": {
+      "selector": "[data-theme=\"nested-theme\"]"
+    },
+    "neutralized": {
+      "selector": "[data-theme=\"neutralized\"]"
+    },
+    "personal-dark": {
+      "selector": "[data-theme=\"personal-dark\"]"
+    },
+    "personal-light": {
+      "selector": "[data-theme=\"personal-light\"]"
+    },
+    "workshop": {
+      "selector": "[data-theme=\"workshop\"]"
+    }
+  },
+  "provenance": {
+    "generator": "neobrui-token-exporter/1",
+    "source": "fixtures/inputs.mjs",
+    "dtcgVersion": "2025.10",
+    "manifestSha256": "b693dfc71950f3d01be29a9c9bb82efc6ec3d441899743ff753b4e177f413f34"
+  }
+}
