@@ -1,7 +1,7 @@
 {
   "schema": "neobrui.qa-timings/v1",
   "task": "Spike 6B timed QA-matrix dry run",
-  "commitBeforeAndAfter": "e7789eece67d7318c3b1f38f10369e004c465d92",
+  "commitBeforeAndAfter": "17fda71",
   "environment": {
     "os": "Debian GNU/Linux 13.4 (trixie)",
     "kernel": "6.8.0-117-generic",
@@ -33,10 +33,10 @@
   },
   "timings": {
     "setupFrozenInstallMs": 1125,
-    "greenBaselineBeforeSeedMs": 11721,
-    "seededRehearsalMs": 23822,
-    "greenBaselineAfterSeedMs": 11028,
-    "canonicalVerificationMs": 46969,
+    "greenBaselineBeforeSeedMs": 12123,
+    "seededRehearsalMs": 26330,
+    "greenBaselineAfterSeedMs": 12123,
+    "canonicalVerificationMs": 56102,
     "humanInvestigationMs": null,
     "documentationMs": null,
     "manualElapsed": "not measured; no interactive hardware session",
@@ -54,10 +54,10 @@
     "duplicateDetections": 0,
     "falsePositives": 0,
     "variants": {
-      "missing-label": { "expected": ["missing-label"], "detected": ["missing-label"], "intendedLayer": "native semantic association plus axe label violation" },
+      "missing-label": { "expected": ["missing-label"], "detected": ["missing-label"], "intendedLayer": "native semantic association plus supplemental axe label violation", "axeExpectation": "label violation only for missing-label and combined; absent for baseline and unrelated seeds" },
       "clipping-320": { "expected": ["clipping-320"], "detected": ["clipping-320"], "intendedLayer": "document/main overflow assertion at 320 CSS px" },
-      "shadow-only-focus": { "expected": ["shadow-only-focus"], "detected": ["shadow-only-focus"], "intendedLayer": "computed focus-visible outline/no-shadow assertion plus screenshot" },
-      "combined": { "expected": ["missing-label", "clipping-320", "shadow-only-focus"], "detected": ["missing-label", "clipping-320", "shadow-only-focus"], "intendedLayer": "union of all three detector layers" }
+      "shadow-only-focus": { "expected": ["shadow-only-focus"], "detected": ["shadow-only-focus"], "intendedLayer": "focus-visible outline and box-shadow loss under test-controlled no-shadow fallback plus screenshot" },
+      "combined": { "expected": ["missing-label", "clipping-320", "shadow-only-focus"], "detected": ["missing-label", "clipping-320", "shadow-only-focus"], "intendedLayer": "union of all three detector layers; no unrelated axe label violation" }
     },
     "perEngine": { "chromium": 4, "firefox": 4, "webkit": 4 }
   },

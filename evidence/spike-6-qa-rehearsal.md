@@ -2,7 +2,7 @@
 
 Date: 2026-08-26 UTC
 Repository: `/workspace/neobrui`
-Starting and ending commit: `e7789ee` (`test: add deterministic QA rehearsal harness`)
+Starting and ending commit: `17fda71` (`test: strengthen Spike 6 accessibility evidence`)
 
 ## Scope and commands
 
@@ -33,10 +33,10 @@ Wall-clock command timings are kept separate from human/manual work:
 | Stage | Measured |
 |---|---:|
 | frozen install | 1.125 s |
-| green baseline before seeds | 11.721 s |
-| seeded rehearsal (12 runs) | 23.822 s |
-| green baseline after seeds | 11.028 s |
-| canonical `pnpm verify:clean` | 46.969 s |
+| green baseline before seeds | 12.123 s |
+| seeded rehearsal (12 runs) | 26.330 s |
+| green baseline after seeds | 12.123 s |
+| canonical `pnpm verify:clean` | 56.102 s |
 | timed human investigation | not measured |
 | timed documentation | not measured |
 | hardware/manual elapsed | manual-unavailable |
@@ -51,12 +51,12 @@ The seeded matrix passed 12/12: 4 variants across Chromium, Firefox, and WebKit,
 
 | Seed | Intended layer | Expected finding | Result |
 |---|---|---|---|
-| missing-label | native semantic association + axe label violation | missing-label | detected exactly |
+| missing-label | native semantic association + supplemental axe `label` violation | missing-label | detected exactly |
 | clipping-320 | document/main overflow assertion at 320 CSS px | clipping-320 | detected exactly |
-| shadow-only-focus | computed focus-visible outline/no-shadow assertion + screenshot | shadow-only-focus | detected exactly |
+| shadow-only-focus | focus-visible outline and box-shadow loss under test-controlled no-shadow fallback + screenshot | shadow-only-focus | detected exactly |
 | combined | union of all three detector layers | all three findings | detected exact union |
 
-The missing-label run produced axe `label` evidence; clipping produced no axe violation (it is a geometry detector); shadow-only-focus was classified by computed style and screenshot. All reports recorded `falsePositives: []` and `duplicateDetections: []`.
+The missing-label run produced both the missing native association and supplemental axe `label` evidence; baseline and unrelated seeds asserted no axe `label` violation. Clipping produced no axe violation (it is a geometry detector); shadow-only-focus was classified by outline and box-shadow computed checks under the test-controlled no-shadow fallback, plus screenshot. All reports recorded `falsePositives: []` and `duplicateDetections: []`.
 
 ## Screenshot visual review
 
@@ -75,12 +75,12 @@ Manual hardware keyboard, Windows High Contrast, NVDA + Firefox/Chrome, VoiceOve
 
 ## Checklists
 
-Statuses use only the required vocabulary (`passed`, `failed`, `manual-unavailable`, `not-triggered`, `not-run`):
+Statuses use only the canonical vocabulary (`passed`, `failed`, `manual-unavailable`, `not-triggered`, `not-run`). The structural test requires these IDs and values to match `evidence/qa-checklists.md` and `evidence/qa-timings.json` exactly:
 
-- PR: PR-1 `passed`; PR-2 and PR-3 `manual-unavailable`.
-- RC: RC-1 `passed`; RC-2 and RC-3 `manual-unavailable`.
-- Quarterly/full audit: AUD-1 `passed`; AUD-2 and AUD-3 `manual-unavailable`.
-- Affected behavior: SLICE-1 `passed`; SLICE-2 `manual-unavailable`.
+- PR-1 `passed`; PR-2 `manual-unavailable`; PR-3 `manual-unavailable`.
+- RC-1 `passed`; RC-2 `manual-unavailable`; RC-3 `manual-unavailable`.
+- AUD-1 `passed`; AUD-2 `manual-unavailable`; AUD-3 `manual-unavailable`.
+- SLICE-1 `passed`; SLICE-2 `manual-unavailable`.
 
 Machine-readable evidence and rationale are in `evidence/qa-timings.json`.
 

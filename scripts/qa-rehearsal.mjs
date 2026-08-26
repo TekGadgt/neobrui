@@ -42,7 +42,7 @@ for (const browser of browsers) {
   }
 }
 await stage('cleanup-retest', async () => { await rm(path.join(root, OUTPUT, 'variants'), { recursive: true, force: true }); await mkdir(path.join(root, OUTPUT, 'variants')); for (const variant of variants) await writeFile(path.join(root, OUTPUT, 'variants', `${variant}.html`), generateVariant(variant)); });
-const output = { schema: 'neobrui.qa-rehearsal/v1', mode, generatedAt: new Date().toISOString(), timings, detectors: { missingLabel: 'semantic association + axe where supported', clipping320: '320 CSS px overflow/clipping', shadowOnlyFocus: 'computed focus-visible + no-shadow fallback + screenshot' }, runs, limitations: ['Linux harness does not claim Windows High Contrast, NVDA, VoiceOver, physical keyboard/touch, or true browser UI zoom at 200%.'] };
+const output = { schema: 'neobrui.qa-rehearsal/v1', mode, generatedAt: new Date().toISOString(), timings, detectors: { missingLabel: 'native association + supplemental axe label violation', clipping320: '320 CSS px overflow/clipping', shadowOnlyFocus: 'focus-visible outline/box-shadow loss under test-controlled no-shadow fallback + screenshot' }, runs, limitations: ['Linux harness does not claim Windows High Contrast, NVDA, VoiceOver, physical keyboard/touch, or true browser UI zoom at 200%.'] };
 await writeFile(path.join(root, OUTPUT, 'report.json'), JSON.stringify(output, null, 2) + '\n');
 console.log(JSON.stringify({ schema: output.schema, mode, browsers, variants, report: path.join(OUTPUT, 'report.json') }, null, 2));
 }
