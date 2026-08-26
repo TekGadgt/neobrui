@@ -1,6 +1,5 @@
-import { mkdir, readFile, writeFile, rm, readdir, stat } from 'node:fs/promises';
+import { mkdir, readFile, writeFile, rm, readdir, stat, copyFile, cp } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
-import { gzipSync } from 'node:zlib';
 import { execFileSync } from 'node:child_process';
 import { join, resolve, relative } from 'node:path';
 import { themes } from '../fixtures/inputs.mjs';
@@ -17,6 +16,8 @@ function minifyCss(css) {
   return css.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\s+/g, ' ').replace(/\s*([{}:;,>])\s*/g, '$1').trim() + '\n';
 }
 function digest(buffer) { return createHash('sha256').update(buffer).digest('hex'); }
+function gzipBytes(buffer) { return execFileSync('gzip', ['-9', '-n', '-c'], { input: buffer }).length; }
+function gzipTool() { return execFileSync('gzip', ['--version'], { encoding: 'utf8' }).split('\n', 1)[0]; }
 function verdict(entry, budget) {
   if (entry.gzipBytes > budget.killGzip) return 'kill/redesign';
   if (entry.rawBytes > budget.raw || entry.minifiedBytes > budget.minified || entry.gzipBytes > (budget.warningGzip ?? budget.gzip)) return 'warning/narrow';
@@ -32,18 +33,23 @@ async function sourceManifest() {
 }
 
 async function measureInstalledConsumer(out, archiveTar) {
-  const consumerRoot = join(out, 'consumer');
+  const viteBin = execFileSync('realpath', [join(root, 'node_modules/vite/bin/vite.js')], { encoding: 'utf8' }).trim();
+  const consumerRoot = join('/tmp', 'neobrui-offline-consumer', relative(root, out).replaceAll('/', '-'));
   await rm(consumerRoot, { recursive: true, force: true });
   await mkdir(join(consumerRoot, 'src'), { recursive: true });
-  await writeFile(join(consumerRoot, 'package.json'), `${JSON.stringify({ type: 'module', dependencies: { '@neobrui/private-spike-candidate': `file:${archiveTar}` }, devDependencies: { vite: '7.3.6' }, }, null, 2)}\n`);
+  await copyFile(archiveTar, join(consumerRoot, 'neobrui-private-spike.tgz'));
+  await writeFile(join(consumerRoot, 'package.json'), `${JSON.stringify({ type: 'module', dependencies: { '@neobrui/private-spike-candidate': 'file:neobrui-private-spike.tgz' } }, null, 2)}\n`);
   await writeFile(join(consumerRoot, 'index.html'), '<main class="_nb-spike-button">local archive consumer</main>');
   await writeFile(join(consumerRoot, 'src/index.css'), '@import "@neobrui/private-spike-candidate";\n@import "@neobrui/private-spike-candidate/button";');
   await writeFile(join(consumerRoot, 'src/main.js'), 'import "./index.css";');
   await writeFile(join(consumerRoot, 'src/foundations.css'), '@import "@neobrui/private-spike-candidate/foundations";');
   await writeFile(join(consumerRoot, 'index.html'), '<style>:root{--_nb-button-background:#8f2d2d;--_nb-border-control:2px solid #111;--_nb-radius-control:4px;--_nb-control-pad-block:8px;--_nb-control-pad-inline:16px;--_nb-color-onAction:#fff;--_nb-shadow-inline:0px;--_nb-shadow-block:0px;--_nb-color-shadow:transparent;--_nb-motion-pressDuration:0ms;}</style><link rel="stylesheet" href="/src/index.css"><main><button class="_nb-spike-button">local archive consumer</button></main>');
   await writeFile(join(consumerRoot, 'foundations.html'), '<link rel="stylesheet" href="/src/foundations.css"><main>foundations</main>');
-  execFileSync('pnpm', ['install', '--offline', '--ignore-scripts', '--no-frozen-lockfile', '--ignore-workspace'], { cwd: consumerRoot, stdio: 'inherit' });
-  execFileSync('pnpm', ['exec', 'vite', 'build', '--outDir', 'out'], { cwd: consumerRoot, stdio: 'inherit' });
+  const consumerStore = join(consumerRoot, 'node_modules/.pnpm');
+  const storeDir = join(root, '.pnpm-store/v11');
+  execFileSync('pnpm', ['install', '--offline', '--store-dir', storeDir, '--ignore-scripts', '--ignore-workspace', '--virtual-store-dir', consumerStore, '--lockfile-only'], { cwd: consumerRoot, stdio: 'inherit' });
+  execFileSync('pnpm', ['install', '--offline', '--store-dir', storeDir, '--ignore-scripts', '--ignore-workspace', '--virtual-store-dir', consumerStore, '--frozen-lockfile'], { cwd: consumerRoot, stdio: 'inherit' });
+  execFileSync(process.execPath, [viteBin, 'build', consumerRoot, '--outDir', 'out'], { cwd: root, stdio: 'inherit' });
   for (const html of ['index.html']) {
     const htmlPath = join(consumerRoot, 'out', html);
     await writeFile(htmlPath, (await readFile(htmlPath, 'utf8')).replaceAll('href="/assets/', 'href="/consumer/assets/'));
@@ -51,11 +57,13 @@ async function measureInstalledConsumer(out, archiveTar) {
   const assetRoot = join(consumerRoot, 'out', 'assets');
   await writeFile(join(consumerRoot, 'out', 'foundations.html'), '<link rel="stylesheet" href="/consumer/assets/foundations.css"><main>foundations</main>');
   await writeFile(join(assetRoot, 'foundations.css'), await readFile(join(consumerRoot, 'node_modules/@neobrui/private-spike-candidate/dist/foundations.css')));
+  await rm(join(out, 'consumer'), { recursive: true, force: true });
+  await cp(join(consumerRoot, 'out'), join(out, 'consumer', 'out'), { recursive: true });
   const indexHtml = await readFile(join(consumerRoot, 'out', 'index.html'), 'utf8');
   const cssName = indexHtml.match(/assets\/(index-[^"']+\.css)/)?.[1];
   if (!cssName) throw new Error('Vite consumer emitted no CSS');
   const content = await readFile(join(assetRoot, cssName));
-  return { filename: `assets/${cssName}`, rawBytes: content.length, gzipBytes: gzipSync(content, { level: 9, mtime: 0 }).length, sha256: digest(content), contentEncoding: 'identity' };
+  return { filename: `assets/${cssName}`, rawBytes: content.length, gzipBytes: gzipBytes(content), sha256: digest(content), contentEncoding: 'identity', packageJsonSha256: digest(await readFile(join(consumerRoot, 'package.json'))), lockfileSha256: digest(await readFile(join(consumerRoot, 'pnpm-lock.yaml'))), runtimeDependency: 'file:neobrui-private-spike.tgz', tooling: 'root-harness Vite 7.3.6' };
 }
 
 export function verifySizeReport(report) {
@@ -83,7 +91,7 @@ export async function buildSizeCandidate({ outputRoot = 'dist/size-spike' } = {}
     const path = join(cssOut, `${name}.css`);
     await writeFile(path, minified);
     const budget = name === 'foundations' ? thresholds.foundations : name === 'recipes' || name === 'consumer' ? thresholds.aggregate : thresholds.recipe;
-    entries.push({ name, path: relative(root, path), rawBytes: raw.length, minifiedBytes: minified.length, gzipBytes: gzipSync(minified, { level: 9, mtime: 0 }).length, sha256: digest(minified), comments: 'raw source comments excluded from minified artifact; no maps or licenses included', budget, verdict: verdict({ rawBytes: raw.length, minifiedBytes: minified.length, gzipBytes: gzipSync(minified, { level: 9, mtime: 0 }).length }, budget) });
+    entries.push({ name, path: relative(root, path), rawBytes: raw.length, minifiedBytes: minified.length, gzipBytes: gzipBytes(minified), sha256: digest(minified), comments: 'raw source comments excluded from minified artifact; no maps or licenses included', budget, verdict: verdict({ rawBytes: raw.length, minifiedBytes: minified.length, gzipBytes: gzipBytes(minified) }, budget) });
   }
   const archiveRoot = join(out, 'package');
   await mkdir(join(archiveRoot, 'dist'), { recursive: true });
@@ -103,9 +111,9 @@ export async function buildSizeCandidate({ outputRoot = 'dist/size-spike' } = {}
   const consumerSourceMinifiedBytes = entries.find((e) => e.name === 'consumer').minifiedBytes;
   const fixtureRaw = Buffer.from(generateCss(themes));
   const fixtureMin = Buffer.from(minifyCss(fixtureRaw.toString()));
-  const fixtureGzip = gzipSync(fixtureMin, { level: 9, mtime: 0 });
-  const dirty = execFileSync('git', ['status', '--porcelain'], { cwd: root, encoding: 'utf8' }).trim().length > 0;
-  return { schemaVersion: 1, candidateSurface: { core: 'recipe-only CSS requiring consumer-defined semantic tokens', optionalNeutralTokens: true, fixtureThemes: 'excluded: generated five-theme fixture CSS is not packaged', recipes: ['surface', 'button', 'field'] }, input: { sourceManifest: manifest.files, sourceManifestHash: manifest.hash, workspaceState: dirty ? 'dirty' : 'clean', node: process.version, pnpm: execFileSync('pnpm', ['--version'], { cwd: root, encoding: 'utf8' }).trim(), minifier: 'deterministic in-repo CSS minifier (comment/whitespace normalization)' }, formulas: { gzip: 'gzip -9 -n', sha256: 'SHA-256 of minified CSS', consumerTransfer: 'identity response bytes; diagnostic gzip -9 -n is reported separately' }, thresholds, entries, excludedFixtureThemes: { themeCount: Object.keys(themes).length, rawBytes: fixtureRaw.length, minifiedBytes: fixtureMin.length, gzipBytes: fixtureGzip.length, sha256: digest(fixtureMin), packaged: false, rationale: 'fixture-only multi-theme output is not a core package entry' }, archive: { path: relative(root, archiveTar), files: archiveFiles, exports: packageJson.exports, runtimeJavaScriptBytes, runtimeAssetBytes, dependencies: [], tarBytes: await bytes(archiveTar) }, consumer: { fixture: 'isolated local archive consumer', network: 'none; archive path only', imports: ['@neobrui/private-spike-candidate', '@neobrui/private-spike-candidate/button', '@neobrui/private-spike-candidate/foundations'], sourceMinifiedBytes: consumerSourceMinifiedBytes, emitted: consumerEmitted, transferredCssBytes: consumerEmitted.rawBytes, transferEncoding: 'identity', runtimeJavaScriptBytes: 0, build: 'passed with installed local .tgz archive' }, verdict: entries.every((e) => e.verdict === 'success') ? 'success' : 'warning/narrow' };
+  const fixtureGzip = gzipBytes(fixtureMin);
+  const dirty = execFileSync('git', ['status', '--porcelain'], { cwd: root, encoding: 'utf8' }).split('\n').some((line) => line.trim() && !line.endsWith('size-report.json'));
+  return { schemaVersion: 1, candidateSurface: { core: 'recipe-only CSS requiring consumer-defined semantic tokens', optionalNeutralTokens: true, fixtureThemes: 'excluded: generated five-theme fixture CSS is not packaged', recipes: ['surface', 'button', 'field'] }, input: { sourceManifest: manifest.files, sourceManifestHash: manifest.hash, workspaceState: dirty ? 'dirty' : 'clean', node: process.version, pnpm: execFileSync('pnpm', ['--version'], { cwd: root, encoding: 'utf8' }).trim(), minifier: 'deterministic in-repo CSS minifier (comment/whitespace normalization)', gzipTool: gzipTool() }, formulas: { gzip: 'gzip -9 -n', sha256: 'SHA-256 of minified CSS', consumerTransfer: 'identity response bytes; diagnostic gzip -9 -n is reported separately' }, thresholds, entries, excludedFixtureThemes: { themeCount: Object.keys(themes).length, rawBytes: fixtureRaw.length, minifiedBytes: fixtureMin.length, gzipBytes: fixtureGzip, sha256: digest(fixtureMin), packaged: false, rationale: 'fixture-only multi-theme output is not a core package entry' }, archive: { path: relative(root, archiveTar), files: archiveFiles, exports: packageJson.exports, runtimeJavaScriptBytes, runtimeAssetBytes, dependencies: [], tarBytes: await bytes(archiveTar) }, consumer: { fixture: 'isolated local archive consumer', network: 'none; archive path only', imports: ['@neobrui/private-spike-candidate', '@neobrui/private-spike-candidate/button', '@neobrui/private-spike-candidate/foundations'], sourceMinifiedBytes: consumerSourceMinifiedBytes, emitted: consumerEmitted, transferredCssBytes: consumerEmitted.rawBytes, transferEncoding: 'identity', runtimeJavaScriptBytes: 0, build: 'passed with installed local .tgz archive' }, verdict: entries.every((e) => e.verdict === 'success') ? 'success' : 'warning/narrow' };
 }
 
 if (process.argv[1] === new URL(import.meta.url).pathname) {
