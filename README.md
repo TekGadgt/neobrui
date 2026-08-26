@@ -1,41 +1,51 @@
-# neobrui disposable Spike 1 token-mapping harness
+# neobrui personal-use pilot
 
-This is a private, unpublishable, disposable evidence harness—not a public package, API, product name, or deployment target. The `fixtures/plain` baseline is intentionally semantic HTML and works with JavaScript disabled. This spike makes no runtime-JavaScript commitment for a future CSS core.
+Neobrui is a validated, private, CSS-only personal-use pilot for Ryan's projects. It is evidence for a narrow semantic styling surface—not a public framework, stable package/API, product identity, deployment target, or support promise. The current repository remains private and unpublishable by design.
 
-The existing `/workspace/personal_site` and `/workspace/htmlday-lite` repositories are read-only evidence sources. They are not imported, copied, edited, submoduled, or referenced by this repository.
+## What exists today
 
-## Scope boundary
+- Semantic token schema and deterministic generated CSS; themes, palettes, fonts, content, and motifs stay product-owned.
+- Opt-in `Surface`, `Button`, and `Field` recipes, with standalone and aggregate CSS entries.
+- Native HTML contracts, RTL/nested/fixed shadow behavior, no-shadow safety cues, and explicit cascade-layer coexistence.
+- Plain CSS, CSS Modules, Astro, and Tailwind integration fixtures (evidence, not adapters or blanket compatibility).
+- Zero runtime JavaScript/assets/dependencies in the private CSS candidate.
+- Automated Chromium, Firefox, and WebKit fixture checks, deterministic archive/consumer size checks, and seeded QA rehearsal.
 
-Spike 4 adds a temporary, explicit cascade-layer contract and isolated coexistence evidence under `fixtures/coexistence`, `fixtures/css-modules`, `fixtures/astro`, and `fixtures/tailwind`. These are fixture-only integrations: no public package/API, runtime core JavaScript, adapter, or plugin is introduced. Astro and Tailwind remain separate packages.
+The current evidence is intentionally narrow. Standalone Button has a provisional minified-size warning (2,413 B versus a 1,800 B hypothesis) while remaining below the gzip warning/kill limits; this is not a publication signal.
 
-Temporary class/custom-property naming, if needed in this spike, uses the documented `_nb-spike` prefix. The prefix is disposable and is not a public naming decision.
+## Provisional boundaries
 
-## Verification
+`_nb-spike` classes, data attributes, custom properties, layer names, and the private package/archive name are disposable evidence. No stable CSS namespace, npm scope, license, public repository posture, registry distribution, semver, or support policy has been selected. Do not expose the selectors to another project or publish the archive without a later decision.
+
+Native HTML and the application own semantics, keyboard behavior, link navigation, validation, disabled behavior, announcements, routing, and state. Automation does not establish manual assistive-technology, OS forced-colors, physical keyboard/touch, or true browser-UI zoom support. Procedures are documented but unexecuted unless a dated run record says otherwise.
+
+## Local setup and verification
 
 ```sh
 pnpm install --frozen-lockfile
 pnpm validate:tokens
-pnpm build:tokens
 pnpm build
 pnpm test
-# canonical full verification (includes every fixture build):
-pnpm verify
-# reproducible clean-tree verification, including capture:
+pnpm verify:size
+# canonical clean-tree verification:
 pnpm verify:clean
-# explicit, non-mutating Chromium evidence capture (44 tests):
-pnpm capture:chromium
 ```
 
-`pnpm test` runs the unit contracts, validates required roles, and runs Chromium, Firefox, and WebKit. It checks fixture content, JavaScript-disabled usability, absence of external requests, private/unpublishable project metadata, forbidden cross-project references, the built HTML entries, and isolated route identity/CSS delivery. The production fixture checks also serve `fixtures/css-modules/dist` at `/css-modules/` and `fixtures/astro/dist` at `/astro/` through an owned port-4174 server, proving hashed local classes/global `_nb-spike` recipes and Astro scoped overrides by computed style. The Tailwind fixture imports generated tokens as an application-owned input and the `/tailwind/` browser check proves recipe variables and the `p-4` utility resolve together. Generated CSS is `fixtures/plain/generated-tokens.css`; source and decision/evidence records are under `src/tokens/`, `scripts/`, `decisions/`, and `evidence/`.
+`pnpm test` includes unit contracts, token validation, and the configured Chromium/Firefox/WebKit Playwright projects. `pnpm verify:size` is fresh and non-mutating; `pnpm measure:size` intentionally regenerates `size-report.json`.
 
-Spike 5 size verification separates measurement from reproducibility checks: `pnpm measure:size` intentionally generates `size-report.json`; `pnpm verify:size` performs one fresh, non-mutating build and compares it byte-for-byte with the committed report. The Node size-package tests perform repeated builds and assert deterministic CSS, archive, consumer metadata, and hashes; `pnpm verify:clean` runs those tests and the verifier together.
+## Formal docs
 
-Normal verification is non-mutating. Explicit capture is only enabled by `pnpm capture:chromium` (the underlying command is `CAPTURE_EVIDENCE=1 pnpm exec playwright test --project=chromium`) and runs the preserved 44 Chromium evidence tests; production fixture assertions are intentionally full-matrix-only. It writes engine-labelled images only under the ignored `.evidence-cache/screenshots/` directory; committed `evidence/screenshots/` files are never refreshed by verification. `pnpm verify:clean` owns both Playwright servers, runs frozen install, all fixture builds, unit contracts, the 138-test full matrix (46 per engine), and capture, then polls the repo-owned Vite preview process tree every 100ms for up to 5000ms before checking tree cleanliness. It fails on any non-empty `git status --porcelain` or surviving preview process. Fixture `.astro/` metadata is ignored. Root Vite, Playwright, and axe tooling is exactly pinned to 7.3.6, 1.62.1, and 4.13.0 respectively; the frozen lockfile is authoritative.
+- [Current surface](docs/current-surface.md)
+- [Getting started for personal use](docs/getting-started-personal-use.md)
+- [Status and support](docs/status-and-support.md)
+- [Expansion roadmap](docs/expansion-roadmap.md)
+- [ADR-008: personal-use positioning](decisions/ADR-008-personal-use-positioning.md)
+- [Manual accessibility testing procedure](docs/manual-accessibility-testing.md)
+- [Accessibility test-run template](docs/templates/accessibility-test-run.md)
+- [Viability assessment and evidence index](docs/personal-use-viability-and-expansion.md)
 
-DTCG export is deliberately deferred: no named consumer or authorized importer/exporter exists for this disposable spike. Core identifiers remain semantic and temporary (`_nb-spike`); application palette, fonts, content, motifs, and behavior stay fixture-owned.
+The manual guide and template define cadence for personal-project adoption, affected behavior changes, release-candidate review, and any future public-support gate. They are procedures, not executed results.
 
-## Portability
+## No publication or support promise
 
-The container uses its own Linux `node_modules` volume; host dependencies remain separate and are never synchronized. The explicit macOS/Linux and arm64/x64 architecture matrix keeps the shared lockfile portable across supported checkouts.
-
-No publish or deployment configuration is present by design. Do not publish this repository.
+This pilot is for controlled local personal use only. Competitive framework positioning, broad accessibility support, outreach, public GitHub source, package publication, and ongoing support are separate future gates. See the roadmap and status docs before making any claim beyond the validated fixture evidence.
