@@ -1,0 +1,63 @@
+name: Deploy docs to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '26'
+  PNPM_VERSION: '11.24.0'
+  PUBLIC_SITE_BASE: /neobrui/
+  PUBLIC_SITE_URL: https://tekgadgt.github.io/neobrui/
+
+jobs:
+  verify:
+    name: Required build and test gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm release:local
+      - run: (cd dist/release && sha256sum -c SHA256SUMS)
+      - run: pnpm prepare:docs
+      - run: pnpm exec astro check --root apps/docs
+      - run: pnpm build:fixtures
+      - run: pnpm build:docs
+      - run: pnpm build:docs:pages
+      - run: pnpm verify:pages
+      - run: pnpm exec node --test tests/*.test.mjs
+
+  deploy:
+    name: Publish Pages artifact
+    needs: verify
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: apps/docs/dist
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

@@ -37,6 +37,10 @@ The static output includes Starlight’s Pagefind index.
 
 Keep the regression test in `tests/navigation.spec.js` and the full axe matrix active while upgrading Astro, Starlight, or Pagefind. Remove the override when the upstream generated input has a non-title accessible name in all supported browsers; first confirm the upgrade in root and `/neobrui/` builds and both search behavior and axe tests.
 
-## Future activation guide
+## GitHub Pages activation guide
 
-Before any publication, explicitly choose the owner/repository URL, review the private-alpha and manual accessibility boundaries, and add a deployment workflow in a separate authorized change. No workflow or credentials are included here.
+The reviewed workflows target `https://tekgadgt.github.io/neobrui/` and require no long-lived secret. After the first authorized push of `main`, open repository **Settings → Pages**, set **Source** to **GitHub Actions**, and wait for the `Deploy docs to GitHub Pages` workflow to complete. The deployment environment is `github-pages` and publishes only `apps/docs/dist`.
+
+To roll back, redeploy the last known-good `main` commit (or disable the Pages workflow and set Pages source to **Deploy from a branch** only if an operator explicitly chooses that alternative). Do not publish npm artifacts. After the first green run, protect `main` and require the CI status checks before merge; keep deployment restricted to `main`.
+
+Before any publication, review the private-alpha and manual accessibility boundaries. No workflow credentials or npm publication permissions are required.

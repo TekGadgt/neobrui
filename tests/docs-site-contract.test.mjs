@@ -54,6 +54,15 @@ test('docs information architecture is represented in content routes', async () 
   assert.match(config, /customCss/);
 });
 
-test('no active GitHub deployment workflow is present', async () => {
-  await assert.rejects(readdir(resolve(root, '.github/workflows')));
+test('GitHub workflows are present with separate CI and Pages deployment jobs', async () => {
+  const workflows = await readdir(resolve(root, '.github/workflows'));
+  assert.deepEqual(workflows.sort(), ['ci.yml', 'pages.yml']);
+  const ci = await text('.github/workflows/ci.yml');
+  const pages = await text('.github/workflows/pages.yml');
+  assert.match(ci, /pull_request/);
+  assert.match(ci, /playwright test --project=\$\{\{ matrix\.browser \}\}/);
+  assert.match(pages, /actions\/configure-pages@v6/);
+  assert.match(pages, /actions\/upload-pages-artifact@v5/);
+  assert.match(pages, /actions\/deploy-pages@v5/);
+  assert.match(pages, /path: apps\/docs\/dist/);
 });

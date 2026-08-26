@@ -19,14 +19,15 @@
     "measure:size": "node scripts/size-package.mjs",
     "verify:size": "node scripts/verify-size.mjs",
     "verify:clean": "node scripts/verify-clean.mjs",
+    "verify:pages": "node scripts/verify-pages.mjs",
     "qa:baseline": "node scripts/qa-rehearsal.mjs baseline",
     "qa:seeded": "node scripts/qa-rehearsal.mjs seeded",
     "qa:rehearsal": "node scripts/qa-rehearsal.mjs rehearsal",
     "prepare:docs": "node scripts/prepare-docs-package.mjs",
     "build:docs": "pnpm release:local && pnpm prepare:docs && pnpm exec astro build --root apps/docs",
-    "build:docs:pages": "PUBLIC_SITE_BASE=/neobrui/ PUBLIC_SITE_URL=https://example.invalid/neobrui/ pnpm run build:docs",
+    "build:docs:pages": "PUBLIC_SITE_BASE=/neobrui/ PUBLIC_SITE_URL=https://tekgadgt.github.io/neobrui/ pnpm run build:docs",
     "preview:docs": "pnpm run build:docs && pnpm exec astro preview --root apps/docs",
-    "preview:docs:pages": "pnpm run build:docs:pages && PUBLIC_SITE_BASE=/neobrui/ PUBLIC_SITE_URL=https://example.invalid/neobrui/ pnpm exec astro preview --root apps/docs"
+    "preview:docs:pages": "pnpm run build:docs:pages && PUBLIC_SITE_BASE=/neobrui/ PUBLIC_SITE_URL=https://tekgadgt.github.io/neobrui/ pnpm exec astro preview --root apps/docs"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.10",
