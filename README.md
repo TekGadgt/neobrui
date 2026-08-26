@@ -42,6 +42,9 @@ pnpm verify:clean
 
 ## Formal docs
 
+- [Accepted CUBE migration contract](decisions/ADR-010-cube-migration-contract.md)
+- [ADR-009: accepted architecture direction](decisions/ADR-009-architecture-proposal.md)
+
 - [Current surface](docs/current-surface.md)
 - [Getting started for personal use](docs/getting-started-personal-use.md)
 - [Status and support](docs/status-and-support.md)

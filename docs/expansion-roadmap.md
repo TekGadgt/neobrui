@@ -1,10 +1,10 @@
 # Expansion roadmap
 
-This roadmap synthesizes `docs/personal-use-viability-and-expansion.md`; it does not create commitments or turn spike evidence into a public API.
+This roadmap synthesizes `docs/personal-use-viability-and-expansion.md`. ADR-009 accepted the CUBE-primary direction; [`ADR-010`](../decisions/ADR-010-cube-migration-contract.md) is the normative migration contract. Acceptance does not mean implementation or adopter authorization.
 
 ## Architecture and release proposal
 
-See [`docs/architecture-and-release-options.md`](architecture-and-release-options.md) and [`decisions/ADR-009-architecture-proposal.md`](../decisions/ADR-009-architecture-proposal.md). They are proposed decision documents only: implementation remains gated on Ryan’s explicit namespace, token-authority/DTCG, theme, layout, package, release, and adopter choices.
+See [`docs/architecture-and-release-options.md`](architecture-and-release-options.md), [`decisions/ADR-009-architecture-proposal.md`](../decisions/ADR-009-architecture-proposal.md), and [`decisions/ADR-010-cube-migration-contract.md`](../decisions/ADR-010-cube-migration-contract.md). Direction is accepted, but implementation remains gated by ADR-010's phase acceptance checks and adopter authorization.
 
 ## Personal-use MVP
 
@@ -27,9 +27,9 @@ Public source governance (license, CONTRIBUTING, security/support and issue poli
 
 Defer runtime component JavaScript, framework adapters/plugins while CSS coexistence works, global resets/hostile specificity, bundled identity, product/editor/QR/hosting abstractions, arbitrary recipe-count targets, and indefinite `_nb-spike` compatibility aliases. DTCG is no longer deferred: its bounded interchange surface is part of the proposed personal-use MVP, subject to Ryan’s canonical-authority and format/version decisions.
 
-## Current decisions still needed
+## Current implementation gates
 
-Ryan still owns the stable namespace, package name/private posture, repository/public-source posture, license, distribution, versioning, token authoring authority and DTCG pin, theme scoping, first adopter, layout API details, and the threshold separating personal kit, public source, and supported framework. Until those are recorded, selectors remain disposable evidence and should not be exposed to another project.
+The stable namespace, package posture, license intent, distribution, versioning, token authority, DTCG pin, theme scoping, and layout API are recorded in ADR-010. They are not implemented yet. Phase acceptance, rollback, and stop conditions must pass before any selector is exposed to another project; the neutral site precedes any separately authorized adopter.
 
 ## Gate discipline
 

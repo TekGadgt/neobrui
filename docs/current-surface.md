@@ -1,6 +1,6 @@
 # Current surface
 
-Status: validated personal-use pilot. This is the supported shape of the evidence today, not a public API promise.
+Status: validated personal-use pilot plus an accepted-but-unimplemented CUBE migration contract. See [`ADR-010`](../decisions/ADR-010-cube-migration-contract.md). This is the observed evidence today, not proof that the stable API has shipped.
 
 ## Entries and selectors
 
@@ -10,7 +10,7 @@ Status: validated personal-use pilot. This is the supported shape of the evidenc
 - Field: a wrapper plus label/description/error styling and text-like `input`, `textarea`, and `select` geometry, focus, disabled, invalid, adjacent-error, and forced-colors rules. The evidenced field is a labeled email `input`; other controls are not equivalently validated.
 - Aggregate: `src/recipes/index.css` combines the recipe entries and cascade-layer declarations. Standalone source entries are available for Surface, Button, and Field.
 
-All current class, data-attribute, custom-property, and layer names are temporary `_nb-spike` evidence. Do not expose them to another project until Ryan selects a stable namespace.
+The observed fixture surface still uses temporary `_nb-spike` names. ADR-010 accepts the `nbr` namespace and exact stable selectors, but Phase 1 has not implemented that migration. Do not expose either observed selectors or unimplemented stable selectors to another project.
 
 ## Themes, direction, and layers
 
@@ -24,7 +24,7 @@ Neobrui is CSS-only. Native HTML and the consuming application own roles, access
 
 ## Integrations and exclusions
 
-Plain CSS, CSS Modules, Astro, and Tailwind coexistence are proven by isolated fixtures. These are integration evidence, not adapters, plugins, or blanket support for every configuration. There is no runtime JavaScript, reset, bundled identity, layout primitive, checkbox/radio recipe, DTCG contract, public package, registry distribution, or publication promise.
+Plain CSS, CSS Modules, Astro, and Tailwind coexistence are proven by isolated fixtures. These are integration evidence, not adapters, plugins, or blanket support for every configuration. There is no runtime JavaScript, reset, bundled identity, implemented layout primitive, implemented Utility, checkbox/radio recipe, implemented DTCG contract, public package, registry distribution, or publication promise. ADR-010 specifies the future Stack/Cluster, Utility, DTCG, and release contracts without claiming they exist.
 
 ## Evidence and misuse
 

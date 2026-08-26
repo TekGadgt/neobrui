@@ -1,23 +1,23 @@
 # Neobrui architecture and release options
 
-Status: Proposed decision paper; no architecture, namespace, release, or token-format choice is adopted by this document.
+Status: Accepted direction; implementation contract is [`ADR-010`](../decisions/ADR-010-cube-migration-contract.md). This paper preserves the alternatives and rationale; it is not the source of implementation-sensitive API details.
 
 ## Executive position
 
 Neobrui (“neobrutalism UI”) is proposed as Ryan’s personal-use CSS kit first. The implementation gate should preserve the current narrow, CSS-only surface and add only the smallest approved primitives and interchange work. A public GitHub source, a supported library, and a competitive framework are separate gates—not consequences of making source visible.
 
-### Proposed decision bundle
+### Accepted decision bundle
 
 1. Keep the working name **neobrui**, subject to a concrete collision, trademark, or search finding.
-2. Approve a concise, project-owned namespace family, preferably `nbr-` (pending Ryan’s choice), used consistently for classes, data attributes, custom properties, and cascade layers. Do not keep `_nb-spike` aliases as a compatibility promise.
+2. Use the concise, project-owned `nbr-` namespace family consistently for classes, data attributes, custom properties, and cascade layers. Do not keep `_nb-spike` aliases as a compatibility promise.
 3. Use a small ITCSS/CUBE hybrid: tokens/settings, compositions/layouts, recipes/blocks, and a deliberately tiny utility layer. Do not add a reset or generic element takeover.
-4. Keep validated JS/TS token and theme maps as the initial canonical authoring source, and add a deterministic DTCG export as a first-class interchange surface. One editable source only; the canonical-authority choice remains pending Ryan’s approval.
+4. Keep validated JS/TS token and theme maps as the initial canonical authoring source, and add a deterministic DTCG export as a first-class interchange surface. One editable source only.
 5. Keep theme state and selectors in the product. Neobrui emits mappings for configured selectors and never creates a second toggle or state machine.
 6. Model `Stack` and `Cluster` as layout compositions with namespaced custom-property hooks and token defaults, not a broad utility matrix. Add them only after approval and evidence.
 7. Use GitHub tags and GitHub Release assets as the first distribution contract. Keep npm private and unpublished until separately authorized.
 8. Sequence adoption as a neutral executable test site, then a bounded HTML Day Lite Surface/Button/Cluster slice with side-by-side rollback. Do not migrate the personal site at the same time.
 
-Every item above is **proposed**, not accepted.
+Every item above is accepted as direction. The exact migration map, selector/attribute contracts, API boundaries, artifact graph, and phase gates live in ADR-010. Implementation remains pending.
 
 ## CSS architecture choices
 
@@ -38,7 +38,7 @@ ITCSS is best understood as a dependency/order model: broad, low-specificity rul
 | Candidate | Readability | Collision/ownership concern | Assessment |
 |---|---|---|---|
 | `nb-` | Very concise. | Generic enough to collide with “navbar”, “next build”, or another internal abbreviation. | Viable but weakest ownership signal. |
-| `nbr-` | Concise and hints “neobrui”. | Still short; must be documented everywhere. | **Recommended candidate**, pending Ryan. |
+| `nbr-` | Concise and hints “neobrui”. | Still short; must be documented everywhere. | **Accepted**; exact selectors and migration rules are in ADR-010. |
 | `neobrui-` | Maximum readability and searchability. | Verbose in markup and custom properties. | Best fallback if collision evidence outweighs ergonomics. |
 | `neo-` | Familiar and short. | Extremely broad; likely collisions and poor search precision. | Not recommended. |
 
@@ -57,7 +57,7 @@ The implementation must not maintain independently editable JS and DTCG files. T
 - **Proposed initial model:** the existing validated JS/TS token and theme maps remain canonical authoring input; a deterministic build emits CSS and DTCG JSON. Finite-role validation, alias/type checks, round-trip checks, and CSS-equivalence tests cover the export. This retains the current zero-runtime-JS pipeline while making DTCG useful to named tooling.
 - **Alternative:** DTCG JSON is canonical; JS/TS maps and CSS are generated views. This improves interoperability for DTCG-native tools but makes the build/parser and migration contract the critical dependency.
 
-Ryan still needs to approve the canonical authority. The recommendation is generated DTCG from the already validated map for MVP, not two sources.
+The accepted authority is generated DTCG from the already validated map for MVP, not two sources.
 
 ### Practical DTCG scope (proposed)
 

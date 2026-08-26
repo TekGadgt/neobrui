@@ -1,7 +1,8 @@
 # ADR-009: Neobrui architecture and release proposal
 
-Status: Proposed
+Status: Accepted
 Date: 2026-08-26
+Acceptance scope: The CUBE-primary architecture and release bundle is accepted as the pre-consumer direction. The exact migration and implementation contract is ADR-010; implementation remains pending.
 
 ## Context
 
@@ -11,10 +12,10 @@ Ryan’s settled direction is that Neobrui (“neobrutalism UI”) is the prefer
 
 ## Proposal
 
-This ADR proposes, but does not accept, the following bundle:
+This ADR records the bundle that was proposed and is now accepted under ADR-010:
 
 - Adopt a small ITCSS/CUBE hybrid: emitted tokens/settings, layouts/compositions, recipes/blocks, and minimal utilities. `Stack` and `Cluster` are compositions; Surface/Button/Field are recipes. Do not add resets or generic element takeover.
-- Select one concise project-owned namespace consistently across classes, data attributes, custom properties, and cascade layers. `nbr-` is the recommended candidate over `nb-`, `neobrui-`, and generic `neo-`; Ryan must approve it. `_nb-spike` aliases are not a lasting compatibility plan.
+- Select one concise project-owned namespace consistently across classes, data attributes, custom properties, and cascade layers. The accepted family is `nbr-`; exact stable selectors and conversion rules are in ADR-010. `_nb-spike` aliases are not a lasting compatibility plan.
 - Keep validated JS/TS token/theme maps as the proposed initial canonical authoring source, with deterministic generated DTCG and CSS outputs. DTCG JSON canonical with generated JS/CSS remains the alternative. Never maintain two independently editable sources.
 - Pin and validate a specific DTCG format/version and supported subset (`$value`, `$type`, groups, aliases/references, paths, and configured theme organization). Record provenance, deterministic ordering, schema validation, CSS equivalence, and bounded import/round-trip behavior. DTCG does not own application theme toggles or selectors.
 - Keep theme state in the product. Neobrui maps configured selectors, resolves complete maps before output, supports validated authoring inheritance only, and makes global defaults opt-in.
@@ -36,13 +37,14 @@ A later GitHub-source gate checks namespace, MIT, README, CI, secrets/history, p
 
 ## Decision ownership
 
-This ADR intentionally records proposed defaults and unresolved choices; it does not silently adopt an architecture or public-release policy. Ryan’s explicit choices are tracked in `docs/architecture-and-release-options.md`.
+This ADR records the accepted direction. The exact, implementation-sensitive choices are frozen in [`ADR-010-cube-migration-contract.md`](ADR-010-cube-migration-contract.md); implementation is still pending and no adopter work is authorized. The decision is limited to this repository's pre-consumer migration contract and does not authorize publication, deployment, or personal-site work.
 
-The complete first-party CUBE review is recorded in `docs/cube-css-fit-review.md`. Its CUBE-primary recommendation is research input only: CUBE architecture acceptance remains pending Ryan’s decision, and this ADR remains Proposed.
+The complete first-party CUBE review is recorded in [`docs/cube-css-fit-review.md`](../docs/cube-css-fit-review.md). Its CUBE-primary recommendation is preserved as the review basis for this acceptance. ADR-010 records the resulting stable names, layers, APIs, artifact graph, phases, and rollback gates.
 
 ## References
 
 - `docs/cube-css-fit-review.md`
+- `decisions/ADR-010-cube-migration-contract.md`
 - `docs/architecture-and-release-options.md`
 - `docs/expansion-roadmap.md`
 - `docs/status-and-support.md`
