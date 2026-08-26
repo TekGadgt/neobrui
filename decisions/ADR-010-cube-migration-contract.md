@@ -2,7 +2,7 @@
 
 Status: Accepted
 Date: 2026-08-26
-Acceptance scope: Neobrui's pre-consumer namespace, cascade, token interchange, composition, utility, package, evidence, and phased migration contract. Phase 1 namespace/layer/Block implementation is complete locally; later phases remain pending and adopter work is not authorized.
+Acceptance scope: Neobrui's namespace, cascade, token interchange, composition, utility, package, release evidence, and phased migration contract. The personal-alpha package artifact is complete locally; public source, publication, and adopter work remain separately gated.
 
 ## Decision
 
@@ -167,7 +167,7 @@ all selected entries    ─> dist/index.css (aggregate five-layer declaration)
 all dist + generated artifacts ─> deterministic GitHub-first archive
 ```
 
-The package is named `neobrui`, remains npm-private/unpublished, and has no registry credentials or publication configuration. Eventual source posture is MIT. Releases use deterministic GitHub-first archives, semantic `0.x` versions, retained prior assets, and checksums. No release or license file is created by this documentation-only phase.
+The package is named `neobrui`, remains npm-private/unpublished, and has no registry credentials or publication configuration. The local personal-alpha artifact uses MIT source posture, deterministic GitHub-first archives, semantic `0.x` versions, retained prior assets, and checksums. This does not authorize publication.
 
 ## Phases, acceptance, rollback, and stop conditions
 
@@ -182,4 +182,4 @@ Only after all four phases pass may adopter work begin: first the neutral site (
 
 Normative docs, tests, fixtures, package exports, and current-surface references must use stable `nbr` names and accepted CUBE vocabulary. Historical evidence may retain `_nb-spike` names only when clearly labeled as historical and not presented as a current selector or contract. Links should point to ADR-010 for accepted decisions and explicitly distinguish accepted-but-unimplemented work from observed behavior.
 
-Phase 1 implementation is recorded in [`docs/cube-phase1-migration.md`](../docs/cube-phase1-migration.md). This ADR remains the contract for later phases; it does not authorize package publication or adopter projects.
+Phase 1 implementation is recorded in [`docs/cube-phase1-migration.md`](../docs/cube-phase1-migration.md). The local Phase 4 artifact workflow is recorded in [`docs/local-release-workflow.md`](../docs/local-release-workflow.md). This ADR remains the contract for future gates; it does not authorize package publication or adopter projects.

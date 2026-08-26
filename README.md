@@ -1,6 +1,6 @@
 # neobrui personal-use pilot
 
-Neobrui is a validated, private, CSS-only personal-use pilot for Ryan's projects. It is evidence for a narrow semantic styling surface—not a public framework, stable package/API, product identity, deployment target, or support promise. The current repository remains private and unpublishable by design.
+Neobrui is a validated, private, CSS-only personal-alpha release for Ryan's projects. It is a narrow semantic styling surface—not a public framework, 1.0-stable API, product identity, deployment target, or support promise. The current repository remains local and npm-private by design.
 
 ## What exists today
 
@@ -9,14 +9,14 @@ Neobrui is a validated, private, CSS-only personal-use pilot for Ryan's projects
 - Opt-in `Surface`, `Button`, and `Field` blocks plus Stack/Cluster compositions and the initial visually-hidden/wrapper utilities, with standalone and aggregate CSS entries.
 - Native HTML contracts, RTL/nested/fixed shadow behavior, no-shadow safety cues, and explicit cascade-layer coexistence.
 - Plain CSS, CSS Modules, Astro, and Tailwind integration fixtures (evidence, not adapters or blanket compatibility).
-- Zero runtime JavaScript/assets/dependencies in the private CSS candidate.
+- Zero runtime JavaScript/assets/dependencies in the private CSS release.
 - Automated Chromium, Firefox, and WebKit fixture checks, deterministic archive/consumer size checks, and seeded QA rehearsal.
 
 The current evidence is intentionally narrow. Standalone Button has a provisional minified-size warning (2,413 B versus a 1,800 B hypothesis) while remaining below the gzip warning/kill limits; this is not a publication signal.
 
-## Provisional boundaries
+## Personal-alpha boundaries
 
-The `nbr` classes, data attributes, custom properties, and five-layer names are the accepted stable Phase 1 contract. The package remains private and unpublished; no npm scope, license, registry distribution, semver, or adopter migration is authorized by this phase.
+The `nbr` classes, data attributes, custom properties, and five-layer names are the accepted CUBE contract. The package is versioned `0.1.0-alpha.0`, remains private and unpublished, and follows the documented semantic `0.x` policy. MIT describes the future source posture; it does not authorize publication, support, or adopter migration.
 
 Native HTML and the application own semantics, keyboard behavior, link navigation, validation, disabled behavior, announcements, routing, and state. Automation does not establish manual assistive-technology, OS forced-colors, physical keyboard/touch, or true browser-UI zoom support. Procedures are documented but unexecuted unless a dated run record says otherwise.
 
@@ -52,6 +52,8 @@ pnpm verify:clean
 - [Expansion roadmap](docs/expansion-roadmap.md)
 - [ADR-008: personal-use positioning](decisions/ADR-008-personal-use-positioning.md)
 - [Manual accessibility testing procedure](docs/manual-accessibility-testing.md)
+- [Local release workflow](docs/local-release-workflow.md)
+- [Pre-GitHub checklist](docs/pre-github-checklist.md)
 - [Accessibility test-run template](docs/templates/accessibility-test-run.md)
 - [Personal-use viability and expansion](docs/personal-use-viability-and-expansion.md)
 - [Historical pre-migration viability assessment](evidence/historical/personal-use-viability-and-expansion.md)
