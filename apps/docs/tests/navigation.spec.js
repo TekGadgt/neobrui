@@ -41,14 +41,47 @@ test('mobile menu supports keyboard activation', async ({ page }) => {
   await expect(menuToggle).toHaveAttribute('aria-expanded', 'true');
 });
 
-test('representative docs states have no axe violations', async ({ page }) => {
-  for (const state of [
-    { route: '/', name: 'desktop' },
+test('responsive TOC exposes only the active navigation landmark', async ({ page }) => {
+  for (const viewport of [{ width: 1280, height: 800, name: 'desktop' }, { width: 320, height: 800, name: 'mobile' }]) {
+    await page.setViewportSize(viewport);
+    await page.goto(sitePath('/examples/'));
+    const landmarks = page.getByRole('navigation', { name: 'On this page' });
+    const mobileLandmark = page.locator('mobile-starlight-toc > nav');
+    const desktopLandmark = page.locator('.right-sidebar-panel nav');
+    await expect(landmarks, `${viewport.name} visible TOC landmark count`).toHaveCount(1);
+    if (viewport.name === 'mobile') {
+      await expect(mobileLandmark, `${viewport.name} mobile TOC visibility`).toBeVisible();
+      await expect(desktopLandmark, `${viewport.name} desktop TOC visibility`).toBeHidden();
+    } else {
+      await expect(mobileLandmark, `${viewport.name} mobile TOC visibility`).toBeHidden();
+      await expect(desktopLandmark, `${viewport.name} desktop TOC visibility`).toBeVisible();
+    }
+  }
+});
+
+test('interactive docs states have no axe violations', async ({ page }) => {
+  const states = [
+    { route: '/', name: 'home' },
     { route: '/examples/', name: 'examples' },
-  ]) {
+  ];
+  for (const state of states) {
     await page.setViewportSize({ width: 1280, height: 800 });
     await page.goto(sitePath(state.route));
-    const results = await new AxeBuilder({ page }).analyze();
-    expect(results.violations, `${state.name}: ${results.violations.map(({ id }) => id).join(', ')}`).toEqual([]);
+    const desktopResults = await new AxeBuilder({ page }).analyze();
+    expect(desktopResults.violations, `${state.name}: ${desktopResults.violations.map(({ id }) => id).join(', ')}`).toEqual([]);
+
+    await page.setViewportSize({ width: 320, height: 800 });
+    await page.goto(sitePath(state.route));
+    await page.getByRole('button', { name: 'Menu' }).click();
+    const menuResults = await new AxeBuilder({ page }).analyze();
+    expect(menuResults.violations.find(({ id }) => id === 'landmark-unique'), `${state.name} mobile menu landmark uniqueness`).toBeUndefined();
+
+    await page.keyboard.press('Escape');
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto(sitePath(state.route));
+    await page.getByRole('button', { name: 'Search' }).click();
+    await expect(page.getByRole('dialog')).toBeVisible();
+    const searchResults = await new AxeBuilder({ page }).analyze();
+    expect(searchResults.violations.find(({ id }) => id === 'landmark-unique'), `${state.name} search landmark uniqueness`).toBeUndefined();
   }
 });
