@@ -8,7 +8,7 @@ test.describe('installed private archive consumer', () => {
     const evidence = await page.locator('button').evaluate(button => ({
       buttonBackground: getComputedStyle(button).backgroundColor,
       buttonBorder: getComputedStyle(button).borderWidth,
-      stylesheets: [...document.styleSheets].map(sheet => new URL(sheet.href).pathname),
+      stylesheets: [...document.styleSheets].map(sheet => sheet.href).filter(Boolean).map(href => new URL(href).pathname),
       scripts: [...document.scripts].map(script => script.src),
     }));
     expect(evidence.buttonBackground).toBe('rgb(143, 45, 45)');
