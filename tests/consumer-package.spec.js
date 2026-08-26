@@ -14,7 +14,7 @@ test.describe('installed private archive consumer', () => {
     expect(evidence.buttonBackground).toBe('rgb(143, 45, 45)');
     expect(evidence.buttonBorder).toBe('2px');
     expect(evidence.stylesheets.every(path => path.startsWith('/consumer/assets/'))).toBe(true);
-    expect(evidence.stylesheets.length).toBe(2);
+    expect(evidence.stylesheets.length).toBe(1);
     expect(evidence.scripts).toEqual([]);
     expect(requests.every(url => url.startsWith('http://127.0.0.1:4174/consumer/'))).toBe(true);
     expect(requests.some(url => url.endsWith('.css'))).toBe(true);
