@@ -1,18 +1,10 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Plain fixture — neobrui Spike 0</title>
-  </head>
-  <body>
-    <main class="_nb-spike-page">
-      <h1>Plain fixture</h1>
-      <p>This static fixture is meaningful without JavaScript or a network connection.</p>
-      <section aria-labelledby="purpose-heading">
-        <h2 id="purpose-heading">Spike 0 harness</h2>
-        <p>It provides a neutral semantic baseline for later CSS evidence.</p>
-      </section>
-    </main>
-  </body>
-</html>
+<html lang="en" data-_nb-theme="personal-light">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Token mapping fixtures</title><link rel="stylesheet" href="/generated-tokens.css"><style>
+:root{font-family:var(--_nb-font-body);color:var(--_nb-color-text);background:var(--_nb-color-canvas);line-height:1.5}*{box-sizing:border-box}body{margin:0;padding:var(--_nb-space-5)}main{max-width:72rem;margin:auto}h1,h2{font-family:var(--_nb-font-display);line-height:1.1}h1{font-size:var(--_nb-text-heading)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(16rem,1fr));gap:var(--_nb-region-gap)}section{padding:var(--_nb-space-4);border:var(--_nb-border-region);background:var(--_nb-surface-background);box-shadow:var(--_nb-surface-shadow)}section.quiet{box-shadow:none;border-inline-start:var(--_nb-border-control);border-block-end:var(--_nb-border-control)}button,input{font:inherit;padding:var(--_nb-control-pad-block) var(--_nb-control-pad-inline);border:var(--_nb-border-control);border-radius:var(--_nb-radius-control)}button{background:var(--_nb-button-background);color:var(--_nb-color-onAction);box-shadow:var(--_nb-shadow-block);cursor:pointer}button:active{transform:translateY(2px);box-shadow:var(--_nb-shadow-pressBlock)}button:disabled{opacity:.55;cursor:not-allowed}input{background:var(--_nb-field-background);color:inherit}input:invalid{border-color:var(--_nb-color-negative)}:focus-visible{outline:var(--_nb-focus-width) solid var(--_nb-color-focus);outline-offset:var(--_nb-focus-offset)}.muted{color:var(--_nb-color-textMuted)}.theme{padding:var(--_nb-space-4);margin-block:var(--_nb-space-5);background:var(--_nb-color-canvas);border:var(--_nb-border-region)}.nested{--_nb-color-action:#5d3a9b;--_nb-color-focus:#8b235f}.state-row{display:flex;flex-wrap:wrap;gap:var(--_nb-space-2);align-items:center}@media(prefers-reduced-motion:reduce){button{transition:none;transform:none}}
+</style></head>
+<body><main class="_nb-spike-page"><h1>Plain fixture</h1><p class="muted">Three isolated relationships use one finite role schema. Values, type, and product meaning stay fixture-local.</p>
+<div class="theme" data-_nb-theme="personal-light"><h2>Spike 0 harness</h2><p>Meaningful without JavaScript or a network connection; this is a neutral semantic baseline for token evidence.</p><h3>Personal light relationship</h3><div class="grid"><section class="quiet"><h3>Quiet surface</h3><p>Rule-only grouping keeps hierarchy without elevation.</p></section><section><h3>Control states</h3><label for="light-email">Required field</label><input id="light-email" required placeholder="Semantic input"><div class="state-row"><button type="button">Action</button><button type="button" disabled>Disabled</button></div></section></div></div>
+<div class="theme" data-_nb-theme="personal-dark"><h2>Personal dark relationship</h2><div class="grid"><section class="quiet"><h3>Quiet surface</h3><p>Dark canvas remaps roles without changing markup.</p></section><section><h3>State comprehension</h3><p class="muted">Focus uses outline; invalid uses border and native required semantics.</p><button type="button">Action</button></section></div></div>
+<div class="theme" data-_nb-theme="workshop"><h2>Workshop relationship</h2><div class="grid"><section class="quiet"><h3>Quiet surface</h3><p>Local palette choices feed semantic hooks, not core names.</p></section><section><h3>Native states</h3><label for="work-email">Email</label><input id="work-email" type="email" required placeholder="name@example.test"><button type="button">Continue</button></section></div><section class="nested" data-_nb-theme="personal-dark"><h3>Nested remap</h3><p>This subtree changes action and focus roles; sibling themes remain unchanged.</p><button type="button">Nested action</button></section></div>
+</main></body></html>

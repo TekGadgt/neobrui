@@ -2,12 +2,14 @@
   "name": "neobrui-spike-0-harness",
   "version": "0.0.0",
   "private": true,
-  "packageManager": "pnpm@11.21.0",
+  "packageManager": "pnpm@11.24.0",
   "type": "module",
   "scripts": {
     "install:frozen": "pnpm install --frozen-lockfile",
-    "build": "vite build",
-    "test": "playwright test",
+    "build:tokens": "node scripts/build-tokens.mjs",
+    "validate:tokens": "node tests/token-schema.test.mjs",
+    "build": "pnpm build:tokens && vite build",
+    "test": "pnpm validate:tokens && playwright test",
     "verify": "pnpm install --frozen-lockfile && pnpm build && pnpm test"
   },
   "devDependencies": {
