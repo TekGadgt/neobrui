@@ -1,7 +1,8 @@
 {
   "schema": "neobrui.qa-timings/v1",
   "task": "Spike 6B timed QA-matrix dry run",
-  "commitBeforeAndAfter": "17fda71",
+  "testedCommit": "17fda7157cebf172cd4e5023a693135afde06972",
+  "provenanceNote": "The timed commands began and ended on testedCommit. Their generated timing and detector evidence was committed afterward, so evidence files are intentionally not expected to exist in the tested commit tree. The tested QA harness sources are byte-identical between testedCommit and the evidence commit d231b51.",
   "environment": {
     "os": "Debian GNU/Linux 13.4 (trixie)",
     "kernel": "6.8.0-117-generic",

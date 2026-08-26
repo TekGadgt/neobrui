@@ -2,7 +2,7 @@
 
 Date: 2026-08-26 UTC
 Repository: `/workspace/neobrui`
-Starting and ending commit: `17fda71` (`test: strengthen Spike 6 accessibility evidence`)
+Tested commit: `17fda7157cebf172cd4e5023a693135afde06972` (`test: strengthen Spike 6 accessibility evidence`). The timed commands began and ended on that commit. Their generated timings and detector evidence were committed afterward, so the evidence files are intentionally absent from the tested commit tree. The tested QA harness sources are byte-identical between `17fda71` and evidence commit `d231b51`.
 
 ## Scope and commands
 
