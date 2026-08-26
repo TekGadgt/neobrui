@@ -47,9 +47,41 @@ jobs:
         with:
           path: apps/docs/dist
 
+  browsers:
+    name: Playwright (${{ matrix.browser }})
+    needs: verify
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - name: Install frozen root dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Install Playwright browser
+        run: pnpm exec playwright install --with-deps ${{ matrix.browser }}
+      - name: Build Pages docs for matching base
+        run: pnpm build:docs:pages
+      - name: Run root browser coverage
+        run: pnpm exec playwright test --project=${{ matrix.browser }}
+      - name: Run docs browser coverage
+        run: PUBLIC_SITE_BASE=/neobrui/ PUBLIC_SITE_URL=https://tekgadgt.github.io/neobrui/ pnpm --dir apps/docs exec playwright test --config=playwright.config.js --project=${{ matrix.browser }}
+
   deploy:
     name: Publish Pages artifact
-    needs: verify
+    needs:
+      - verify
+      - browsers
     runs-on: ubuntu-latest
     permissions:
       contents: read

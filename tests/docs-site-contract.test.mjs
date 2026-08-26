@@ -68,7 +68,21 @@ test('GitHub workflows are present with separate CI and Pages deployment jobs', 
   assert.match(pages, /actions\/deploy-pages@v5/);
   assert.match(verify, /path: apps\/docs\/dist/);
   assert.match(verify, /verify:pages[\s\S]*upload-pages-artifact/);
-  assert.match(deploy, /needs: verify/);
+  assert.match(deploy, /needs:\s*\n\s+- verify\n\s+- browsers/);
+  assert.doesNotMatch(deploy, /actions\/(?:checkout|upload-pages-artifact|configure-pages)|pnpm (?:install|build|run build)/);
+});
+
+test('Pages workflow gates deployment on every browser and project matrix entry', async () => {
+  const pages = await text('.github/workflows/pages.yml');
+  const browser = pages.slice(pages.indexOf('  browsers:'), pages.indexOf('  deploy:'));
+  const deploy = pages.slice(pages.indexOf('  deploy:'));
+  assert.match(browser, /browser: \[chromium, firefox, webkit\]/);
+  assert.match(browser, /pnpm exec playwright install --with-deps \$\{\{ matrix\.browser \}\}/);
+  assert.match(browser, /pnpm exec playwright test --project=\$\{\{ matrix\.browser \}\}/);
+  assert.match(browser, /pnpm --dir apps\/docs exec playwright test --config=playwright\.config\.js --project=\$\{\{ matrix\.browser \}\}/);
+  assert.match(browser, /build:docs:pages/);
+  assert.match(deploy, /needs:\s*\n\s+- verify\n\s+- browsers/);
+  assert.match(deploy, /actions\/deploy-pages@v5/);
   assert.doesNotMatch(deploy, /actions\/(?:checkout|upload-pages-artifact|configure-pages)|pnpm (?:install|build|run build)/);
 });
 
