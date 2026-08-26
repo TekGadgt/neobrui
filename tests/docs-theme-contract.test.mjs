@@ -17,6 +17,8 @@ test('docs theme defines independent accessible light and dark Starlight maps', 
   assert.match(source, /prefers-color-scheme: dark/);
   assert.match(source, /--nbr-docs-border: #18212b/);
   assert.match(source, /--nbr-docs-border: #dbe7f2/);
+  assert.match(source, /--nbr-docs-control-border: #18212b/);
+  assert.match(source, /--nbr-docs-control-border: #dbe7f2/);
 });
 
 test('docs theme contract documents ownership and Starlight upgrade checks', async () => {

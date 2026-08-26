@@ -8,6 +8,7 @@
   --nbr-docs-border: #18212b;
   --nbr-docs-shadow: 4px 4px 0 #18212b;
   --nbr-docs-focus: #a64200;
+  --nbr-docs-control-border: #18212b;
 }
 
 html[data-theme='light'],
@@ -34,6 +35,7 @@ html[data-theme='auto'] {
   --nbr-docs-border: #18212b;
   --nbr-docs-shadow: 4px 4px 0 #18212b;
   --nbr-docs-focus: #a64200;
+  --nbr-docs-control-border: #18212b;
 }
 
 html[data-theme='dark'] {
@@ -58,6 +60,7 @@ html[data-theme='dark'] {
   --nbr-docs-border: #dbe7f2;
   --nbr-docs-shadow: 4px 4px 0 #dbe7f2;
   --nbr-docs-focus: #ffb86b;
+  --nbr-docs-control-border: #dbe7f2;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -83,6 +86,7 @@ html[data-theme='dark'] {
     --nbr-docs-border: #dbe7f2;
     --nbr-docs-shadow: 4px 4px 0 #dbe7f2;
     --nbr-docs-focus: #ffb86b;
+  --nbr-docs-control-border: #dbe7f2;
   }
 }
 
@@ -109,6 +113,12 @@ html[data-theme='dark'] {
 .surface-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
 .surface-grid .nbr-surface { margin: 0; }
 .wrapper-demo { border: 2px dashed var(--nbr-docs-border); padding-block: 1rem; }
+
+/* Native Starlight controls use a dedicated boundary token. Keep this scoped
+   to controls so page separators can remain quieter. */
+:where(starlight-theme-select label, starlight-menu-button button, .pagefind-ui__search-input) {
+  border: 2px solid var(--nbr-docs-control-border);
+}
 
 /* Preserve usable landmarks and controls while making active states obvious. */
 :where(.sl-markdown-content, .sidebar-content) :is(a, button, [tabindex]):focus-visible {

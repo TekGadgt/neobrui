@@ -190,10 +190,13 @@ test.describe('docs control boundary contrast', () => {
         await page.evaluate((value) => { document.documentElement.dataset.theme = value; }, theme);
         const controls = await page.evaluate((selectors) => {
           const styles = getComputedStyle(document.documentElement);
-          const backgrounds = { page: styles.getPropertyValue('--sl-color-bg').trim(), sidebar: styles.getPropertyValue('--sl-color-bg-sidebar').trim() };
+          const pageBackground = getComputedStyle(document.body).backgroundColor;
+          const sidebarElement = document.querySelector('#starlight__sidebar');
+          const sidebarBackground = sidebarElement ? getComputedStyle(sidebarElement).backgroundColor : pageBackground;
+          const backgrounds = { page: pageBackground, sidebar: sidebarBackground };
           return selectors.flatMap((selector) => [...document.querySelectorAll(selector)].map((element) => {
             const control = getComputedStyle(element);
-            return { selector, border: control.borderTopColor || styles.getPropertyValue('--sl-color-gray-5').trim(), backgrounds };
+            return { selector, border: control.borderTopColor || styles.getPropertyValue('--sl-color-hairline-light').trim() || styles.getPropertyValue('--sl-color-gray-5').trim(), backgrounds };
           }));
         }, controlBoundarySelectors);
         expect(controls.length, `${theme} ${viewport.width}px representative controls`).toBeGreaterThanOrEqual(3);
@@ -218,8 +221,7 @@ test.describe('docs control boundary contrast', () => {
       await expect(searchInput).toBeVisible();
       const inputBoundary = await searchInput.evaluate((element) => {
         const style = getComputedStyle(element);
-        const root = getComputedStyle(document.documentElement);
-        return { border: style.borderTopColor, page: root.getPropertyValue('--sl-color-bg').trim() };
+        return { border: style.borderTopColor, page: getComputedStyle(document.body).backgroundColor };
       });
       expect(contrastFromCss(inputBoundary.border, inputBoundary.page), `${theme} search dialog input`).toBeGreaterThanOrEqual(3);
     });

@@ -47,7 +47,7 @@ Before any publication, review the private-alpha and manual accessibility bounda
 
 ## Theme rationale and maintenance contract
 
-The documentation shell deliberately uses a product-owned Neobrutalist treatment: high-contrast ink/paper colors, 2px boundaries, modest hard shadows, tactile links, and a clear heading/body/code hierarchy. The palette is defined in `src/styles/custom.css`, not in the Neobrui CSS package or generated neutral artifacts. Light and dark Starlight maps are explicit, and `auto` follows `prefers-color-scheme`; every semantic text, accent, surface, border, focus, code, sidebar, and control role must retain a WCAG 2.2 AA margin when changed.
+The documentation shell deliberately uses a product-owned Neobrutalist treatment: high-contrast ink/paper colors, 2px boundaries, modest hard shadows, tactile links, and a clear heading/body/code hierarchy. The palette is defined in `src/styles/custom.css`, not in the Neobrui CSS package or generated neutral artifacts. Light and dark Starlight maps are explicit, and `auto` follows `prefers-color-scheme`; every semantic text, accent, surface, border, focus, code, sidebar, and control role must retain a WCAG 2.2 AA margin when changed. Native Starlight control boundaries use the dedicated `--nbr-docs-control-border` token (separate from quieter page hairlines) and must remain at least 3:1 against both page and sidebar surfaces in every theme.
 
 Starlight upgrade checks: when upgrading Astro, Starlight, Pagefind, or their generated class/token contracts:
 
