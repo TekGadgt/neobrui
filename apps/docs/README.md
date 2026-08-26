@@ -44,3 +44,15 @@ The reviewed workflows target `https://tekgadgt.github.io/neobrui/` and require 
 To roll back, redeploy the last known-good `main` commit (or disable the Pages workflow and set Pages source to **Deploy from a branch** only if an operator explicitly chooses that alternative). Do not publish npm artifacts. After the first green run, protect `main` and require the CI status checks before merge; keep deployment restricted to `main`.
 
 Before any publication, review the private-alpha and manual accessibility boundaries. No workflow credentials or npm publication permissions are required.
+
+## Theme rationale and maintenance contract
+
+The documentation shell deliberately uses a product-owned Neobrutalist treatment: high-contrast ink/paper colors, 2px boundaries, modest hard shadows, tactile links, and a clear heading/body/code hierarchy. The palette is defined in `src/styles/custom.css`, not in the Neobrui CSS package or generated neutral artifacts. Light and dark Starlight maps are explicit, and `auto` follows `prefers-color-scheme`; every semantic text, accent, surface, border, focus, code, sidebar, and control role must retain a WCAG 2.2 AA margin when changed.
+
+Starlight upgrade checks: when upgrading Astro, Starlight, Pagefind, or their generated class/token contracts:
+
+1. Run `pnpm build:docs` and `pnpm build:docs:pages` from a clean tree.
+2. Run the root Node contracts, the full Playwright matrix (`chromium`, `firefox`, `webkit`), and the docs-app Playwright matrix in both explicit themes and system `auto` states.
+3. Re-run full axe checks on home, Blocks, and Examples, including search, TOC, mobile, forced-colors, and reduced-motion states; inspect direct token-pair contrast assertions rather than relying only on axe.
+4. Check 1280px and 320px screenshots for overflow, focus visibility, active navigation, code readability, and unchanged `/neobrui/` asset URLs.
+5. Keep the supported Search wrapper unless upstream Pagefind provides a non-title accessible name in every supported browser. Do not fork Starlight navigation or move this identity palette into the package.

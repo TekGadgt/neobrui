@@ -123,3 +123,42 @@ test('interactive docs states have no axe violations', async ({ page }) => {
     expect(searchResults.violations, `${state.name} search: ${searchResults.violations.map(({ id }) => id).join(', ')}`).toEqual([]);
   }
 });
+
+const docsRoutes = ['/', '/getting-started/', '/foundations/', '/compositions/', '/utilities/', '/blocks/', '/examples/', '/accessibility/', '/release/', '/future/'];
+const contrast = (foreground, background) => {
+  const channel = (value) => {
+    const c = Number.parseInt(value, 16) / 255;
+    return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+  };
+  const rgb = (value) => [value.slice(1, 3), value.slice(3, 5), value.slice(5, 7)].map(channel);
+  const luminance = ([r, g, b]) => 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  const first = luminance(rgb(foreground));
+  const second = luminance(rgb(background));
+  return (Math.max(first, second) + 0.05) / (Math.min(first, second) + 0.05);
+};
+
+test.describe('docs theme contrast matrix', () => {
+  for (const theme of ['light', 'dark']) {
+    test(`${theme} renders every route with passing core token pairs`, async ({ page }) => {
+      for (const route of docsRoutes) {
+        await page.goto(sitePath(route));
+        await page.evaluate((value) => { document.documentElement.dataset.theme = value; }, theme);
+        const tokens = await page.evaluate(() => {
+          const styles = getComputedStyle(document.documentElement);
+          return {
+            text: styles.getPropertyValue('--sl-color-text').trim(),
+            muted: styles.getPropertyValue('--sl-color-gray-2').trim(),
+            accent: styles.getPropertyValue('--sl-color-accent').trim(),
+            background: styles.getPropertyValue('--sl-color-bg').trim(),
+            border: styles.getPropertyValue('--sl-color-hairline').trim(),
+          };
+        });
+        expect(tokens, route).toEqual(expect.objectContaining({ text: expect.stringMatching(/^#[0-9a-f]{6}$/i), background: expect.stringMatching(/^#[0-9a-f]{6}$/i) }));
+        expect(contrast(tokens.text, tokens.background), `${theme} ${route} body`).toBeGreaterThanOrEqual(7);
+        expect(contrast(tokens.muted, tokens.background), `${theme} ${route} muted`).toBeGreaterThanOrEqual(4.5);
+        expect(contrast(tokens.accent, tokens.background), `${theme} ${route} accent`).toBeGreaterThanOrEqual(4.5);
+        expect(contrast(tokens.border, tokens.background), `${theme} ${route} boundary`).toBeGreaterThanOrEqual(3);
+      }
+    });
+  }
+});
