@@ -12,7 +12,7 @@ Neobrui is a validated, private, CSS-only Phase 4 personal-alpha release for Rya
 - Zero runtime JavaScript/assets/dependencies in the private CSS release.
 - Automated Chromium, Firefox, and WebKit fixture checks, deterministic archive/consumer size checks, and seeded QA rehearsal.
 
-The current evidence is intentionally narrow. Standalone Button is 2,341 minified bytes and 699 gzip bytes in the committed `size-report.json`; it carries a provisional minified-size warning against the 1,800 B ceiling while remaining below the gzip warning/kill limits. This is not a publication signal.
+The current evidence is intentionally narrow. The committed `size-report.json` is the initial design evidence: standalone Button is 2,341 minified bytes and 699 gzip bytes, with a provisional minified-size warning against the 1,800 B ceiling while remaining below the gzip warning/kill limits. This is not a publication signal; rerun `pnpm measure:size` intentionally when changing or expanding the package surface, not required on every CI/build run.
 
 ## Personal-alpha boundaries
 
@@ -34,7 +34,7 @@ pnpm verify:size
 pnpm verify:clean
 ```
 
-`pnpm test` includes unit contracts, token validation, and the configured Chromium/Firefox/WebKit Playwright projects. `pnpm verify:size` is fresh and non-mutating; `pnpm measure:size` intentionally regenerates `size-report.json`.
+`pnpm test` includes unit contracts, token validation, and the configured Chromium/Firefox/WebKit Playwright projects. Browser startup intentionally verifies the built fixture without requiring a fresh size-report comparison. `pnpm verify:size` remains an explicit, fresh, non-mutating size-evidence check; `pnpm measure:size` intentionally regenerates `size-report.json`. The release checksum verifies artifact integrity and identity within this reviewed release flow, not CSS budget or size-report freshness, and not independent authenticity. Future npm staging should add SHA-256 plus SHA-512/SRI for the exact candidate tarball and verify the registry integrity/downloaded tarball after publish; npm provenance is complementary.
 
 ## Repository boundaries
 

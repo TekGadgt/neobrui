@@ -6,7 +6,7 @@ Neobrui is a validated CUBE Phase 4 `0.1.0-alpha.0` personal-alpha release for R
 
 What is validated: semantic tokens; opt-in Surface, Button, and Field Blocks; RTL/nested/fixed shadow behavior; the ordered `nbr.tokens`, `nbr.compositions`, `nbr.utilities`, `nbr.blocks`, `nbr.exceptions` layers; plain CSS/CSS Modules/Astro/Tailwind coexistence fixtures; zero runtime JavaScript in the release; deterministic size/archive checks; and automated Chromium, Firefox, and WebKit fixture coverage. Product-owned `data-theme` state remains outside the package.
 
-The size result is honest and provisional: overall `warning/narrow`; standalone Button is 2,341 minified bytes and 699 gzip bytes in the committed `size-report.json`, against a provisional 1,800-byte minified ceiling and 800-byte gzip limit. This is not a CSS/API change or a publication signal.
+The size result is honest and provisional: overall `warning/narrow`; standalone Button is 2,341 minified bytes and 699 gzip bytes in the committed `size-report.json`, against a provisional 1,800-byte minified ceiling and 800-byte gzip limit. This is the initial design evidence, not a CSS/API change or a publication signal. Size freshness is not required for browser, CI, or build verification; rerun the snapshot intentionally when changing or expanding the package surface.
 
 ## Coverage boundary
 

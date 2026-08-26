@@ -14,7 +14,7 @@ pnpm verify:size
 
 Verify the generated archive from repository root with `(cd dist/release && sha256sum -c SHA256SUMS)`.
 
-`pnpm verify:size` performs a fresh non-mutating build and compares it with the committed report. `pnpm verify:clean` is the canonical full clean-tree path. Keep the three configured Playwright projects (Chromium, Firefox, WebKit).
+The committed `size-report.json` is initial design evidence. `pnpm verify:size` is an optional, explicit fresh non-mutating size-evidence check, not required for browser, CI, or build verification; use `pnpm measure:size` intentionally when changing or expanding the package surface. `pnpm verify:clean` is the canonical full clean-tree path for fixture, browser, release-integrity, and teardown checks. Keep the three configured Playwright projects (Chromium, Firefox, WebKit).
 
 ## Define tokens and a theme
 

@@ -29,8 +29,8 @@ The release package is private and has no `publishConfig`, registry setting, or 
 1. Frozen install and lockfile policy.
 2. Token generation/schema and DTCG round-trip tests.
 3. Fixture builds and Chromium/Firefox/WebKit Playwright projects.
-4. Seeded QA rehearsal and deterministic size report.
-5. Release archive twice; compare SHA-256, file manifest, and runtime graph.
+4. Seeded QA rehearsal and explicit size evidence when a release review calls for it.
+5. Release archive twice; compare SHA-256, file manifest, zero-runtime output, and export graph. The co-generated checksum verifies artifact integrity and identity within this reviewed release flow, not CSS budget, size-report freshness, or independent authenticity; the committed size snapshot is initial design evidence and is rerun intentionally when the package surface changes, not required on every CI/build run. Future npm staging should add SHA-256 plus SHA-512/SRI for the exact candidate tarball and verify registry integrity/downloaded bytes after publication; npm provenance is complementary.
 6. Secret, private-path, remote, and publication guard checks.
 7. Verify clean tree and owned preview-process teardown.
 
