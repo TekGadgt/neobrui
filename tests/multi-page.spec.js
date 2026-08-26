@@ -26,6 +26,30 @@ test.describe('isolated fixture delivery', () => {
     });
   }
 
+  test.describe('invalid email state contract', () => {
+    for (const [route] of [[''], ...fixtures.map(([name]) => [name])]) {
+      test(`${route || 'root'} exposes a non-color invalid cue and correction text`, async ({ page }) => {
+        await page.goto(route ? `/${route}/` : '/');
+        const fields = page.locator('input[type="email"]');
+        expect(await fields.count()).toBeGreaterThan(0);
+        for (let index = 0; index < await fields.count(); index += 1) {
+          const field = fields.nth(index);
+          await expect(field).toHaveAttribute('aria-invalid', 'true');
+          const describedBy = await field.getAttribute('aria-describedby');
+          expect(describedBy).toBeTruthy();
+          const description = page.locator(`#${describedBy}`);
+          await expect(description).toBeVisible();
+          await expect(description).toContainText(/enter|valid|email/i);
+          await expect(field).toHaveCSS('border-style', 'dashed');
+          await page.emulateMedia({ forcedColors: 'active' });
+          await page.addStyleTag({ content: '* { color: CanvasText !important; background: Canvas !important; box-shadow: none !important; }' });
+          await expect(description).toBeVisible();
+          await expect(field).toHaveCSS('border-style', 'dashed');
+        }
+      });
+    }
+  });
+
   test('production output contains every isolated HTML entry', async () => {
     for (const [route, heading, theme] of fixtures) {
       const html = await fs.readFile(path.join(root, 'dist', route, 'index.html'), 'utf8');
