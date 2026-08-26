@@ -22,4 +22,8 @@ pnpm verify
 
 `pnpm test` runs Chromium, Firefox, and WebKit. It checks fixture content, JavaScript-disabled usability, absence of external requests, private/unpublishable project metadata, forbidden cross-project references, and the temporary prefix policy.
 
+## Portability
+
+The container uses its own Linux `node_modules` volume; host dependencies remain separate and are never synchronized. The explicit macOS/Linux and arm64/x64 architecture matrix keeps the shared lockfile portable across supported checkouts.
+
 No publish or deployment configuration is present by design. Do not publish this repository.

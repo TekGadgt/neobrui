@@ -40,3 +40,14 @@ test('repository metadata and references satisfy Spike 0 boundaries', async () =
   expect(source.join('\n')).toContain('_nb-spike');
   await expect(fs.readFile(path.join(root, 'README.md'), 'utf8')).resolves.toContain('read-only evidence');
 });
+
+test('repository portability contract keeps host and container dependencies separate', async () => {
+  const workspace = await fs.readFile(path.join(root, 'pnpm-workspace.yaml'), 'utf8');
+  const readme = await fs.readFile(path.join(root, 'README.md'), 'utf8');
+  expect(workspace).toContain('supportedArchitectures:');
+  expect(workspace).toContain('os: [darwin, linux]');
+  expect(workspace).toContain('cpu: [arm64, x64]');
+  expect(readme).toMatch(/container.*Linux.*node_modules.*volume/i);
+  expect(readme).toMatch(/host.*dependenc(?:y|ies).*separate/i);
+  expect(readme).toMatch(/architecture matrix.*shared lockfile/i);
+});
