@@ -1,6 +1,6 @@
 # Getting started for personal use
 
-This repository is the local, private Phase 3 CUBE CSS pilot. Its stable current namespace is `nbr`, with Compositions under `src/compositions`, Utilities under `src/utilities`, and the package/archive remaining private and unpublished. Use a local checkout or the explicitly generated private archive only; do not resolve it from a registry or publish it.
+This repository is the local, private `0.1.0-alpha.0` CUBE Phase 4 personal-alpha release. Its stable current namespace is `nbr`, with Compositions under `src/compositions`, Utilities under `src/utilities`, and a deterministic package/archive contract. Use a local checkout or the explicitly generated private archive only; do not resolve it from a registry or publish it.
 
 ## Local verification path
 
@@ -12,6 +12,8 @@ pnpm test
 pnpm verify:size
 ```
 
+Verify the generated archive from repository root with `(cd dist/release && sha256sum -c SHA256SUMS)`.
+
 `pnpm verify:size` performs a fresh non-mutating build and compares it with the committed report. `pnpm verify:clean` is the canonical full clean-tree path. Keep the three configured Playwright projects (Chromium, Firefox, WebKit).
 
 ## Define tokens and a theme
@@ -20,7 +22,7 @@ The validated authoring path is a JavaScript token map checked by `src/tokens/sc
 
 ## Consume CSS
 
-The Phase 1 names below are the stable local contract. Product themes and `data-theme` state remain product-owned; Neobrui supplies semantic tokens and opt-in Blocks only.
+The current Phase 4 names below are the stable local contract. Product themes and `data-theme` state remain product-owned; Neobrui supplies semantic tokens and opt-in Blocks only.
 
 Plain CSS:
 
@@ -43,10 +45,11 @@ Standalone versus aggregate: use the aggregate entry when all approved Compositi
 
 ## Before actual project adoption
 
-- [x] Phase 1 selects the `nbr` CSS namespace and five-layer contract; review collisions before any adopter.
-- [x] Phase 3 adds only Stack/Cluster, the two one-job Utilities, and the neutral executable fixture; no generated utility matrix or adopter work is included.
+- [x] The CUBE migration establishes the `nbr` CSS namespace and five-layer contract; review collisions before any future adopter.
+- [x] The approved Phase 3 Stack/Cluster Compositions, two one-job Utilities, and neutral executable fixture are included; no generated utility matrix or adopter work is included.
 - [x] Automated affected behavior QA covers Composition wrapping/nesting, RTL and supported vertical writing mode, long unbroken content, and 320px reflow in `tests/neutral-site.spec.js`: focused Playwright run passed 9/9 across Chromium, Firefox, and WebKit; canonical `pnpm test` passed 150/150. Keyboard/focus, forced colors, reduced motion, and no-shadow manual runs remain separate residual checks.
-- [ ] Keep each Utility within its 700 B minified / 350 B gzip budget and the combined Utility layer within 1,200 B minified / 600 B gzip; remove it if the contract needs a modifier matrix or `!important`.
-- [ ] Ryan selects the first adopter: neutral fixture (recommended) or one bounded slice of `htmlday-lite`/`personal_site`.
+- [x] The two Utilities remain within their 700 B minified / 350 B gzip budgets and the combined Utility layer remains within 1,200 B minified / 600 B gzip; remove a Utility if its contract needs a modifier matrix or `!important`.
+- [x] Phase 4 packages the private `0.1.0-alpha.0` local archive with deterministic checksum/provenance; publication remains disabled.
+- [ ] Manual accessibility, hardware, OS forced-colors, and true browser-UI zoom checks remain unexecuted; further Blocks and adopter work are deferred.
 
 See `docs/current-surface.md`, `docs/status-and-support.md`, and `docs/manual-accessibility-testing.md` before using the evidence as a contract.

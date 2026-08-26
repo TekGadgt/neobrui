@@ -1,6 +1,6 @@
 # neobrui personal-use pilot
 
-Neobrui is a validated, private, CSS-only personal-alpha release for Ryan's projects. It is a narrow semantic styling surface—not a public framework, 1.0-stable API, product identity, deployment target, or support promise. The current repository remains local and npm-private by design.
+Neobrui is a validated, private, CSS-only Phase 4 personal-alpha release for Ryan's projects. It is a narrow semantic styling surface—not a public framework, 1.0-stable API, product identity, deployment target, or support promise. The current repository remains local and npm-private by design.
 
 ## What exists today
 
@@ -12,7 +12,7 @@ Neobrui is a validated, private, CSS-only personal-alpha release for Ryan's proj
 - Zero runtime JavaScript/assets/dependencies in the private CSS release.
 - Automated Chromium, Firefox, and WebKit fixture checks, deterministic archive/consumer size checks, and seeded QA rehearsal.
 
-The current evidence is intentionally narrow. Standalone Button has a provisional minified-size warning (2,413 B versus a 1,800 B hypothesis) while remaining below the gzip warning/kill limits; this is not a publication signal.
+The current evidence is intentionally narrow. Standalone Button is 2,341 minified bytes and 699 gzip bytes in the committed `size-report.json`; it carries a provisional minified-size warning against the 1,800 B ceiling while remaining below the gzip warning/kill limits. This is not a publication signal.
 
 ## Personal-alpha boundaries
 
@@ -28,6 +28,8 @@ pnpm validate:tokens
 pnpm build
 pnpm test
 pnpm verify:size
+# verify the local archive checksum from repository root:
+(cd dist/release && sha256sum -c SHA256SUMS)
 # canonical clean-tree verification:
 pnpm verify:clean
 ```

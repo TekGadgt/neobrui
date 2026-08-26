@@ -1,6 +1,6 @@
 # Expansion roadmap
 
-This roadmap supersedes the historical pre-migration assessment in `evidence/historical/personal-use-viability-and-expansion.md`. ADR-009 accepted the CUBE-primary direction; [`ADR-010`](../decisions/ADR-010-cube-migration-contract.md) is the normative migration contract. Phase 1 has implemented the stable `nbr` namespace, `src/blocks` Blocks, and ordered five-layer declaration; later expansion remains gated and does not authorize adopter migration.
+This roadmap supersedes the historical pre-migration assessment in `evidence/historical/personal-use-viability-and-expansion.md`. ADR-009 accepted the CUBE-primary direction; [`ADR-010`](../decisions/ADR-010-cube-migration-contract.md) is the normative migration contract. Phase 4 has implemented the stable `nbr` namespace, CUBE layers, package exports, and the `0.1.0-alpha.0` local archive; later expansion remains gated and does not authorize adopter migration.
 
 ## Architecture and release proposal
 
@@ -8,12 +8,12 @@ See [`docs/architecture-and-release-options.md`](architecture-and-release-option
 
 ## Personal-use MVP
 
-- Preserve the implemented `nbr` namespace, package/repository/license posture, distribution, token authoring authority, DTCG format/version and theme organization, product-owned `data-theme` scoping, and first-adopter decision.
+- Preserve the implemented `nbr` namespace, private package/license posture, local distribution, token authoring authority, DTCG format/version and theme organization, product-owned `data-theme` scoping, and deferred adopter decision.
 - Preserve foundations plus standalone/aggregate Surface, Button, and Field, with zero runtime JavaScript and product-owned semantics/identity.
 - Document token authoring, native markup, layers, RTL/no-shadow behavior, plain CSS and Astro use, and the manual QA boundary.
-- Add validated deterministic DTCG export, schema/alias/type and round-trip boundary tests, CSS equivalence checks, provenance, and size/maintenance accounting from the first formal implementation; do not maintain independently editable JS and DTCG sources.
-- Add validated Stack and Cluster layout primitives, the two bounded Utilities, and a neutral executable example; validate with the full browser matrix, size checks, responsive/RTL/writing-mode evidence, and affected integration tests.
-- Prove a neutral example, then one bounded private adoption with rollback.
+- Preserve the validated deterministic DTCG export, schema/alias/type and round-trip boundary tests, CSS equivalence checks, provenance, and size/maintenance accounting; do not maintain independently editable JS and DTCG sources.
+- Stack, Cluster, the two bounded Utilities, and a neutral executable example are implemented and validated in Phase 3; retain them in the current local alpha contract.
+- Do not adopt HTML Day or the personal site yet; any future bounded adoption requires a separate authorization and rollback plan.
 
 ## Useful next (demand-gated)
 
@@ -29,7 +29,7 @@ Defer runtime component JavaScript, framework adapters/plugins while CSS coexist
 
 ## Current implementation gates
 
-The stable namespace, package posture, license intent, distribution, versioning, token authority, DTCG pin, product-owned theme scoping, and Phase 3 layout/utility APIs are recorded in ADR-010. Phase 3 implements Stack, Cluster, the initial Utilities, and the neutral evidence site; adopter work remains future scope. Phase acceptance, rollback, and stop conditions must pass before any selector is exposed to another project.
+The stable namespace, package posture, license intent, distribution, versioning, token authority, DTCG pin, product-owned theme scoping, Phase 3 layout/utility APIs, and Phase 4 archive are recorded in ADR-010. The current archive is local and private; adopter work remains future scope. Manual accessibility is unexecuted, and further Blocks remain deferred.
 
 ## Gate discipline
 

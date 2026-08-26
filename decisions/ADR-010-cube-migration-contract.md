@@ -164,17 +164,17 @@ src/compositions/*.css ─> dist/compositions/{stack,cluster}.css
 src/utilities/*.css    ─> dist/utilities/{visually-hidden,wrapper}.css
 src/blocks/*.css       ─> dist/blocks/{surface,button,field}.css
 all selected entries    ─> dist/index.css (aggregate five-layer declaration)
-all dist + generated artifacts ─> deterministic GitHub-first archive
+all dist + generated artifacts ─> deterministic local personal-alpha archive
 ```
 
-The package is named `neobrui`, remains npm-private/unpublished, and has no registry credentials or publication configuration. The local personal-alpha artifact uses MIT source posture, deterministic GitHub-first archives, semantic `0.x` versions, retained prior assets, and checksums. This does not authorize publication.
+The package is named `neobrui`, versioned `0.1.0-alpha.0`, remains npm-private/unpublished, and has no registry credentials or publication configuration. The implemented local personal-alpha artifact is `dist/release/neobrui-0.1.0-alpha.0.tgz`, accompanied by `SHA256SUMS`, `RELEASE_NOTES.md`, and `PROVENANCE.json`; its deterministic archive and checksum are current local evidence. Future GitHub publication and adopter gates are separate decisions and are not authorized by this artifact.
 
 ## Phases, acceptance, rollback, and stop conditions
 
 1. **Phase 1 — namespace/layer/Block migration.** Replace disposable names atomically, introduce the five layer contract, and rename recipes to Blocks without changing visual/native behavior. Accept only after existing fixtures/tests and diff inspection prove no behavior/API/package change beyond the agreed names. Roll back by reverting the single migration commit; stop on any selector, token value, or native-state drift.
 2. **Phase 2 — DTCG and theme authoring.** Add the pinned exporter/import subset, complete-map validation, product selector manifest, aliases/types, equivalence, deterministic output, provenance, and separate size accounting. Accept only with byte-stable output and bounded round-trip evidence. Roll back by removing generated/interchange work while retaining the accepted namespace contract; stop on ambiguity or silent unknown-feature handling.
 3. **Phase 3 — Compositions/Utilities/neutral site.** Implement Stack, Cluster, the two Utilities, their budgets, and the neutral executable site. Accept with full Chromium/Firefox/WebKit coverage, responsive/RTL/writing-mode/keyboard evidence, and demand records. Roll back each new entry independently; stop and remove it if it needs a matrix, `!important`, or misses its budget.
-4. **Phase 4 — package/license/version/release artifact.** Add MIT posture, package exports, deterministic archive/checksum, and semantic `0.x` release metadata only after the prior phases pass. Accept with archive reproducibility, package-boundary, provenance, size, and clean-tree checks. Roll back by selecting the prior retained archive/tag; never rewrite history.
+4. **Phase 4 — package/license/version/release artifact (implemented locally).** MIT posture, package exports, deterministic archive/checksum, and semantic `0.x` release metadata are implemented in the local `0.1.0-alpha.0` personal-alpha archive after the prior phases passed. Acceptance is recorded by archive reproducibility, package-boundary, provenance, size, and clean-tree checks. Future GitHub publication, tags, registry publication, and adopter gates remain separately gated; no remote or tag is created here.
 
 Only after all four phases pass may adopter work begin: first the neutral site (Phase 3 evidence), then a separately authorized bounded HTML Day Lite slice. Personal-site work is explicitly excluded. Any failed acceptance gate, unbounded compatibility request, or missing product decision is a stop condition rather than an implicit scope expansion.
 
@@ -182,4 +182,4 @@ Only after all four phases pass may adopter work begin: first the neutral site (
 
 Normative docs, tests, fixtures, package exports, and current-surface references must use stable `nbr` names and accepted CUBE vocabulary. Historical evidence may retain `_nb-spike` names only when clearly labeled as historical and not presented as a current selector or contract. Links should point to ADR-010 for accepted decisions and explicitly distinguish accepted-but-unimplemented work from observed behavior.
 
-Phase 1 implementation is recorded in [`docs/cube-phase1-migration.md`](../docs/cube-phase1-migration.md). The local Phase 4 artifact workflow is recorded in [`docs/local-release-workflow.md`](../docs/local-release-workflow.md). This ADR remains the contract for future gates; it does not authorize package publication or adopter projects.
+Phase 1 implementation is recorded in [`docs/cube-phase1-migration.md`](../docs/cube-phase1-migration.md). The local Phase 4 artifact workflow is recorded in [`docs/local-release-workflow.md`](../docs/local-release-workflow.md). This ADR records the current local artifact and remains the contract for future GitHub publication and adopter gates; it does not authorize package publication or adopter projects.

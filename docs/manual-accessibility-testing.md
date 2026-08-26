@@ -2,7 +2,7 @@
 
 Status: personal-use pilot procedure. The procedures below are instructions, not evidence that a run has passed. Do not claim support for an assistive technology, operating system, browser, or device until its relevant run is recorded as passing.
 
-## Phase 3 manual QA triggers
+## Current manual QA triggers
 
 Start with `fixtures/neutral-site/` and record a dated run when Composition or Utility behavior changes. At minimum check nested Stack/Cluster instances, long unbroken content at 320px, LTR/RTL and supported vertical writing modes, keyboard focus and the non-focusable visually-hidden decision, forced-colors, reduced motion, native form semantics, and no-shadow affordances. Playwright/axe evidence complements but does not replace the manual procedure below.
 

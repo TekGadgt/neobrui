@@ -1,6 +1,6 @@
 # Current surface
 
-Status: validated personal-use pilot with CUBE Phase 1 namespace/layer/Block migration implemented locally. See [`ADR-010`](../decisions/ADR-010-cube-migration-contract.md) and the [`Phase 1 migration evidence`](cube-phase1-migration.md).
+Status: validated `0.1.0-alpha.0` personal-alpha pilot with the CUBE Phase 4 package and local release artifact implemented. See [`ADR-010`](../decisions/ADR-010-cube-migration-contract.md) and the [`local release workflow`](local-release-workflow.md).
 
 ## Entries and selectors
 
@@ -13,7 +13,7 @@ Status: validated personal-use pilot with CUBE Phase 1 namespace/layer/Block mig
 - Utilities: `.nbr-u-visually-hidden` (non-focusable accessible hiding, no MVP focus reveal) and `.nbr-u-wrapper` (centered content measure with bounded logical padding/size hooks).
 - Neutral executable evidence route: `/neutral-site/`, CSS-only, no runtime JavaScript or external requests.
 
-The fixture and runtime surface uses the stable `nbr` names. This repository remains private and unpublished; no adopter migration is authorized by this Phase 3 change.
+The fixture and runtime surface uses the stable `nbr` names. This repository remains private and unpublished; no HTML Day or personal-site adopter migration is authorized. Further Blocks and adopter work remain deferred.
 
 ## Themes, direction, and layers
 

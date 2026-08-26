@@ -10,7 +10,15 @@ pnpm verify:size
 pnpm release:local
 ```
 
+Verify the generated archive from repository root:
+
+```sh
+(cd dist/release && sha256sum -c SHA256SUMS)
+```
+
 `pnpm release:local` creates `dist/release/neobrui-0.1.0-alpha.0.tgz`, `SHA256SUMS`, `RELEASE_NOTES.md`, and `PROVENANCE.json`. The archive is deterministic (`tar` sorted names, epoch timestamps, numeric uid/gid) and contains CSS, DTCG interchange, README, and MIT license only. It is suitable for a later GitHub Release upload, but this workflow performs no GitHub, npm, registry, network, tag, or deployment operation.
+
+The checksum command is intentionally run from the repository root: the subshell changes into `dist/release`, where the manifest's archive filename is relative to the manifest itself.
 
 The release package is private and has no `publishConfig`, registry setting, or credentials. `0.x` policy: patch releases correct output or documentation without intended API changes; minor releases may add or change pre-1.0 contracts. No release implies 1.0 stability or public support.
 

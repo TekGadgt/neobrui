@@ -2,11 +2,11 @@
 
 ## Current posture
 
-Neobrui is a validated CUBE personal-alpha release for Ryan's personal projects. It is private, local-only, CSS-only, and unpublished. The local API uses the `nbr` namespace, `src/blocks` source, and five named layers; there is no npm availability, SLA, issue response promise, or framework/support commitment.
+Neobrui is a validated CUBE Phase 4 `0.1.0-alpha.0` personal-alpha release for Ryan's personal projects. It is private, local-only, CSS-only, and unpublished. The local API uses the `nbr` namespace, `src/blocks` source, and five named layers; there is no npm availability, SLA, issue response promise, or framework/support commitment.
 
 What is validated: semantic tokens; opt-in Surface, Button, and Field Blocks; RTL/nested/fixed shadow behavior; the ordered `nbr.tokens`, `nbr.compositions`, `nbr.utilities`, `nbr.blocks`, `nbr.exceptions` layers; plain CSS/CSS Modules/Astro/Tailwind coexistence fixtures; zero runtime JavaScript in the release; deterministic size/archive checks; and automated Chromium, Firefox, and WebKit fixture coverage. Product-owned `data-theme` state remains outside the package.
 
-The size result is honest and provisional: overall `warning/narrow`; standalone Button is 2,322 minified bytes against a provisional 1,800-byte ceiling, while its gzip result remains below the warning/kill limits. This is not a CSS/API change or a publication signal.
+The size result is honest and provisional: overall `warning/narrow`; standalone Button is 2,341 minified bytes and 699 gzip bytes in the committed `size-report.json`, against a provisional 1,800-byte minified ceiling and 800-byte gzip limit. This is not a CSS/API change or a publication signal.
 
 ## Coverage boundary
 
