@@ -19,6 +19,6 @@ test.describe('installed private archive consumer', () => {
     expect(requests.every(url => url.startsWith('http://127.0.0.1:4174/consumer/'))).toBe(true);
     expect(requests.some(url => url.endsWith('.css'))).toBe(true);
     await page.goto('http://127.0.0.1:4174/consumer/foundations.html');
-    await expect(page.locator('link[rel="stylesheet"]')).toHaveAttribute('href', /\/consumer\/assets\/foundations-/);
+    await expect(page.locator('link[rel="stylesheet"]')).toHaveAttribute('href', '/consumer/assets/foundations.css');
   });
 });
