@@ -24,5 +24,5 @@ Revisit before actual project adoption, a namespace/package rename, adding Stack
 - `docs/getting-started-personal-use.md`
 - `docs/status-and-support.md`
 - `docs/expansion-roadmap.md`
-- `docs/personal-use-viability-and-expansion.md`
+- `evidence/historical/personal-use-viability-and-expansion.md` (historical pre-migration assessment)
 - `docs/manual-accessibility-testing.md`

@@ -84,6 +84,11 @@ assert.match(gitignore, /^\.evidence-cache\/$/m);
 // Current-contract regression boundary: legacy names are permitted only in
 // explicitly path-based historical evidence/ADR roots. Generated output,
 // package archives, and runtime fixture output are current contract too.
+const historicalViability = 'evidence/historical/personal-use-viability-and-expansion.md';
+assert.equal((await stat(historicalViability)).isFile(), true);
+await assert.rejects(stat('docs/personal-use-viability-and-expansion.md'));
+const readmeText = await readFile('README.md', 'utf8');
+assert.match(readmeText, /Historical pre-migration viability assessment.*evidence\/historical\/personal-use-viability-and-expansion\.md/);
 const currentRoots = [
   'src', 'scripts', 'fixtures', 'tests',
   'docs/getting-started-personal-use.md', 'docs/expansion-roadmap.md',

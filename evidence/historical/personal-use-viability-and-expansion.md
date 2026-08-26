@@ -1,5 +1,7 @@
 # Neobrui personal-use viability and expansion
 
+Status: Historical pre-Phase 1 assessment. Current namespace, CUBE layers, source paths, and implementation status are governed by ADR-010 and current documentation; legacy names in this file are evidence of the decision input, not current API.
+
 Assessment date: 2026-08-26
 
 ## Executive recommendation

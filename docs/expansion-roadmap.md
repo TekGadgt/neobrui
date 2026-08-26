@@ -1,6 +1,6 @@
 # Expansion roadmap
 
-This roadmap synthesizes `docs/personal-use-viability-and-expansion.md`. ADR-009 accepted the CUBE-primary direction; [`ADR-010`](../decisions/ADR-010-cube-migration-contract.md) is the normative migration contract. Phase 1 has implemented the stable `nbr` namespace, `src/blocks` Blocks, and ordered five-layer declaration; later expansion remains gated and does not authorize adopter migration.
+This roadmap supersedes the historical pre-migration assessment in `evidence/historical/personal-use-viability-and-expansion.md`. ADR-009 accepted the CUBE-primary direction; [`ADR-010`](../decisions/ADR-010-cube-migration-contract.md) is the normative migration contract. Phase 1 has implemented the stable `nbr` namespace, `src/blocks` Blocks, and ordered five-layer declaration; later expansion remains gated and does not authorize adopter migration.
 
 ## Architecture and release proposal
 
