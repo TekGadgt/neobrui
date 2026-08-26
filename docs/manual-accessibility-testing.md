@@ -4,7 +4,7 @@ Status: personal-use pilot procedure. The procedures below are instructions, not
 
 ## Purpose and scope
 
-Use this guide for the validated `Surface`, `Button`, and `Field` recipes and for representative integration fixtures that use them. Start with the neutral fixture and one bounded adopter. Preserve application-owned semantics and behavior: CSS does not create button/link roles, disable links, announce status, submit forms, or manage errors. Extend the same checks to a future recipe only after its markup/state contract is written down; add a fixture and a run-log section rather than inferring coverage from a similar recipe.
+Use this guide for the validated `Surface`, `Button`, and `Field` Blocks and for representative integration fixtures that use them. Start with the neutral fixture and one bounded adopter. Preserve application-owned semantics and behavior: CSS does not create button/link roles, disable links, announce status, submit forms, or manage errors. Extend the same checks to a future Block only after its markup/state contract is written down; add a fixture and a run-log section rather than inferring coverage from a similar Block.
 
 No user research or outreach is authorized by this guide. Record only test metadata and defect evidence; do not put names, emails, account data, or other personal data in screenshots, videos, logs, or tickets.
 
@@ -13,7 +13,7 @@ No user research or outreach is authorized by this guide. Record only test metad
 | Trigger | Minimum run |
 |---|---|
 | Personal-project adoption | Keyboard and 200% zoom on the fixture; one available AT/OS run and one available touch device; record unavailable environments as not run. |
-| Affected behavior or recipe state changes | Repeat every affected procedure, including the integration fixture and both directions where relevant. |
+| Affected behavior or Block state changes | Repeat every affected procedure, including the integration fixture and both directions where relevant. |
 | Release candidate | Full manual matrix in this guide for the environments the pilot promises; unresolved failures block support wording. |
 | Future public-support gate | Evidence-backed repeated runs on named stable versions, maintained device/AT matrix, owner and retest cadence, plus authorized user evidence and project governance. Until those exist, use “untested” or “personal-use pilot only,” never a broad support claim. |
 

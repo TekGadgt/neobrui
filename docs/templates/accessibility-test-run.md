@@ -8,7 +8,7 @@ Copy this file to a project-relative evidence/run-log location for each run. Do 
 - Date/time (timezone):
 - Tester initials or team alias (optional; no personal contact details):
 - Fixture/project-relative path or URL:
-- Recipe/scope: [ ] Surface  [ ] Button  [ ] Field  [ ] integration fixture  [ ] future recipe: ______
+- Block/fixture scope: [ ] Surface Block  [ ] Button Block  [ ] Field Block  [ ] integration fixture  [ ] future Block: ______
 - Commit/package version:
 - Human test or automated supplement: [ ] human  [ ] automated supplement (describe):
 - Overall status: [ ] passed  [ ] failed  [ ] blocked  [ ] not run
