@@ -2,11 +2,16 @@
 
 This roadmap synthesizes `docs/personal-use-viability-and-expansion.md`; it does not create commitments or turn spike evidence into a public API.
 
+## Architecture and release proposal
+
+See [`docs/architecture-and-release-options.md`](architecture-and-release-options.md) and [`decisions/ADR-009-architecture-proposal.md`](../decisions/ADR-009-architecture-proposal.md). They are proposed decision documents only: implementation remains gated on Ryan’s explicit namespace, token-authority/DTCG, theme, layout, package, release, and adopter choices.
+
 ## Personal-use MVP
 
-- Decide the stable CSS namespace, package/repository/license posture, distribution, token authoring, theme scoping, and first adopter.
+- Decide the stable CSS namespace, package/repository/license posture, distribution, token authoring authority, DTCG format/version and theme organization, theme scoping, and first adopter.
 - Preserve foundations plus standalone/aggregate Surface, Button, and Field, with zero runtime JavaScript and product-owned semantics/identity.
 - Document token authoring, native markup, layers, RTL/no-shadow behavior, plain CSS and Astro use, and the manual QA boundary.
+- Add validated deterministic DTCG export, schema/alias/type and round-trip boundary tests, CSS equivalence checks, provenance, and size/maintenance accounting from the first formal implementation; do not maintain independently editable JS and DTCG sources.
 - Add only evidence-backed Stack and Cluster layout primitives if Ryan approves implementation; validate with the full browser matrix, size checks, and affected integration tests.
 - Prove a neutral example, then one bounded private adoption with rollback.
 
@@ -20,12 +25,12 @@ Public source governance (license, CONTRIBUTING, security/support and issue poli
 
 ## Reject or defer
 
-Defer DTCG until a named importer and round-trip test exist. Reject runtime component JavaScript, framework adapters/plugins while CSS coexistence works, global resets/hostile specificity, bundled identity, product/editor/QR/hosting abstractions, arbitrary recipe-count targets, and indefinite `_nb-spike` compatibility aliases.
+Defer runtime component JavaScript, framework adapters/plugins while CSS coexistence works, global resets/hostile specificity, bundled identity, product/editor/QR/hosting abstractions, arbitrary recipe-count targets, and indefinite `_nb-spike` compatibility aliases. DTCG is no longer deferred: its bounded interchange surface is part of the proposed personal-use MVP, subject to Ryan’s canonical-authority and format/version decisions.
 
 ## Current decisions still needed
 
-Ryan still owns the stable namespace, package name/private posture, repository/public-source posture, license, distribution, versioning, token authoring format, theme scoping, first adopter, layout API details, and the threshold separating personal kit, public source, and supported framework. Until those are recorded, selectors remain disposable evidence and should not be exposed to another project.
+Ryan still owns the stable namespace, package name/private posture, repository/public-source posture, license, distribution, versioning, token authoring authority and DTCG pin, theme scoping, first adopter, layout API details, and the threshold separating personal kit, public source, and supported framework. Until those are recorded, selectors remain disposable evidence and should not be exposed to another project.
 
 ## Gate discipline
 
-Every expansion should name its consumer evidence, API decision, affected automated slice, manual QA slice, rollback, and support wording. Keep the existing Chromium/Firefox/WebKit coverage; never substitute one engine for the declared matrix.
+Every expansion should name its consumer evidence, API decision, affected automated slice, manual QA slice, rollback, and support wording. Keep the existing Chromium/Firefox/WebKit coverage; never substitute one engine for the declared matrix. DTCG additions must also name the supported format subset, provenance, deterministic-output check, schema/round-trip/equivalence tests, and size/maintenance budget.
