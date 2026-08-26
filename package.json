@@ -22,7 +22,7 @@
     "qa:baseline": "node scripts/qa-rehearsal.mjs baseline",
     "qa:seeded": "node scripts/qa-rehearsal.mjs seeded",
     "qa:rehearsal": "node scripts/qa-rehearsal.mjs rehearsal",
-    "build:docs": "pnpm release:local && pnpm --dir apps/docs install --ignore-workspace --frozen-lockfile --ignore-scripts --config.strict-dep-builds=false && pnpm --dir apps/docs rebuild esbuild && pnpm --dir apps/docs build",
+    "build:docs": "pnpm release:local && pnpm --dir apps/docs install --frozen-lockfile --ignore-scripts --config.strict-dep-builds=false && pnpm --dir apps/docs rebuild esbuild && pnpm --dir apps/docs build",
     "build:docs:pages": "PUBLIC_SITE_BASE=/neobrui/ PUBLIC_SITE_URL=https://example.invalid/neobrui/ pnpm run build:docs"
   },
   "devDependencies": {

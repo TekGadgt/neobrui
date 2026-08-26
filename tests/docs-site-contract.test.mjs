@@ -24,6 +24,18 @@ test('docs app pins Starlight and Astro and supports configurable project base',
   assert.match(config, /PUBLIC_SITE_URL/);
 });
 
+test('docs app owns its browser and axe tooling with a narrow install policy exception', async () => {
+  const manifest = JSON.parse(await text('apps/docs/package.json'));
+  assert.equal(manifest.devDependencies['@axe-core/playwright'], '4.13.0');
+  assert.equal(manifest.devDependencies['@playwright/test'], '1.62.1');
+  assert.equal(manifest.devDependencies.typescript, '5.9.3');
+  const policy = await text('apps/docs/pnpm-workspace.yaml');
+  assert.match(policy, /minimumReleaseAgeExclude:/);
+  assert.match(policy, /@astrojs\/starlight@0\.41\.9/);
+  assert.match(policy, /astro@7\.2\.7/);
+  assert.doesNotMatch(policy, /minimumReleaseAge:\s*0/);
+});
+
 test('docs information architecture is represented in content routes', async () => {
   const routes = [
     'index.mdx', 'getting-started/index.mdx', 'foundations/index.mdx',
