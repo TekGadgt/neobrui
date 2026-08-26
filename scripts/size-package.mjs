@@ -78,15 +78,16 @@ export async function buildSizeCandidate({ outputRoot = 'dist/size-package' } = 
   await rm(out, { recursive: true, force: true });
   const cssOut = join(out, 'dist');
   await mkdir(cssOut, { recursive: true });
+  const layerBlock = (css) => `@layer nbr.blocks {\n${css}\n}`;
   const source = {
     foundations: generateCss({ neutral: themes['personal-light'] }),
     stack: await readFile(join(root, 'src/compositions/stack.css'), 'utf8'),
     cluster: await readFile(join(root, 'src/compositions/cluster.css'), 'utf8'),
     visuallyHidden: await readFile(join(root, 'src/utilities/visually-hidden.css'), 'utf8'),
     wrapper: await readFile(join(root, 'src/utilities/wrapper.css'), 'utf8'),
-    surface: await readFile(join(root, 'src/blocks/surface.css'), 'utf8'),
-    button: await readFile(join(root, 'src/blocks/button.css'), 'utf8'),
-    field: await readFile(join(root, 'src/blocks/field.css'), 'utf8'),
+    surface: layerBlock(await readFile(join(root, 'src/blocks/surface.css'), 'utf8')),
+    button: layerBlock(await readFile(join(root, 'src/blocks/button.css'), 'utf8')),
+    field: layerBlock(await readFile(join(root, 'src/blocks/field.css'), 'utf8')),
   };
   source.compositions = `${source.stack}\n${source.cluster}`;
   source.utilities = `${source.visuallyHidden}\n${source.wrapper}`;

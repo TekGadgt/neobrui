@@ -34,4 +34,23 @@ test.describe('neutral CUBE onboarding site', () => {
     await expect(page.locator('#email')).toBeFocused();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
   });
+
+  test('proves nested compositions, vertical writing, and long-content reflow', async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 720 });
+    await page.goto('/neutral-site/');
+    const evidence = await page.evaluate(() => {
+      const nestedCluster = document.querySelector('#nested-cluster');
+      const nestedStack = document.querySelector('#nested-stack');
+      const vertical = document.querySelector('[style*="writing-mode"]');
+      const longContent = document.querySelector('.fixture-long-content');
+      return {
+        clusterDisplay: getComputedStyle(nestedCluster).display,
+        stackDisplay: getComputedStyle(nestedStack).display,
+        writingMode: getComputedStyle(vertical).writingMode,
+        longContentFits: longContent.scrollWidth <= longContent.clientWidth,
+        pageFits: document.documentElement.scrollWidth <= document.documentElement.clientWidth,
+      };
+    });
+    expect(evidence).toEqual({ clusterDisplay: 'flex', stackDisplay: 'flex', writingMode: 'vertical-rl', longContentFits: true, pageFits: true });
+  });
 });

@@ -7,4 +7,5 @@ body { margin: 0; padding-block: var(--nbr-space-5); }
 .nbr-button { text-decoration: none; }
 .nbr-surface { max-inline-size: 100%; }
 .nbr-cluster > * { max-inline-size: 100%; }
+.fixture-long-content { overflow-wrap: anywhere; word-break: break-word; }
 .fixture-note { color: var(--nbr-color-text-muted); }

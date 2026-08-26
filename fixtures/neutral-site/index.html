@@ -11,9 +11,13 @@
     <p class="fixture-note">Native semantics, finite composition hooks, and product-owned theme scope.</p>
     <section class="nbr-surface nbr-stack" data-nbr-level="outlined" data-nbr-shadow-direction="fixed">
       <h2>Stack and Cluster</h2>
-      <div class="nbr-cluster" dir="rtl" style="--nbr-cluster-gap: var(--nbr-space-2)">
+      <div id="nested-cluster" class="nbr-cluster" dir="rtl" style="--nbr-cluster-gap: var(--nbr-space-2)">
         <button class="nbr-button" type="button">Primary action</button>
         <a class="nbr-button" href="#field">Native link</a>
+        <div id="nested-stack" class="nbr-stack" style="--nbr-stack-gap: var(--nbr-space-1)">
+          <span class="fixture-long-content">unbroken-content-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</span>
+          <span style="writing-mode: vertical-rl">縦書き</span>
+        </div>
       </div>
     </section>
     <form id="field" class="nbr-field nbr-stack" novalidate>

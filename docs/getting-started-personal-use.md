@@ -45,7 +45,7 @@ Standalone versus aggregate: use the aggregate entry when all approved Compositi
 
 - [x] Phase 1 selects the `nbr` CSS namespace and five-layer contract; review collisions before any adopter.
 - [x] Phase 3 adds only Stack/Cluster, the two one-job Utilities, and the neutral executable fixture; no generated utility matrix or adopter work is included.
-- [ ] Trigger the affected behavior QA slice for Composition wrapping/nesting, RTL and supported vertical writing modes, 320px reflow, keyboard/focus, forced colors, reduced motion, and no-shadow behavior; record manual runs separately from automation.
+- [x] Automated affected behavior QA covers Composition wrapping/nesting, RTL and supported vertical writing mode, long unbroken content, and 320px reflow in `tests/neutral-site.spec.js`: focused Playwright run passed 9/9 across Chromium, Firefox, and WebKit; canonical `pnpm test` passed 150/150. Keyboard/focus, forced colors, reduced motion, and no-shadow manual runs remain separate residual checks.
 - [ ] Keep each Utility within its 700 B minified / 350 B gzip budget and the combined Utility layer within 1,200 B minified / 600 B gzip; remove it if the contract needs a modifier matrix or `!important`.
 - [ ] Ryan selects the first adopter: neutral fixture (recommended) or one bounded slice of `htmlday-lite`/`personal_site`.
 

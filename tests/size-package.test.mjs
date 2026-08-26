@@ -30,19 +30,36 @@ test('candidate archive is CSS-only and has explicit subpath exports', async () 
   assert.equal(new Set(declaration).size, declaration.length);
 });
 
+test('archive block outputs own the nbr.blocks layer and preserve cascade precedence', async () => {
+  await buildSizeCandidate({ outputRoot: 'tmp/size-test-layer-ownership' });
+  const fs = await import('node:fs/promises');
+  const names = ['surface', 'button', 'field', 'blocks'];
+  const css = Object.fromEntries(await Promise.all(names.map(async (name) => [
+    name, await fs.readFile(`tmp/size-test-layer-ownership/package/dist/${name}.css`, 'utf8'),
+  ])));
+  for (const name of ['surface', 'button', 'field']) {
+    assert.match(css[name], /^@layer nbr\.blocks\{/);
+    assert.doesNotMatch(css[name], /(^|\n)(?!@layer)[^{]+\{/);
+  }
+  const aggregate = css.blocks;
+  assert.match(aggregate, /^@layer nbr\.tokens,nbr\.compositions,nbr\.utilities,nbr\.blocks,nbr\.exceptions;/);
+  assert.equal((aggregate.match(/@layer nbr\.blocks\{/g) ?? []).length, 3);
+  assert.ok(aggregate.indexOf('@layer nbr.tokens') < aggregate.indexOf('@layer nbr.blocks'));
+});
+
 test('consumer accounting measures the emitted Vite CSS separately from source entries', async () => {
   const report = await buildSizeCandidate({ outputRoot: 'tmp/size-test-emitted' });
   assert.match(report.consumer.emitted.filename, /^assets\/index-[^/]+\.css$/);
-  assert.equal(report.consumer.emitted.rawBytes, 5187);
-  assert.equal(report.consumer.emitted.gzipBytes, 1281);
+  assert.equal(report.consumer.emitted.rawBytes, 7552);
+  assert.equal(report.consumer.emitted.gzipBytes, 1318);
   assert.match(report.consumer.emitted.sha256, /^[0-9a-f]{64}$/);
   assert.equal(report.consumer.emitted.contentEncoding, 'identity');
   assert.match(report.consumer.emitted.packageJsonSha256, /^[0-9a-f]{64}$/);
   assert.match(report.consumer.emitted.lockfileSha256, /^[0-9a-f]{64}$/);
   assert.equal(report.consumer.emitted.runtimeDependency, 'file:neobrui-private.tgz');
   assert.equal(report.consumer.emitted.tooling, 'root-harness Vite 7.3.6');
-  assert.equal(report.consumer.transferredCssBytes, 5187);
-  assert.equal(report.consumer.sourceMinifiedBytes, 6700);
+  assert.equal(report.consumer.transferredCssBytes, 7552);
+  assert.equal(report.consumer.sourceMinifiedBytes, 6757);
 });
 
 test('provenance is a stable source-input manifest, not a self-referential commit', async () => {
