@@ -11,14 +11,42 @@
     ]
   },
   "input": {
-    "gitCommit": "7f969aee41a5dec2137cbee6c45b311967b89028",
+    "sourceManifest": [
+      {
+        "path": "src/tokens/tokens.mjs",
+        "sha256": "923100a7383855ecb11298e61624058bc4a7a017dd6d2bbf1736e18149b255d8"
+      },
+      {
+        "path": "src/recipes/surface.css",
+        "sha256": "546eac02f2541f9408d22f0d6a23eff236cd63f364c3a947e14218881aab08ae"
+      },
+      {
+        "path": "src/recipes/button.css",
+        "sha256": "539d4f17b799b6db46159dede778fe0166a08f8a2938a6e8f9ca16f2a85390df"
+      },
+      {
+        "path": "src/recipes/field.css",
+        "sha256": "f684e3b4224b0902f4c3627f210f755288c5abbc15f99b2778eeaac87ca37a86"
+      },
+      {
+        "path": "fixtures/inputs.mjs",
+        "sha256": "e161cb6e1821c973c5b0430ed2265bbc3d14fb8e99b0fe0dc2a244115d9db83a"
+      },
+      {
+        "path": "scripts/size-spike.mjs",
+        "sha256": "7c3a8d6d4246967cd1bcd7f9d1687c5e51f59c98a06133163c1d8a0dd4d0b1d2"
+      }
+    ],
+    "sourceManifestHash": "404977caea8e13a88961f72f569cba15b52c21059fa98b945c100006577384d5",
+    "workspaceState": "clean",
     "node": "v26.5.1",
     "pnpm": "11.24.0",
     "minifier": "deterministic in-repo CSS minifier (comment/whitespace normalization)"
   },
   "formulas": {
     "gzip": "gzip -9 -n",
-    "sha256": "SHA-256 of minified CSS"
+    "sha256": "SHA-256 of minified CSS",
+    "consumerTransfer": "identity response bytes; diagnostic gzip -9 -n is reported separately"
   },
   "thresholds": {
     "foundations": {
@@ -200,11 +228,21 @@
     "network": "none; archive path only",
     "imports": [
       "@neobrui/private-spike-candidate",
-      "@neobrui/private-spike-candidate/button"
+      "@neobrui/private-spike-candidate/button",
+      "@neobrui/private-spike-candidate/foundations"
     ],
-    "transferredCssBytes": 6076,
+    "sourceMinifiedBytes": 6076,
+    "emitted": {
+      "filename": "assets/index-CkZHh2OY.css",
+      "rawBytes": 4667,
+      "gzipBytes": 1069,
+      "sha256": "3f692005168c906115287457219dcd47d4783ccd426934187b76fca2119be24a",
+      "contentEncoding": "identity"
+    },
+    "transferredCssBytes": 4667,
+    "transferEncoding": "identity",
     "runtimeJavaScriptBytes": 0,
-    "build": "passed with local archive only"
+    "build": "passed with installed local .tgz archive"
   },
   "verdict": "warning/narrow"
 }
