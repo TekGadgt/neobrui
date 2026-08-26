@@ -8,7 +8,7 @@ From the repository root, generate the approved release, prepare its package fil
 
 ```sh
 pnpm run build:docs
-PUBLIC_SITE_BASE=/neobrui/ PUBLIC_SITE_URL=https://example.invalid/neobrui/ pnpm run build:docs:pages
+PUBLIC_SITE_BASE=/neobrui/ PUBLIC_SITE_URL=https://tekgadgt.github.io/neobrui/ pnpm run build:docs:pages
 ```
 
 The preparation step validates the canonical archive checksum and extracts only its expected public files into ignored `apps/docs/.generated/neobrui/`. Do not create `apps/docs/node_modules`; the repository’s root `node_modules` is the portable workspace dependency volume.

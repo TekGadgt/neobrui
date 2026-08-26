@@ -61,8 +61,34 @@ test('GitHub workflows are present with separate CI and Pages deployment jobs', 
   const pages = await text('.github/workflows/pages.yml');
   assert.match(ci, /pull_request/);
   assert.match(ci, /playwright test --project=\$\{\{ matrix\.browser \}\}/);
-  assert.match(pages, /actions\/configure-pages@v6/);
-  assert.match(pages, /actions\/upload-pages-artifact@v5/);
+  const verify = pages.slice(pages.indexOf('  verify:'), pages.indexOf('  deploy:'));
+  const deploy = pages.slice(pages.indexOf('  deploy:'));
+  assert.match(verify, /actions\/configure-pages@v6/);
+  assert.match(verify, /actions\/upload-pages-artifact@v5/);
   assert.match(pages, /actions\/deploy-pages@v5/);
-  assert.match(pages, /path: apps\/docs\/dist/);
+  assert.match(verify, /path: apps\/docs\/dist/);
+  assert.match(verify, /verify:pages[\s\S]*upload-pages-artifact/);
+  assert.match(deploy, /needs: verify/);
+  assert.doesNotMatch(deploy, /actions\/(?:checkout|upload-pages-artifact|configure-pages)|pnpm (?:install|build|run build)/);
+});
+
+test('Pages workflow contract keeps triggers and permissions least-privilege', async () => {
+  const pages = await text('.github/workflows/pages.yml');
+  assert.match(pages, /push:\s*\n\s+branches: \[main\]/);
+  assert.match(pages, /workflow_dispatch:/);
+  assert.match(pages, /permissions:\s*\n\s+contents: read/);
+  assert.match(pages, /deploy:\s*[\s\S]*permissions:\s*\n\s+contents: read\s*\n\s+pages: write\s*\n\s+id-token: write/);
+  assert.doesNotMatch(pages, /npm token|NPM_TOKEN|secrets\./i);
+});
+
+test('Pages-facing URLs use the canonical project URL', async () => {
+  const files = ['README.md', 'apps/docs/package.json', 'apps/docs/README.md', 'package.json', '.github/workflows/pages.yml', 'docs/github-pages.md'];
+  for (const file of files) {
+    const content = await text(file);
+    assert.doesNotMatch(content, /example\.invalid/);
+  }
+  const rootManifest = JSON.parse(await text('package.json'));
+  const docsManifest = JSON.parse(await text('apps/docs/package.json'));
+  assert.match(rootManifest.scripts['build:docs:pages'], /https:\/\/tekgadgt\.github\.io\/neobrui\//);
+  assert.match(docsManifest.scripts['preview:pages'], /https:\/\/tekgadgt\.github\.io\/neobrui\//);
 });

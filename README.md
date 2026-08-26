@@ -56,7 +56,7 @@ pnpm verify:clean
 - [Manual accessibility testing procedure](docs/manual-accessibility-testing.md)
 - [Local release workflow](docs/local-release-workflow.md)
 - [Pre-GitHub checklist](docs/pre-github-checklist.md)
-- [GitHub Pages workflow](docs/github-pages.md)
+- [GitHub Pages workflow](docs/github-pages.md) — https://tekgadgt.github.io/neobrui/
 - [Accessibility test-run template](docs/templates/accessibility-test-run.md)
 - [Personal-use viability and expansion](docs/personal-use-viability-and-expansion.md)
 - [Historical pre-migration viability assessment](evidence/historical/personal-use-viability-and-expansion.md)

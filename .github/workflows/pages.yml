@@ -32,6 +32,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - uses: actions/configure-pages@v6
       - run: pnpm release:local
       - run: (cd dist/release && sha256sum -c SHA256SUMS)
       - run: pnpm prepare:docs
@@ -41,6 +42,10 @@ jobs:
       - run: pnpm build:docs:pages
       - run: pnpm verify:pages
       - run: pnpm exec node --test tests/*.test.mjs
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: apps/docs/dist
 
   deploy:
     name: Publish Pages artifact
@@ -54,10 +59,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/configure-pages@v6
-      - uses: actions/upload-pages-artifact@v5
-        with:
-          path: apps/docs/dist
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
