@@ -67,12 +67,54 @@ const shadowsSpec = await readFile('tests/shadow-direction.spec.js', 'utf8');
 const packageScripts = packageJson.scripts;
 const gitignore = await readFile('.gitignore', 'utf8');
 assert.match(packageScripts['capture:chromium'], /CAPTURE_EVIDENCE=1 pnpm exec playwright test --project=chromium/);
-assert.match(packageScripts.verify, /build:fixtures/);
+assert.match(packageScripts['test:e2e'], /build:fixtures/);
+assert.equal(packageScripts['test:e2e'], 'pnpm build:fixtures && playwright test');
+assert.match(packageScripts.test, /node --test tests\/\*\.test\.mjs && pnpm validate:tokens && pnpm test:e2e/);
+assert.match(packageScripts['capture:chromium'], /^pnpm build:fixtures && /);
+assert.match(packageScripts['build:fixtures'], /build-consumer-fixture\.mjs/);
 assert.match(packageScripts['verify:clean'], /scripts\/verify-clean\.mjs/);
 assert.match(packageScripts.test, /node --test tests\/\*\.test\.mjs/);
-assert.match(await readFile('scripts/verify-clean.mjs', 'utf8'), /waitForOwnedPreviewExit/);
+const cleanVerifier = await readFile('scripts/verify-clean.mjs', 'utf8');
+const playwrightConfig = await readFile('playwright.config.js', 'utf8');
+const packageManifest = JSON.parse(await readFile('package.json', 'utf8'));
+const requiredWorkflows = await Promise.all([
+  readFile('.github/workflows/ci.yml', 'utf8'),
+  readFile('.github/workflows/pages.yml', 'utf8'),
+]);
+assert.match(cleanVerifier, /waitForOwnedPreviewExit/);
+assert.equal(packageManifest.scripts['measure:size'], 'node scripts/size-package.mjs');
+assert.doesNotMatch(packageManifest.scripts['verify:clean'], /verify:size/);
+for (const workflow of requiredWorkflows) assert.doesNotMatch(workflow, /verify:size|measure:size/);
+for (const workflow of requiredWorkflows) {
+  assert.ok((workflow.match(/pnpm build:fixtures/g) ?? []).length >= 2, 'each workflow prepares fixtures in verification and browser jobs');
+  const buildIndex = workflow.indexOf('run: pnpm build:fixtures', workflow.indexOf('browsers:'));
+  const rootPlaywrightIndex = workflow.indexOf('pnpm exec playwright test --project=${{ matrix.browser }}');
+  assert.ok(buildIndex >= 0 && buildIndex < rootPlaywrightIndex, 'browser jobs build fixtures before root Playwright');
+}
+assert.match(requiredWorkflows[0], /release:local/);
+assert.match(requiredWorkflows[0], /sha256sum -c SHA256SUMS/);
+assert.match(requiredWorkflows[1], /release:local/);
+assert.match(requiredWorkflows[1], /sha256sum -c SHA256SUMS/);
+const currentDocs = await Promise.all([
+  readFile('README.md', 'utf8'),
+  readFile('decisions/ADR-006-size-package.md', 'utf8'),
+  readFile('docs/getting-started-personal-use.md', 'utf8'),
+  readFile('docs/local-release-workflow.md', 'utf8'),
+  readFile('docs/status-and-support.md', 'utf8'),
+]);
+for (const doc of currentDocs) {
+  assert.match(doc, /initial design evidence|initial evidence/i);
+  assert.match(doc, /not required.*(browser|CI|build)|not.*(browser|CI|build).*required|without requiring.*(browser|CI|build)/i);
+}
+assert.match(currentDocs[0], /checksum.*(integrity|artifact)|integrity.*checksum/i);
+assert.doesNotMatch(cleanVerifier, /verify:size/);
 assert.match(await readFile('scripts/preview-process.mjs', 'utf8'), /PREVIEW_TEARDOWN_TIMEOUT/);
-assert.match(await readFile('playwright.config.js', 'utf8'), /production-fixtures-server\.mjs 4174/);
+assert.match(playwrightConfig, /production-fixtures-server\.mjs 4174/);
+assert.doesNotMatch(playwrightConfig, /verify:size/);
+assert.match(playwrightConfig, /command: 'pnpm vite preview/);
+assert.doesNotMatch(playwrightConfig, /command: 'pnpm build/);
+assert.doesNotMatch(playwrightConfig, /build-consumer-fixture/);
+assert.doesNotMatch(playwrightConfig, /command: '[^']*(?:build|&&)/);
 assert.match(await readFile('tests/production-fixtures.spec.js', 'utf8'), /panel_/);
 assert.match(coexistenceSpec, /[.]evidence-cache\/screenshots\/coexistence-matrix-\$\{browserName\}\.png/);
 assert.match(coexistenceSpec, /[.]evidence-cache\/screenshots\/coexistence-hostile-\$\{browserName\}\.png/);

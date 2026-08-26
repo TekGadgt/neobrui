@@ -44,20 +44,33 @@ async function validateMember(archiveRoot, member) {
   }
 }
 
+function asciiCaseFold(file) {
+  // Archive duplicate checks use deterministic ASCII folding; Unicode is not normalized.
+  return file.replace(/[A-Z]/g, character => character.toLowerCase());
+}
+
+export function validateArchiveMembers(files) {
+  if (!Array.isArray(files)) throw new TypeError('archive files must be an array');
+  const normalized = files.map(validatePath);
+  const exact = new Set();
+  const folded = new Set();
+  for (const file of normalized) {
+    const key = asciiCaseFold(file);
+    if (exact.has(file) || folded.has(key)) throw new Error(`duplicate archive path is not allowed: ${file}`);
+    exact.add(file);
+    folded.add(key);
+  }
+  return normalized.sort();
+}
+
 /** Create a deterministic gzip tar without invoking a system tar binary. */
 export async function createDeterministicArchive({ root, output, files, prefix = '' }) {
   if (!Array.isArray(files)) throw new TypeError('archive files must be an array');
-  const archiveRoot = await realpath(resolve(root));
-  const sortedFiles = [...new Set(files.map(validatePath))].sort();
-  const folded = new Set();
-  for (const file of sortedFiles) {
-    const key = file.toLocaleLowerCase('en-US');
-    if (folded.has(key)) throw new Error(`duplicate archive path is not allowed: ${file}`);
-    folded.add(key);
-    await validateMember(archiveRoot, file);
-  }
-  const archivePath = resolve(output);
+  const sortedFiles = validateArchiveMembers(files);
   const archivePrefix = prefix ? validatePath(prefix) : undefined;
+  const archiveRoot = await realpath(resolve(root));
+  for (const file of sortedFiles) await validateMember(archiveRoot, file);
+  const archivePath = resolve(output);
   await mkdir(dirname(archivePath), { recursive: true });
   try {
     await create({

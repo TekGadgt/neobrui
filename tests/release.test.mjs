@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { buildRelease } from '../scripts/release.mjs';
-import { createDeterministicArchive } from '../scripts/create-archive.mjs';
+import { createDeterministicArchive, validateArchiveMembers } from '../scripts/create-archive.mjs';
 import { mkdir, rm, symlink, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
@@ -29,6 +29,21 @@ test('formal release archive and checksum are byte deterministic', async () => {
   assert.deepEqual(first.files, second.files);
   const checksum = await readFile('tmp/release-a/SHA256SUMS', 'utf8');
   assert.match(checksum, new RegExp(`${first.archive.sha256}  neobrui-0\\.1\\.0-alpha\\.0\\.tgz`));
+});
+
+test('member-list validation rejects ambiguous paths before filesystem access', () => {
+  assert.throws(
+    () => validateArchiveMembers(['nested/valid.txt', 'NESTED/VALID.TXT']),
+    /duplicate archive path is not allowed: NESTED\/VALID\.TXT/,
+  );
+  assert.throws(
+    () => validateArchiveMembers(['nested/valid.txt', 'nested/valid.txt']),
+    /duplicate archive path is not allowed: nested\/valid\.txt/,
+  );
+  assert.deepEqual(
+    validateArchiveMembers(['z.txt', 'nested/a.txt']),
+    ['nested/a.txt', 'z.txt'],
+  );
 });
 
 test('deterministic archive accepts explicit safe sorted files and rejects symlinks', async () => {
