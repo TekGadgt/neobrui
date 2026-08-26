@@ -16,6 +16,8 @@ Verify the generated archive from repository root with `(cd dist/release && sha2
 
 The committed `size-report.json` is initial design evidence. `pnpm verify:size` is an optional, explicit fresh non-mutating size-evidence check, not required for browser, CI, or build verification; use `pnpm measure:size` intentionally when changing or expanding the package surface. `pnpm verify:clean` is the canonical full clean-tree path for fixture, browser, release-integrity, and teardown checks. Keep the three configured Playwright projects (Chromium, Firefox, WebKit).
 
+The root `test:e2e` command builds the complete fixture set before starting Playwright. CI browser jobs are isolated per engine and perform that same complete build before the serve-only Playwright configuration; ignored generated outputs never cross jobs. The Pages browser job then builds and checks the docs artifact after root coverage.
+
 ## Define tokens and a theme
 
 The validated authoring path is a JavaScript token map checked by `src/tokens/schema.mjs` and emitted by `src/tokens/tokens.mjs`. Copy the shape from `fixtures/inputs.mjs`, supply every required semantic role, and keep palette aliases, fonts, content, and motifs in the consuming project. DTCG 2025.10 export/import is bounded and build-time only; generated JSON is not a second source.
