@@ -1,8 +1,8 @@
 import { mkdir, readFile, writeFile, rm, readdir, stat, cp } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
-import { execFileSync } from 'node:child_process';
 import { join, resolve, relative } from 'node:path';
 import { buildSizeReport } from './size-package.mjs';
+import { createDeterministicArchive } from './create-archive.mjs';
 
 const root = resolve(new URL('..', import.meta.url).pathname);
 export const RELEASE_VERSION = '0.1.0-alpha.0';
@@ -33,10 +33,6 @@ async function collect(dir, base = dir) {
     else result.push({ path: relative(base, path), bytes: (await stat(path)).size });
   }
   return result;
-}
-
-function run(command, args, cwd = root) {
-  return execFileSync(command, args, { cwd, encoding: 'utf8' }).trim();
 }
 
 export async function buildRelease({ outputRoot = 'dist/release' } = {}) {
@@ -70,7 +66,7 @@ export async function buildRelease({ outputRoot = 'dist/release' } = {}) {
   const packageFiles = await collect(pkgRoot);
   const archiveName = `neobrui-${RELEASE_VERSION}.tgz`;
   const archive = join(out, archiveName);
-  run('tar', ['--sort=name', '--mtime=@0', '--owner=0', '--group=0', '--numeric-owner', '-czf', archive, '-C', pkgRoot, '.']);
+  await createDeterministicArchive({ root: pkgRoot, output: archive, files: packageFiles.map(({ path }) => path), prefix: 'package' });
   const archiveBytes = await readFile(archive);
   const checksum = sha256(archiveBytes);
   await writeFile(join(out, 'SHA256SUMS'), `${checksum}  ${archiveName}\n`);

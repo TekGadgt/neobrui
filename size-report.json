@@ -62,10 +62,10 @@
       },
       {
         "path": "scripts/size-package.mjs",
-        "sha256": "9c8d1e0dbd98bb10f00645e1ebc4d566abe48b9397bd39f8786eb7e4326cdd96"
+        "sha256": "8830df6aaead82ac5bd4d7e28b6c9c8e59e9b1d2ed55866d7bb2cb623b1ce6d9"
       }
     ],
-    "sourceManifestHash": "4b4a6ba9f4bcc4c74ec7e038198766d0849f559eb59aa644ad19ca56a57086ab",
+    "sourceManifestHash": "191ee84dbe4280a80f2122844eff390902e283c26405c6c98d42c6b375de67b9",
     "workspaceState": "clean",
     "node": "v26.5.1",
     "pnpm": "11.24.0",
@@ -413,7 +413,7 @@
     },
     "runtimeJavaScriptBytes": 0,
     "runtimeAssetBytes": 0,
-    "tarBytes": 2411
+    "tarBytes": 2330
   },
   "consumer": {
     "fixture": "isolated local archive consumer",
@@ -431,7 +431,7 @@
       "sha256": "70c4f0563a88d52130ba5df4af9fc961597af6c749d00d4d76314933da09f576",
       "contentEncoding": "identity",
       "packageJsonSha256": "216be6adc98e34ce755b3e2b25f474a59179ab5358553b47a25cff07e0517084",
-      "lockfileSha256": "6bc4e572637e7f39537bb446e61e2170f76ae6e8e5949e6884c1b3c92946043a",
+      "lockfileSha256": "21a1b1b3ff914dc85867defcba3eefedcf19284890067579865fe3c0cde94b4f",
       "runtimeDependency": "file:neobrui-private.tgz",
       "tooling": "root-harness Vite 7.3.6"
     },

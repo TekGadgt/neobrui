@@ -5,6 +5,7 @@ import { join, resolve, relative } from 'node:path';
 import { themes } from '../fixtures/inputs.mjs';
 import { generateCss } from '../src/tokens/tokens.mjs';
 import { themeSelectors } from '../fixtures/theme-manifest.mjs';
+import { createDeterministicArchive } from './create-archive.mjs';
 
 const root = resolve(new URL('..', import.meta.url).pathname);
 const thresholds = {
@@ -112,7 +113,7 @@ export async function buildSizeReport({ outputRoot = 'dist/size-package' } = {})
   async function collect(dir) { for (const name of (await readdir(dir)).sort()) { const path = join(dir, name); const info = await stat(path); if (info.isDirectory()) await collect(path); else archiveFiles.push({ path: relative(archiveRoot, path), bytes: info.size }); } }
   await collect(archiveRoot);
   const archiveTar = join(out, 'neobrui-private.tgz');
-  execFileSync('tar', ['--sort=name', '--mtime=@0', '--owner=0', '--group=0', '--numeric-owner', '-czf', archiveTar, '-C', archiveRoot, '.']);
+  await createDeterministicArchive({ root: archiveRoot, output: archiveTar, files: archiveFiles.map(({ path }) => path), prefix: 'package' });
   const runtimeJavaScriptBytes = archiveFiles.filter((f) => f.path.endsWith('.js')).reduce((n, f) => n + f.bytes, 0);
   const runtimeAssetBytes = archiveFiles.filter((f) => !/\.(css|json|md)$/.test(f.path)).reduce((n, f) => n + f.bytes, 0);
   const manifest = await sourceManifest();

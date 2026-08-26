@@ -16,7 +16,9 @@ Verify the generated archive from repository root:
 (cd dist/release && sha256sum -c SHA256SUMS)
 ```
 
-`pnpm release:local` creates `dist/release/neobrui-0.1.0-alpha.0.tgz`, `SHA256SUMS`, `RELEASE_NOTES.md`, and `PROVENANCE.json`. The archive is deterministic (`tar` sorted names, epoch timestamps, numeric uid/gid) and contains CSS, DTCG interchange, README, and MIT license only. It is suitable for a later GitHub Release upload, but this workflow performs no GitHub, npm, registry, network, tag, or deployment operation.
+`pnpm release:local` creates `dist/release/neobrui-0.1.0-alpha.0.tgz`, `SHA256SUMS`, `RELEASE_NOTES.md`, and `PROVENANCE.json`. Archive creation uses the pinned in-repository `tar@7.5.22` package, not a system `tar`, so the same Node/pnpm command works on macOS (BSD tools) and Linux without GNU tar or Homebrew `gtar`. Members are explicitly sorted, prefixed with `package/` for package-manager installation, use epoch timestamps, portable gzip headers, normalized modes, and omit host uid/gid/name metadata. The archive contains CSS, DTCG interchange, README, and MIT license only. It is suitable for a later GitHub Release upload, but this workflow performs no GitHub, npm, registry, network, tag, or deployment operation.
+
+The release and size archive generators never invoke `tar` to create archives. System `tar -tzf`/`-xOf` commands in validation are read-only and use flags supported by both BSD and GNU tar. `gzip -9 -n -c` remains the size-report diagnostic formula; the archive gzip stream is produced by `tar@7.5.22` with portable headers. The root Linux `node_modules` and pnpm store are container-only installation state; do not copy them to macOS.
 
 The checksum command is intentionally run from the repository root: the subshell changes into `dist/release`, where the manifest's archive filename is relative to the manifest itself.
 
