@@ -1,6 +1,6 @@
 # Getting started for personal use
 
-This repository is a local, private CSS-only pilot. It is not published, and the package name/archive are provisional. Use a local checkout or the explicitly generated private archive only; do not resolve it from a registry or publish it.
+This repository is the local, private Phase 1 CUBE CSS pilot. Its stable current namespace is `nbr`, its source Blocks live under `src/blocks`, and the package/archive remain private and unpublished. Use a local checkout or the explicitly generated private archive only; do not resolve it from a registry or publish it.
 
 ## Local verification path
 
@@ -20,7 +20,7 @@ The validated authoring path is a JavaScript token map checked by `src/tokens/sc
 
 ## Consume CSS
 
-The current names are disposable. These examples describe the evidence shape only; wait for the stable namespace/package decision before adopting selectors in a project.
+The Phase 1 names below are the stable local contract. Product themes and `data-theme` state remain product-owned; Neobrui supplies semantic tokens and opt-in Blocks only.
 
 Plain CSS:
 
@@ -41,7 +41,7 @@ Standalone versus aggregate: use the aggregate entry when all three blocks are n
 
 ## Before actual project adoption
 
-- [ ] Ryan selects a stable CSS namespace for classes, data attributes, custom properties, and layers; review collisions.
+- [x] Phase 1 selects the `nbr` CSS namespace and five-layer contract; review collisions before any adopter.
 - [ ] Ryan decides package/repository posture, package name, distribution method, versioning, and license; preserve `private: true` until then.
 - [ ] Ryan selects the first adopter: neutral fixture (recommended) or one bounded slice of `htmlday-lite`/`personal_site`.
 - [ ] Write a migration map and bounded plan; keep product CSS and identity beside the migration.

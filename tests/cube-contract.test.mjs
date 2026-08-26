@@ -8,6 +8,7 @@ assert.match(css, /--nbr-color-text-muted/);
 assert.doesNotMatch(css, /--_nb-|data-_nb-/);
 
 assert.equal(css.indexOf('@layer nbr.tokens'), 0);
+assert.equal((css.match(/@layer nbr\.tokens, nbr\.compositions, nbr\.utilities, nbr\.blocks, nbr\.exceptions;/g) ?? []).length, 1);
 assert.ok(css.indexOf('nbr.tokens') < css.indexOf('nbr.compositions'));
 assert.ok(css.indexOf('nbr.compositions') < css.indexOf('nbr.utilities'));
 assert.ok(css.indexOf('nbr.utilities') < css.indexOf('nbr.blocks'));

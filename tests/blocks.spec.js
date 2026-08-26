@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-test.describe('Spike 2 blocks', () => {
+test.describe('CUBE Blocks', () => {
   test.beforeEach(async ({ page }) => { await page.goto('/blocks/'); });
 
   test('has native names and keyboard order', async ({ page }) => {

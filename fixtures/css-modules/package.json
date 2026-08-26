@@ -1,1 +1,1 @@
-{"name":"neobrui-spike4-css-modules","private":true,"version":"0.0.0","type":"module","scripts":{"build":"vite build"},"devDependencies":{"vite":"7.3.6"}}
+{"name":"neobrui-cube-css-modules","private":true,"version":"0.0.0","type":"module","scripts":{"build":"vite build"},"devDependencies":{"vite":"7.3.6"}}

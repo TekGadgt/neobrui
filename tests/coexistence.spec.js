@@ -6,7 +6,7 @@ const cases = [
   ['explicit', 'rgb(22, 101, 52)'],
 ];
 
-test.describe('Spike 4 shared cascade matrix', () => {
+test.describe('CUBE shared cascade matrix', () => {
   test('Tailwind utility and neobrui block resolve together in production output', async ({ page }) => {
     await page.goto('/tailwind/');
     const button = page.locator('button');

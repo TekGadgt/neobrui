@@ -5,10 +5,10 @@ Status: validated personal-use pilot with CUBE Phase 1 namespace/layer/Block mig
 ## Entries and selectors
 
 - Foundations: semantic token roles and generated custom properties; fixture-owned values are not distributed as a theme.
-- Surface: opt-in `data-nbr-level="quiet|outlined|raised"` levels, with borders, semantic colors, hard shadows, and forced-colors fallback.
+- Surface Block: opt-in `data-nbr-level="quiet|outlined|raised"` levels, with borders, semantic colors, hard shadows, and forced-colors fallback.
 - Button: native `button` and button-like `a` styling for hover, active, focus-visible, disabled/`aria-disabled`, busy, reduced motion, forced colors, logical RTL shadow direction, and a fixed-direction escape hatch.
 - Field: a wrapper plus label/description/error styling and text-like `input`, `textarea`, and `select` geometry, focus, disabled, invalid, adjacent-error, and forced-colors rules. The evidenced field is a labeled email `input`; other controls are not equivalently validated.
-- Aggregate: `src/blocks/index.css` combines the block entries and cascade-layer declarations. Standalone source entries are available for Surface, Button, and Field.
+- Aggregate Blocks: `src/blocks/index.css` combines the Block entries and predeclares exactly `nbr.tokens, nbr.compositions, nbr.utilities, nbr.blocks, nbr.exceptions`. Standalone source entries are available for Surface, Button, and Field.
 
 The fixture and runtime surface uses the stable `nbr` names. This repository remains private and unpublished; no adopter migration is authorized by this Phase 1 change.
 
@@ -16,7 +16,7 @@ The fixture and runtime surface uses the stable `nbr` names. This repository rem
 
 Five fixture mappings (light, dark, workshop, nested, and neutralized) demonstrate token separation and nested direction behavior. Palette, typography, fonts, content, motifs, and theme state remain product-owned. The automated shadow matrix covers LTR, RTL, nested direction, fixed direction, and shadow removal; borders and focus/invalid/disabled cues remain when shadows are removed.
 
-Tokens emit `@layer nbr.tokens`; aggregate blocks predeclare the complete ordered five-layer contract. Unlayered consumer CSS or a later consumer layer wins. The blocks intentionally avoid resets, IDs, broad `!important`, and hostile specificity.
+Tokens emit `@layer nbr.tokens`; aggregate Blocks predeclare the complete ordered five-layer contract. Compositions and Utilities are reserved and empty in Phase 1. Unlayered consumer CSS or a later consumer layer wins. The Blocks intentionally avoid resets, IDs, broad `!important`, and hostile specificity.
 
 ## Semantic responsibilities
 
@@ -28,4 +28,4 @@ Plain CSS, CSS Modules, Astro, and Tailwind coexistence are proven by isolated f
 
 ## Evidence and misuse
 
-The canonical evidence is in `docs/personal-use-viability-and-expansion.md`, `evidence/spike-2-blocks.md`, `evidence/spike-3-shadows.md`, `evidence/spike-4-coexistence.md`, `evidence/spike-5-size-package.md`, `evidence/spike-6-qa-rehearsal.md`, and `size-report.json`. Automated Chromium/Firefox/WebKit checks validate the fixtures; manual accessibility, hardware, OS forced-colors, and true browser-UI zoom procedures are documented but unexecuted without a dated run record. Do not infer support for untested markup, configurations, assistive technologies, devices, or future browser versions.
+The canonical evidence is in `docs/personal-use-viability-and-expansion.md`, the historical [`Spike 2 recipe evidence`](../evidence/spike-2-recipes.md), `evidence/spike-3-shadows.md`, `evidence/spike-4-coexistence.md`, `evidence/spike-5-size-package.md`, `evidence/spike-6-qa-rehearsal.md`, and `size-report.json`. Automated Chromium/Firefox/WebKit checks validate the fixtures; manual accessibility, hardware, OS forced-colors, and true browser-UI zoom procedures are documented but unexecuted without a dated run record. Do not infer support for untested markup, configurations, assistive technologies, devices, or future browser versions.

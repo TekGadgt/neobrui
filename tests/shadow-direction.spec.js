@@ -5,7 +5,7 @@ import { mkdir } from 'node:fs/promises';
 const shadow = locator => locator.evaluate(el => getComputedStyle(el).boxShadow);
 const inlineOffset = value => Number(value.match(/(?:rgb\([^)]*\)|rgba\([^)]*\))\s*(-?\d+(?:\.\d+)?)px/)?.[1]);
 
-test.describe('Spike 3 shadow direction policy', () => {
+test.describe('CUBE shadow direction policy', () => {
   test.beforeEach(async ({ page }) => { await page.goto('/shadows/'); });
 
   test('logical LTR and RTL offsets are nonzero, with block positive', async ({ page }) => {

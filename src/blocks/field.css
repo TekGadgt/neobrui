@@ -1,4 +1,4 @@
-/* Disposable Spike 2 block: native label/input semantics are required. */
+/* Native label/input semantics are required. */
 .nbr-field { display: grid; gap: var(--nbr-space-2); max-inline-size: 32rem; color: var(--nbr-color-text); }
 .nbr-field label { font-size: var(--nbr-text-label); font-weight: 700; }
 .nbr-field input, .nbr-field textarea, .nbr-field select { inline-size: 100%; min-block-size: 2.75rem; padding: var(--nbr-control-pad-block) var(--nbr-control-pad-inline); border: var(--nbr-border-control); border-radius: var(--nbr-radius-control); background: var(--nbr-field-background); color: inherit; font: inherit; }

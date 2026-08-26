@@ -1,4 +1,4 @@
-/* Disposable Spike 2 block: native button/link behavior remains semantic. */
+/* Native button/link behavior remains semantic. */
 .nbr-button { display: inline-flex; align-items: center; justify-content: center; min-block-size: 2.75rem; padding: var(--nbr-control-pad-block) var(--nbr-control-pad-inline); border: var(--nbr-border-control); border-radius: var(--nbr-radius-control); background: var(--nbr-button-background); color: var(--nbr-color-on-action); font: inherit; font-weight: 700; text-decoration: none; cursor: pointer; transition: transform var(--nbr-motion-press-duration) ease, box-shadow var(--nbr-motion-press-duration) ease; box-shadow: var(--nbr-shadow-inline-offset, var(--nbr-shadow-inline)) var(--nbr-shadow-block) 0 var(--nbr-color-shadow); }
 .nbr-button:hover { filter: brightness(1.08); }
 .nbr-button:active { transform: translate(var(--nbr-shadow-press-translation-inline, calc(var(--nbr-shadow-inline) - var(--nbr-shadow-press-inline))), calc(var(--nbr-shadow-block) - var(--nbr-shadow-press-block))); box-shadow: var(--nbr-shadow-press-inline-offset, var(--nbr-shadow-press-inline)) var(--nbr-shadow-press-block) 0 var(--nbr-color-shadow); }

@@ -82,7 +82,7 @@ export async function buildSizeCandidate({ outputRoot = 'dist/size-package' } = 
     button: await readFile(join(root, 'src/blocks/button.css'), 'utf8'),
     field: await readFile(join(root, 'src/blocks/field.css'), 'utf8'),
   };
-  source.blocks = `@layer nbr.tokens, nbr.blocks;\n${source.surface}\n${source.button}\n${source.field}`;
+  source.blocks = `@layer nbr.tokens, nbr.compositions, nbr.utilities, nbr.blocks, nbr.exceptions;\n${source.surface}\n${source.button}\n${source.field}`;
   source.consumer = `${source.foundations}\n${source.blocks}`;
   const entries = [];
   for (const name of ['foundations', 'surface', 'button', 'field', 'blocks', 'consumer']) {

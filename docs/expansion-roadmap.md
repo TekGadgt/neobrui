@@ -1,6 +1,6 @@
 # Expansion roadmap
 
-This roadmap synthesizes `docs/personal-use-viability-and-expansion.md`. ADR-009 accepted the CUBE-primary direction; [`ADR-010`](../decisions/ADR-010-cube-migration-contract.md) is the normative migration contract. Acceptance does not mean implementation or adopter authorization.
+This roadmap synthesizes `docs/personal-use-viability-and-expansion.md`. ADR-009 accepted the CUBE-primary direction; [`ADR-010`](../decisions/ADR-010-cube-migration-contract.md) is the normative migration contract. Phase 1 has implemented the stable `nbr` namespace, `src/blocks` Blocks, and ordered five-layer declaration; later expansion remains gated and does not authorize adopter migration.
 
 ## Architecture and release proposal
 
@@ -8,7 +8,7 @@ See [`docs/architecture-and-release-options.md`](architecture-and-release-option
 
 ## Personal-use MVP
 
-- Decide the stable CSS namespace, package/repository/license posture, distribution, token authoring authority, DTCG format/version and theme organization, theme scoping, and first adopter.
+- Preserve the implemented `nbr` namespace, package/repository/license posture, distribution, token authoring authority, DTCG format/version and theme organization, product-owned `data-theme` scoping, and first-adopter decision.
 - Preserve foundations plus standalone/aggregate Surface, Button, and Field, with zero runtime JavaScript and product-owned semantics/identity.
 - Document token authoring, native markup, layers, RTL/no-shadow behavior, plain CSS and Astro use, and the manual QA boundary.
 - Add validated deterministic DTCG export, schema/alias/type and round-trip boundary tests, CSS equivalence checks, provenance, and size/maintenance accounting from the first formal implementation; do not maintain independently editable JS and DTCG sources.
@@ -29,7 +29,7 @@ Defer runtime component JavaScript, framework adapters/plugins while CSS coexist
 
 ## Current implementation gates
 
-The stable namespace, package posture, license intent, distribution, versioning, token authority, DTCG pin, theme scoping, and layout API are recorded in ADR-010. They are not implemented yet. Phase acceptance, rollback, and stop conditions must pass before any selector is exposed to another project; the neutral site precedes any separately authorized adopter.
+The stable namespace, package posture, license intent, distribution, versioning, token authority, DTCG pin, product-owned theme scoping, and layout API are recorded in ADR-010. Phase 1 implements only the namespace/layer/Block migration; compositions, utilities, DTCG, and layout APIs remain future scope. Phase acceptance, rollback, and stop conditions must pass before any selector is exposed to another project; the neutral site precedes any separately authorized adopter.
 
 ## Gate discipline
 

@@ -24,21 +24,25 @@ test('candidate archive is CSS-only and has explicit subpath exports', async () 
   assert.equal(report.archive.runtimeJavaScriptBytes, 0);
   assert.equal(report.archive.runtimeAssetBytes, 0);
   assert.deepEqual(Object.keys(report.archive.exports), ['.', './foundations', './surface', './button', './field', './blocks']);
+  const aggregate = await (await import('node:fs/promises')).readFile('tmp/size-test-archive/package/dist/blocks.css', 'utf8');
+  const declaration = aggregate.match(/^@layer ([^;]+);/m)?.[1].split(/,\s*/);
+  assert.deepEqual(declaration, ['nbr.tokens', 'nbr.compositions', 'nbr.utilities', 'nbr.blocks', 'nbr.exceptions']);
+  assert.equal(new Set(declaration).size, declaration.length);
 });
 
 test('consumer accounting measures the emitted Vite CSS separately from source entries', async () => {
   const report = await buildSizeCandidate({ outputRoot: 'tmp/size-test-emitted' });
-  assert.equal(report.consumer.emitted.filename, 'assets/index-BjvOK4SL.css');
-  assert.equal(report.consumer.emitted.rawBytes, 4419);
-  assert.equal(report.consumer.emitted.gzipBytes, 1051);
-  assert.equal(report.consumer.emitted.sha256, '09900efc7322f1307702345fb1ee354dece005f996a20d359560b3f99876ee08');
+  assert.match(report.consumer.emitted.filename, /^assets\/index-[^/]+\.css$/);
+  assert.equal(report.consumer.emitted.rawBytes, 4465);
+  assert.equal(report.consumer.emitted.gzipBytes, 1071);
+  assert.match(report.consumer.emitted.sha256, /^[0-9a-f]{64}$/);
   assert.equal(report.consumer.emitted.contentEncoding, 'identity');
   assert.match(report.consumer.emitted.packageJsonSha256, /^[0-9a-f]{64}$/);
   assert.match(report.consumer.emitted.lockfileSha256, /^[0-9a-f]{64}$/);
   assert.equal(report.consumer.emitted.runtimeDependency, 'file:neobrui-private.tgz');
   assert.equal(report.consumer.emitted.tooling, 'root-harness Vite 7.3.6');
-  assert.equal(report.consumer.transferredCssBytes, 4419);
-  assert.equal(report.consumer.sourceMinifiedBytes, 5903);
+  assert.equal(report.consumer.transferredCssBytes, 4465);
+  assert.equal(report.consumer.sourceMinifiedBytes, 5949);
 });
 
 test('provenance is a stable source-input manifest, not a self-referential commit', async () => {

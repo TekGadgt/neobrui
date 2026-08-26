@@ -1,5 +1,5 @@
 {
-  "name": "neobrui-spike-0-harness",
+  "name": "neobrui-cube-harness",
   "version": "0.0.0",
   "private": true,
   "packageManager": "pnpm@11.24.0",
@@ -7,10 +7,10 @@
   "scripts": {
     "install:frozen": "pnpm install --frozen-lockfile",
     "build:tokens": "node scripts/build-tokens.mjs",
-    "build:tailwind": "pnpm --filter neobrui-spike4-tailwind build",
+    "build:tailwind": "pnpm --filter neobrui-cube-tailwind build",
     "validate:tokens": "node tests/token-schema.test.mjs",
     "build": "pnpm build:tokens && pnpm build:tailwind && vite build",
-    "build:fixtures": "pnpm build && pnpm --filter neobrui-spike4-css-modules build && pnpm --filter neobrui-spike4-astro build && pnpm --filter neobrui-spike4-tailwind build",
+    "build:fixtures": "pnpm build && pnpm --filter neobrui-cube-css-modules build && pnpm --filter neobrui-cube-astro build && pnpm --filter neobrui-cube-tailwind build",
     "test": "node --test tests/*.test.mjs && pnpm validate:tokens && playwright test",
     "verify": "pnpm install --frozen-lockfile && pnpm build:fixtures && pnpm test",
     "capture:chromium": "CAPTURE_EVIDENCE=1 pnpm exec playwright test --project=chromium",

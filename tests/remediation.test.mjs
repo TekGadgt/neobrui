@@ -5,6 +5,7 @@ import path from 'node:path';
 import { generateCss } from '../src/tokens/tokens.mjs';
 import { themes } from '../fixtures/inputs.mjs';
 import { REQUIRED_ROLES, validateTokens } from '../src/tokens/schema.mjs';
+import { buildSizeCandidate } from '../scripts/size-package.mjs';
 
 const base = structuredClone(themes['personal-light']);
 
@@ -45,7 +46,7 @@ assert.doesNotMatch(coreSource, /(?:<|\.)\s*(?:astro|react|storybook|tailwind)(?
 assert.doesNotMatch(source, /(?:editor|preview|creator|takeaway|portfolio|brand)\s*[:=]/i);
 assert.doesNotMatch(source, /\.json\s*['"]?\s*[:=]/i);
 
-// Spike 4 reproducibility contracts: these checks intentionally fail until the
+// Reproducibility contracts: these checks intentionally fail until the
 // fixture owns its generated tokens and verification is non-mutating.
 assert.match(await readFile('fixtures/tailwind/input.css', 'utf8'), /generated-tokens\.css/);
 const tailwindOutput = await readFile('fixtures/tailwind/dist/output.css', 'utf8');
@@ -78,5 +79,42 @@ assert.match(shadowsSpec, /[.]evidence-cache\/screenshots\/shadows-\$\{browserNa
 assert.doesNotMatch(coexistenceSpec, /evidence\/screenshots\//);
 assert.doesNotMatch(shadowsSpec, /evidence\/screenshots\//);
 assert.match(gitignore, /^\.evidence-cache\/$/m);
+
+// Current-contract regression boundary: legacy names are permitted only in
+// explicitly historical evidence/ADR files and migration-map rows.
+const currentRoots = ['src', 'scripts', 'fixtures', 'tests', 'docs/getting-started-personal-use.md', 'docs/expansion-roadmap.md', 'docs/status-and-support.md', 'docs/personal-use-viability-and-expansion.md', 'docs/current-surface.md', 'package.json', 'dist'];
+const historicalPath = /(?:^|\/)(?:evidence|decisions)\//;
+const legacyMarkers = /_nb-spike|--_nb-|data-_nb-|neobrui\.recipes|src\/recipes|\bSpike\b|\brecipes?\b/i;
+const currentFiles = [];
+async function collectCurrent(entry) {
+  const info = await (await import('node:fs/promises')).stat(entry);
+  if (info.isDirectory()) {
+    if (['node_modules', 'dist', '.astro', '.qa-rehearsal', '.evidence-cache', 'tmp'].includes(entry.split('/').at(-1))) return;
+    for (const child of await readdir(entry)) await collectCurrent(`${entry}/${child}`);
+  } else currentFiles.push(entry);
+}
+for (const root of currentRoots) await collectCurrent(root);
+for (const file of currentFiles) {
+  const text = await readFile(file, 'utf8');
+  const lines = text.split('\n').filter(line => file !== 'tests/remediation.test.mjs' && file !== 'tests/cube-contract.test.mjs' && file !== 'tests/qa-rehearsal.test.mjs' && legacyMarkers.test(line) && !/historical|pre-migration|old name|former name|migration-map|disposable|do not preserve|evidence\/|decisions\//i.test(line));
+  assert.doesNotMatch(lines.join('\n'), legacyMarkers, `legacy current contract in ${file}`);
+}
+
+// Every current Markdown link must resolve to a repository file or directory.
+for (const file of currentFiles.filter(file => file.endsWith('.md'))) {
+  const text = await readFile(file, 'utf8');
+  for (const [, target] of text.matchAll(/\[[^\]]+\]\(([^)#]+)(?:#[^)]+)?\)/g)) {
+    if (/^(?:https?:|mailto:|#)/.test(target)) continue;
+    const resolved = path.resolve(path.dirname(file), target);
+    await import('node:fs/promises').then(({ access }) => access(resolved)).catch(() => assert.fail(`broken Markdown link ${file} -> ${target}`));
+  }
+}
+
+const sizeOutput = 'tmp/remediation-size';
+await buildSizeCandidate({ outputRoot: sizeOutput });
+const aggregateCss = await readFile(`${sizeOutput}/dist/blocks.css`, 'utf8');
+const aggregateLayers = aggregateCss.match(/^@layer ([^;]+);/m)?.[1].split(/,\s*/);
+assert.deepEqual(aggregateLayers, ['nbr.tokens', 'nbr.compositions', 'nbr.utilities', 'nbr.blocks', 'nbr.exceptions']);
+assert.equal(new Set(aggregateLayers).size, aggregateLayers.length);
 
 console.log(`remediation tests: ${boundaryFiles.length} files, ${Object.keys(REQUIRED_ROLES).length} families`);

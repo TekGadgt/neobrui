@@ -8,7 +8,7 @@ test('plain fixture exposes semantic heading and content', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('heading', { name: 'Plain fixture', level: 1 })).toBeVisible();
   await expect(page.getByText('meaningful without JavaScript or a network connection')).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Spike 0 harness', level: 2 })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'CUBE baseline harness', level: 2 })).toBeVisible();
 });
 
 test('plain fixture remains usable with JavaScript disabled', async ({ browser }) => {
@@ -30,7 +30,7 @@ test('fixture makes no external network requests', async ({ page }) => {
   expect(external).toEqual([]);
 });
 
-test('repository metadata and references satisfy Spike 0 boundaries', async () => {
+test('repository metadata and references satisfy baseline boundaries', async () => {
   const packageJson = JSON.parse(await fs.readFile(path.join(root, 'package.json'), 'utf8'));
   expect(packageJson.private).toBe(true);
   expect(packageJson.publishConfig).toBeUndefined();
