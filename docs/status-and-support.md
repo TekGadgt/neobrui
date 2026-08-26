@@ -6,7 +6,7 @@ Neobrui is a validated Phase 1 CUBE personal-use pilot for Ryan's personal proje
 
 What is validated: semantic tokens; opt-in Surface, Button, and Field Blocks; RTL/nested/fixed shadow behavior; the ordered `nbr.tokens`, `nbr.compositions`, `nbr.utilities`, `nbr.blocks`, `nbr.exceptions` layers (the middle layers are empty in Phase 1); plain CSS/CSS Modules/Astro/Tailwind coexistence fixtures; zero runtime JavaScript in the candidate; deterministic size/archive checks; and automated Chromium, Firefox, and WebKit fixture coverage. Product-owned `data-theme` state remains outside the package.
 
-The size result is honest and provisional: overall `warning/narrow`; standalone Button is 2,413 minified bytes against a provisional 1,800-byte ceiling, while its gzip result remains below the warning/kill limits. This is not a CSS/API change or a publication signal.
+The size result is honest and provisional: overall `warning/narrow`; standalone Button is 2,322 minified bytes against a provisional 1,800-byte ceiling, while its gzip result remains below the warning/kill limits. This is not a CSS/API change or a publication signal.
 
 ## Coverage boundary
 

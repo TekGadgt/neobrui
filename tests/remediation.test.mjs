@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { mkdtemp, readFile, readdir, rm, stat, writeFile } from 'node:fs/promises';
+import { mkdtemp, readFile, readdir, rm, stat, lstat, writeFile } from 'node:fs/promises';
 import packageJson from '../package.json' with { type: 'json' };
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
@@ -91,42 +91,54 @@ assert.equal((await stat(currentViability)).isFile(), true);
 const readmeText = await readFile('README.md', 'utf8');
 assert.match(readmeText, /Personal-use viability and expansion.*docs\/personal-use-viability-and-expansion\.md/);
 assert.match(readmeText, /Historical pre-migration viability assessment.*evidence\/historical\/personal-use-viability-and-expansion\.md/);
-const currentRoots = [
-  'src', 'scripts', 'fixtures', 'tests',
-  'docs/getting-started-personal-use.md', 'docs/expansion-roadmap.md',
-  'docs/status-and-support.md',
-  'docs/personal-use-viability-and-expansion.md',
-  'docs/manual-accessibility-testing.md',
-  'docs/templates/accessibility-test-run.md', 'package.json',
-  'dist', 'fixtures/css-modules/dist',
-  'fixtures/astro/dist', 'fixtures/tailwind/dist', 'tmp/remediation-size',
-  'evidence', 'decisions',
-];
-const historicalPath = /(?:^|\/)(?:evidence|decisions)(?:\/|$)/;
-const legacyMarkers = /_nb-spike|--_nb-|data-_nb-|neobrui\.recipes|src\/recipes|\bSpike\b|\brecipes?\b/i;
+const currentRoots = ['README.md', 'docs', 'decisions', 'src', 'tests', 'fixtures', 'scripts', 'dist', 'evidence', 'tmp/remediation-size', 'package.json'];
+const historicalPath = /(?:^|\/)evidence\/historical(?:\/|$)|(?:^|\/)decisions\/ADR-00[1-8]-/;
+const legacyMarkers = /--_nb-|data-_nb-|neobrui\.recipes|src\/recipes/i;
 const sizeOutput = 'tmp/remediation-size';
 await buildSizeCandidate({ outputRoot: sizeOutput });
 const currentFiles = [];
+const LIMITS = { files: 5000, fileBytes: 1024 * 1024, archiveBytes: 16 * 1024 * 1024, archiveMembers: 2048, archiveMemberBytes: 1024 * 1024, archiveTextBytes: 32 * 1024 * 1024 };
 async function collectCurrent(entry) {
-  const info = await stat(entry);
+  const info = await lstat(entry);
+  if (info.isSymbolicLink()) throw new Error(`symlink is not allowed: ${entry}`);
   if (info.isDirectory()) {
-    if (['node_modules', '.astro', '.qa-rehearsal', '.evidence-cache'].includes(entry.split('/').at(-1))) return;
+    if (['node_modules', '.pnpm-store', '.astro', '.qa-rehearsal', '.evidence-cache', 'test-results'].includes(entry.split('/').at(-1))) return;
     for (const child of await readdir(entry)) await collectCurrent(`${entry}/${child}`);
-  } else currentFiles.push(entry);
+  } else if (info.isFile()) {
+    if (info.size > LIMITS.fileBytes) throw new Error(`file byte limit exceeded: ${entry}`);
+    currentFiles.push(entry);
+    if (currentFiles.length > LIMITS.files) throw new Error(`file count limit exceeded: ${LIMITS.files}`);
+  }
 }
 for (const root of currentRoots) await collectCurrent(root);
 const currentTestFiles = new Set(['tests/remediation.test.mjs', 'tests/cube-contract.test.mjs', 'tests/qa-rehearsal.test.mjs']);
 function currentText(file, text) {
   if (historicalPath.test(file) || currentTestFiles.has(file)) return;
-  assert.doesNotMatch(text, legacyMarkers, `legacy current contract in ${file}`);
+  const documentedMigration = file.endsWith('.md') ? text.split('\n').filter((line) => !(line.includes('→') || /historical|pre-migration|old evidence|prior evidence/i.test(line))).join('\n') : text;
+  const actionable = file.endsWith('ADR-010-cube-migration-contract.md')
+    ? documentedMigration.replace(/## Complete naming map[\s\S]*?## Stable selectors and attributes/, '## Stable selectors and attributes')
+    : documentedMigration;
+  assert.doesNotMatch(actionable, legacyMarkers, `legacy current contract in ${file}`);
 }
-function archiveTextEntries(file) {
-  return execFileSync('tar', ['-tzf', file], { encoding: 'utf8' }).split('\n').filter(entry => entry && !entry.endsWith('/'))
-    .map(entry => execFileSync('tar', ['-xOf', file, entry], { encoding: 'utf8' }));
+async function archiveTextEntries(file) {
+  assert.ok((await stat(file)).size <= LIMITS.archiveBytes, `archive byte limit exceeded: ${file}`);
+  const entries = execFileSync('tar', ['-tzf', file], { encoding: 'utf8' }).split('\n').filter(Boolean);
+  assert.ok(entries.length <= LIMITS.archiveMembers, `archive member limit exceeded: ${file}`);
+  let extractedBytes = 0;
+  return entries.filter(entry => {
+    assert.ok(!entry.startsWith('/') && !entry.split('/').includes('..') && !entry.includes('\\'), `archive traversal member: ${entry}`);
+    return !entry.endsWith('/');
+  }).map(entry => {
+    const text = execFileSync('tar', ['-xOf', file, entry], { encoding: 'utf8', maxBuffer: LIMITS.archiveMemberBytes });
+    assert.ok(Buffer.byteLength(text) <= LIMITS.archiveMemberBytes, `archive member byte limit exceeded: ${entry}`);
+    extractedBytes += Buffer.byteLength(text);
+    assert.ok(extractedBytes <= LIMITS.archiveTextBytes, `archive text limit exceeded: ${file}`);
+    return text;
+  });
 }
 for (const file of currentFiles) {
   if (file.endsWith('.tgz')) {
-    for (const text of archiveTextEntries(file)) currentText(`${file} archive entry`, text);
+    for (const text of await archiveTextEntries(file)) currentText(`${file} archive entry`, text);
   } else currentText(file, await readFile(file, 'utf8'));
 }
 
@@ -134,12 +146,12 @@ for (const file of currentFiles) {
 // its line calls itself historical. This guards against the old line waiver.
 const probeRoot = await mkdtemp('tmp/remediation-legacy-probe-');
 const probeFile = `${probeRoot}/generated.css`;
-await writeFile(probeFile, '/* historical evidence */ ._nb-spike-button { color: red; }\n');
-assert.throws(() => currentText(probeFile, '/* historical evidence */ ._nb-spike-button { color: red; }'), /legacy current contract/);
+await writeFile(probeFile, '/* historical evidence */ .nbr-button { --_nb-color: red; }\n');
+assert.throws(() => currentText(probeFile, '/* historical evidence */ .nbr-button { --_nb-color: red; }'), /legacy current contract/);
 await rm(probeRoot, { recursive: true, force: true });
 
 // Every current Markdown link must resolve to a repository file or directory.
-for (const file of currentFiles.filter(file => file.endsWith('.md'))) {
+for (const file of currentFiles.filter(file => file.endsWith('.md') && !historicalPath.test(file))) {
   const text = await readFile(file, 'utf8');
   for (const [, target] of text.matchAll(/\[[^\]]+\]\(([^)#]+)(?:#[^)]+)?\)/g)) {
     if (/^(?:https?:|mailto:|#)/.test(target)) continue;

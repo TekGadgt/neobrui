@@ -3,7 +3,12 @@ import { flattenTokens, validateTokens } from './schema.mjs';
 const RESERVED_SEGMENTS = new Set(['tokens', 'compositions', 'utilities', 'blocks', 'exceptions']);
 
 export function normalizeTokenPath(path) {
-  const segments = path.split(/[./]/).map((segment) => segment
+  if (typeof path !== 'string' || !path) throw new Error(`Invalid token path "${path}"`);
+  if (/(?:^|[\\/])\.\.(?:[\\/]|$)/.test(path)) throw new Error(`Traversal in token path "${path}"`);
+  const normalizedSeparators = path.replace(/\\/g, '/').replace(/\/+/g, '/').replace(/^\/+/, '').replace(/^\.\//, '');
+  const rawSegments = normalizedSeparators.split(/[./]/);
+  if (rawSegments.some((segment) => segment === '..')) throw new Error(`Traversal in token path "${path}"`);
+  const segments = rawSegments.map((segment) => segment
     .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
     .replace(/([A-Z]+)([A-Z][a-z])/g, '$1-$2')
     .replace(/[_\s]+/g, '-')
