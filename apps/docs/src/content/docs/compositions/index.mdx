@@ -1,0 +1,18 @@
+---
+title: Compositions
+---
+
+## Stack
+
+`.nbr-stack` is a nested-safe vertical flex flow. It uses `--nbr-space-4` by default and accepts the bounded `--nbr-stack-gap` hook. Child margins remain yours.
+
+```html
+<section class="nbr-stack" aria-labelledby="heading">
+  <h2 id="heading">A clear vertical rhythm</h2>
+  <p>Spacing comes from the composition, not child resets.</p>
+</section>
+```
+
+## Cluster
+
+`.nbr-cluster` wraps inline actions and tags. Its default gap is `--nbr-space-3`; use `--nbr-cluster-align` and `--nbr-cluster-justify` for bounded alignment changes.

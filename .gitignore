@@ -6,6 +6,7 @@ test-results/
 evidence/playwright-results.json
 .evidence-cache/
 fixtures/*/.astro/
+apps/docs/.astro/
 tmp/
 .qa-rehearsal/
 dist/size-spike/

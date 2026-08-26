@@ -1,0 +1,23 @@
+---
+title: Release and rollback
+---
+
+## Current artifact
+
+Version `0.1.0-alpha.0` is a private personal-alpha release. The approved archive is `dist/release/neobrui-0.1.0-alpha.0.tgz`.
+
+- SHA-256: `808f79185cb91fc37553a196403eb855e01a220baab2716c93502a9e126d1bcd`
+- Format: DTCG `2025.10` interchange plus CSS exports
+- Runtime JavaScript/assets: none in the Neobrui archive
+- Publication: not published, tagged, or deployed
+
+Verify locally:
+
+```sh
+pnpm release:local
+(cd dist/release && sha256sum -c SHA256SUMS)
+```
+
+## Rollback
+
+Retain known-good archives and select the prior file dependency. Never rewrite history or silently update an adopter. A minor pre-1.0 release may change contracts; review the release notes before updating.

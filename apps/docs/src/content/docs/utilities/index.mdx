@@ -1,0 +1,17 @@
+---
+title: Utilities
+---
+
+## Visually hidden
+
+`.nbr-u-visually-hidden` preserves non-focusable content in the accessibility tree while removing it from visual flow. It is not `display: none`, and it does not provide a focus-reveal mode.
+
+## Wrapper
+
+`.nbr-u-wrapper` centers content with a readable measure and logical inline padding. Tune `--nbr-wrapper-max-inline-size` or `--nbr-wrapper-padding-inline` from your application when needed.
+
+```html
+<main class="nbr-u-wrapper">
+  <h1>Readable by default</h1>
+</main>
+```

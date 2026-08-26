@@ -1,0 +1,33 @@
+---
+title: Neobrui
+description: A semantic CSS kit for careful personal projects.
+template: splash
+hero:
+  title: Small CSS. Clear boundaries.
+  tagline: Neobrui is a private personal-alpha kit for native HTML, semantic tokens, and opt-in composition.
+  actions:
+    - text: Get started
+      link: /getting-started/
+      icon: right-arrow
+    - text: Explore examples
+      link: /examples/
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## A useful surface, not a promise
+
+Neobrui `0.1.0-alpha.0` is validated for controlled local use. It ships CSS and build-time DTCG interchange; it does not ship runtime JavaScript, a reset, identity, or a public support commitment.
+
+<div class="showcase">
+
+**The design principle:** native HTML and the consuming application own semantics, state, routing, validation, and announcements. Neobrui supplies a small, inspectable visual layer.
+
+</div>
+
+<CardGrid>
+  <Card title="Foundations" href="/foundations/">Semantic roles and product-owned themes.</Card>
+  <Card title="Compositions" href="/compositions/">Stack and Cluster for flow and wrapping.</Card>
+  <Card title="Blocks" href="/blocks/">Surface, Button, and Field opt-in styling.</Card>
+</CardGrid>
