@@ -1,0 +1,210 @@
+{
+  "schemaVersion": 1,
+  "candidateSurface": {
+    "core": "recipe-only CSS requiring consumer-defined semantic tokens",
+    "optionalNeutralTokens": true,
+    "fixtureThemes": "excluded: generated five-theme fixture CSS is not packaged",
+    "recipes": [
+      "surface",
+      "button",
+      "field"
+    ]
+  },
+  "input": {
+    "gitCommit": "7f969aee41a5dec2137cbee6c45b311967b89028",
+    "node": "v26.5.1",
+    "pnpm": "11.24.0",
+    "minifier": "deterministic in-repo CSS minifier (comment/whitespace normalization)"
+  },
+  "formulas": {
+    "gzip": "gzip -9 -n",
+    "sha256": "SHA-256 of minified CSS"
+  },
+  "thresholds": {
+    "foundations": {
+      "raw": 6000,
+      "minified": 3500,
+      "gzip": 1500,
+      "killGzip": 2500
+    },
+    "recipe": {
+      "raw": 3000,
+      "minified": 1800,
+      "gzip": 800,
+      "killGzip": 1500
+    },
+    "aggregate": {
+      "raw": 14000,
+      "minified": 8000,
+      "gzip": 3000,
+      "warningGzip": 5000,
+      "killGzip": 5000
+    }
+  },
+  "entries": [
+    {
+      "name": "foundations",
+      "path": "dist/size-spike/dist/foundations.css",
+      "rawBytes": 1516,
+      "minifiedBytes": 1338,
+      "gzipBytes": 515,
+      "sha256": "5fb071b6dcc8801e62e60d9ca4634426f4f803ea3cc50ddad8b4144a2221be37",
+      "comments": "raw source comments excluded from minified artifact; no maps or licenses included",
+      "budget": {
+        "raw": 6000,
+        "minified": 3500,
+        "gzip": 1500,
+        "killGzip": 2500
+      },
+      "verdict": "success"
+    },
+    {
+      "name": "surface",
+      "path": "dist/size-spike/dist/surface.css",
+      "rawBytes": 880,
+      "minifiedBytes": 771,
+      "gzipBytes": 284,
+      "sha256": "69653fe8bb11f7547c0a42378356b363f1a7110dbac482c6afbf42cdac67a018",
+      "comments": "raw source comments excluded from minified artifact; no maps or licenses included",
+      "budget": {
+        "raw": 3000,
+        "minified": 1800,
+        "gzip": 800,
+        "killGzip": 1500
+      },
+      "verdict": "success"
+    },
+    {
+      "name": "button",
+      "path": "dist/size-spike/dist/button.css",
+      "rawBytes": 2619,
+      "minifiedBytes": 2413,
+      "gzipBytes": 699,
+      "sha256": "7383a84592e00db23d31b333d05e3eeb3aaeb7e2a2b52a7ab070a5dbc1726716",
+      "comments": "raw source comments excluded from minified artifact; no maps or licenses included",
+      "budget": {
+        "raw": 3000,
+        "minified": 1800,
+        "gzip": 800,
+        "killGzip": 1500
+      },
+      "verdict": "warning/narrow"
+    },
+    {
+      "name": "field",
+      "path": "dist/size-spike/dist/field.css",
+      "rawBytes": 1697,
+      "minifiedBytes": 1519,
+      "gzipBytes": 519,
+      "sha256": "f2db7118d5f0e2cca8c812ed5802add8b9f901855fe88b172b55ced3d8179fe3",
+      "comments": "raw source comments excluded from minified artifact; no maps or licenses included",
+      "budget": {
+        "raw": 3000,
+        "minified": 1800,
+        "gzip": 800,
+        "killGzip": 1500
+      },
+      "verdict": "success"
+    },
+    {
+      "name": "recipes",
+      "path": "dist/size-spike/dist/recipes.css",
+      "rawBytes": 5238,
+      "minifiedBytes": 4739,
+      "gzipBytes": 1084,
+      "sha256": "35a7868dc0e6e473eb45d7de25c07b26e14bf3e57b6e43545815faa64ce83569",
+      "comments": "raw source comments excluded from minified artifact; no maps or licenses included",
+      "budget": {
+        "raw": 14000,
+        "minified": 8000,
+        "gzip": 3000,
+        "warningGzip": 5000,
+        "killGzip": 5000
+      },
+      "verdict": "success"
+    },
+    {
+      "name": "consumer",
+      "path": "dist/size-spike/dist/consumer.css",
+      "rawBytes": 6755,
+      "minifiedBytes": 6076,
+      "gzipBytes": 1453,
+      "sha256": "314a9feff1daef28c303e0c3c2973e95ee8b3a9e13af727c87e9f70e450a24b7",
+      "comments": "raw source comments excluded from minified artifact; no maps or licenses included",
+      "budget": {
+        "raw": 14000,
+        "minified": 8000,
+        "gzip": 3000,
+        "warningGzip": 5000,
+        "killGzip": 5000
+      },
+      "verdict": "success"
+    }
+  ],
+  "excludedFixtureThemes": {
+    "themeCount": 5,
+    "rawBytes": 7504,
+    "minifiedBytes": 6618,
+    "gzipBytes": 825,
+    "sha256": "a376b5ef3af66c26d555a10e23b92fcff3165ea32fb6a0f44c5bc41601ae1e64",
+    "packaged": false,
+    "rationale": "fixture-only multi-theme output is not a core package entry"
+  },
+  "archive": {
+    "path": "dist/size-spike/neobrui-private-spike.tgz",
+    "files": [
+      {
+        "path": "README.md",
+        "bytes": 78
+      },
+      {
+        "path": "dist/button.css",
+        "bytes": 2413
+      },
+      {
+        "path": "dist/field.css",
+        "bytes": 1519
+      },
+      {
+        "path": "dist/foundations.css",
+        "bytes": 1338
+      },
+      {
+        "path": "dist/recipes.css",
+        "bytes": 4739
+      },
+      {
+        "path": "dist/surface.css",
+        "bytes": 771
+      },
+      {
+        "path": "package.json",
+        "bytes": 394
+      }
+    ],
+    "exports": {
+      ".": "./dist/recipes.css",
+      "./foundations": "./dist/foundations.css",
+      "./surface": "./dist/surface.css",
+      "./button": "./dist/button.css",
+      "./field": "./dist/field.css",
+      "./recipes": "./dist/recipes.css"
+    },
+    "runtimeJavaScriptBytes": 0,
+    "runtimeAssetBytes": 0,
+    "dependencies": [],
+    "tarBytes": 2042
+  },
+  "consumer": {
+    "fixture": "isolated local archive consumer",
+    "network": "none; archive path only",
+    "imports": [
+      "@neobrui/private-spike-candidate",
+      "@neobrui/private-spike-candidate/button"
+    ],
+    "transferredCssBytes": 6076,
+    "runtimeJavaScriptBytes": 0,
+    "build": "passed with local archive only"
+  },
+  "verdict": "warning/narrow"
+}
