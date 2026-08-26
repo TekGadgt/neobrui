@@ -1,5 +1,5 @@
 // Copy into a personal project; selectors and token meaning remain product-owned.
-import { exportDtcg } from '../src/tokens/dtcg.mjs';
+import { generateDtcgBundle } from '../src/tokens/dtcg.mjs';
 
 export const selectors = Object.freeze({
   light: '.my-product[data-theme="light"]',
@@ -7,5 +7,5 @@ export const selectors = Object.freeze({
 });
 
 export function buildInterchange(themes) {
-  return exportDtcg(themes, { selectors });
+  return generateDtcgBundle(themes, { selectors });
 }

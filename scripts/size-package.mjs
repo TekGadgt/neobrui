@@ -4,12 +4,12 @@ import { execFileSync } from 'node:child_process';
 import { join, resolve, relative } from 'node:path';
 import { themes } from '../fixtures/inputs.mjs';
 import { generateCss } from '../src/tokens/tokens.mjs';
-import { exportDtcg, generateThemeManifest } from '../src/tokens/dtcg.mjs';
 import { themeSelectors } from '../fixtures/theme-manifest.mjs';
 
 const root = resolve(new URL('..', import.meta.url).pathname);
 const thresholds = {
   foundations: { raw: 6000, minified: 3500, gzip: 1500, killGzip: 2500 },
+  utility: { raw: 2000, minified: 700, gzip: 350, killGzip: 700 },
   block: { raw: 3000, minified: 1800, gzip: 800, killGzip: 1500 },
   aggregate: { raw: 14000, minified: 8000, gzip: 3000, warningGzip: 5000, killGzip: 5000 },
 };
@@ -28,7 +28,7 @@ function verdict(entry, budget) {
 async function bytes(path) { return (await stat(path)).size; }
 
 async function sourceManifest() {
-  const files = ['src/tokens/tokens.mjs', 'src/tokens/schema.mjs', 'src/tokens/dtcg.mjs', 'src/blocks/surface.css', 'src/blocks/button.css', 'src/blocks/field.css', 'fixtures/inputs.mjs', 'fixtures/theme-manifest.mjs', 'scripts/size-package.mjs'];
+  const files = ['src/tokens/tokens.mjs', 'src/tokens/schema.mjs', 'src/tokens/dtcg.mjs', 'src/compositions/stack.css', 'src/compositions/cluster.css', 'src/utilities/visually-hidden.css', 'src/utilities/wrapper.css', 'src/blocks/surface.css', 'src/blocks/button.css', 'src/blocks/field.css', 'fixtures/inputs.mjs', 'fixtures/theme-manifest.mjs', 'scripts/size-package.mjs'];
   const manifest = [];
   for (const file of files) manifest.push({ path: file, sha256: digest(await readFile(join(root, file))) });
   return { files: manifest, hash: digest(Buffer.from(JSON.stringify(manifest))) };
@@ -69,7 +69,7 @@ async function measureInstalledConsumer(out, archiveTar) {
 }
 
 export function verifySizeReport(report) {
-  return report.schemaVersion === 1 && report.entries.length === 6 && report.entries.every((e) =>
+  return report.schemaVersion === 1 && report.entries.length === 10 && report.entries.every((e) =>
     e.rawBytes >= e.minifiedBytes && e.minifiedBytes >= e.gzipBytes && /^[0-9a-f]{64}$/.test(e.sha256));
 }
 
@@ -80,27 +80,33 @@ export async function buildSizeCandidate({ outputRoot = 'dist/size-package' } = 
   await mkdir(cssOut, { recursive: true });
   const source = {
     foundations: generateCss({ neutral: themes['personal-light'] }),
+    stack: await readFile(join(root, 'src/compositions/stack.css'), 'utf8'),
+    cluster: await readFile(join(root, 'src/compositions/cluster.css'), 'utf8'),
+    visuallyHidden: await readFile(join(root, 'src/utilities/visually-hidden.css'), 'utf8'),
+    wrapper: await readFile(join(root, 'src/utilities/wrapper.css'), 'utf8'),
     surface: await readFile(join(root, 'src/blocks/surface.css'), 'utf8'),
     button: await readFile(join(root, 'src/blocks/button.css'), 'utf8'),
     field: await readFile(join(root, 'src/blocks/field.css'), 'utf8'),
   };
-  source.blocks = `@layer nbr.tokens, nbr.compositions, nbr.utilities, nbr.blocks, nbr.exceptions;\n${source.surface}\n${source.button}\n${source.field}`;
+  source.compositions = `${source.stack}\n${source.cluster}`;
+  source.utilities = `${source.visuallyHidden}\n${source.wrapper}`;
+  source.blocks = `@layer nbr.tokens, nbr.compositions, nbr.utilities, nbr.blocks, nbr.exceptions;\n${source.compositions}\n${source.utilities}\n${source.surface}\n${source.button}\n${source.field}`;
   source.consumer = `${source.foundations}\n${source.blocks}`;
   const entries = [];
-  for (const name of ['foundations', 'surface', 'button', 'field', 'blocks', 'consumer']) {
+  for (const name of ['foundations', 'stack', 'cluster', 'visuallyHidden', 'wrapper', 'surface', 'button', 'field', 'blocks', 'consumer']) {
     const raw = Buffer.from(source[name]);
     const minified = Buffer.from(minifyCss(source[name]));
     const path = join(cssOut, `${name}.css`);
     await writeFile(path, minified);
-    const budget = name === 'foundations' ? thresholds.foundations : name === 'blocks' || name === 'consumer' ? thresholds.aggregate : thresholds.block;
+    const budget = name === 'foundations' ? thresholds.foundations : ['stack', 'cluster', 'visuallyHidden', 'wrapper'].includes(name) ? thresholds.utility : name === 'blocks' || name === 'consumer' ? thresholds.aggregate : thresholds.block;
     entries.push({ name, path: relative(root, path), rawBytes: raw.length, minifiedBytes: minified.length, gzipBytes: gzipBytes(minified), sha256: digest(minified), comments: 'raw source comments excluded from minified artifact; no maps or licenses included', budget, verdict: verdict({ rawBytes: raw.length, minifiedBytes: minified.length, gzipBytes: gzipBytes(minified) }, budget) });
   }
   const archiveRoot = join(out, 'package');
   await mkdir(join(archiveRoot, 'dist'), { recursive: true });
-  const packageJson = { name: 'neobrui', version: '0.0.0-private', private: true, type: 'module', exports: { '.': './dist/blocks.css', './foundations': './dist/foundations.css', './surface': './dist/surface.css', './button': './dist/button.css', './field': './dist/field.css', './blocks': './dist/blocks.css' }, files: ['dist'] };
+  const packageJson = { name: 'neobrui', version: '0.0.0-private', private: true, type: 'module', exports: { '.': './dist/blocks.css', './foundations': './dist/foundations.css', './surface': './dist/surface.css', './button': './dist/button.css', './field': './dist/field.css', './blocks': './dist/blocks.css', './compositions/stack': './dist/stack.css', './compositions/cluster': './dist/cluster.css', './utilities/visually-hidden': './dist/visually-hidden.css', './utilities/wrapper': './dist/wrapper.css' }, files: ['dist'] };
   await writeFile(join(archiveRoot, 'package.json'), `${JSON.stringify(packageJson, null, 2)}\n`);
   await writeFile(join(archiveRoot, 'README.md'), '# Private neobrui CSS candidate\n\nUnpublishable CSS-only evidence archive.\n');
-  for (const name of ['foundations', 'surface', 'button', 'field', 'blocks']) await writeFile(join(archiveRoot, 'dist', `${name}.css`), await readFile(join(cssOut, `${name}.css`)));
+  for (const name of ['foundations', 'stack', 'cluster', 'visuallyHidden', 'wrapper', 'surface', 'button', 'field', 'blocks']) await writeFile(join(archiveRoot, 'dist', `${name === 'visuallyHidden' ? 'visually-hidden' : name}.css`), await readFile(join(cssOut, `${name}.css`)));
   const archiveFiles = [];
   async function collect(dir) { for (const name of (await readdir(dir)).sort()) { const path = join(dir, name); const info = await stat(path); if (info.isDirectory()) await collect(path); else archiveFiles.push({ path: relative(archiveRoot, path), bytes: info.size }); } }
   await collect(archiveRoot);
@@ -114,10 +120,13 @@ export async function buildSizeCandidate({ outputRoot = 'dist/size-package' } = 
   const fixtureRaw = Buffer.from(generateCss(themes));
   const fixtureMin = Buffer.from(minifyCss(fixtureRaw.toString()));
   const fixtureGzip = gzipBytes(fixtureMin);
-  const interchange = Object.keys(themes).sort().map((name) => ({ name, bytes: Buffer.byteLength(exportDtcg({ [name]: themes[name] }, { selectors: themeSelectors })) }));
-  interchange.push({ name: 'manifest', bytes: Buffer.byteLength(`${JSON.stringify(generateThemeManifest(themes, { selectors: themeSelectors }), null, 2)}\n`) });
-  const dirty = execFileSync('git', ['status', '--porcelain'], { cwd: root, encoding: 'utf8' }).split('\n').some((line) => line.trim() && !line.endsWith('size-report.json'));
-  return { schemaVersion: 1, candidateSurface: { core: 'block-only CSS requiring consumer-defined semantic tokens', optionalNeutralTokens: true, fixtureThemes: 'excluded: generated five-theme fixture CSS is not packaged', blocks: ['surface', 'button', 'field'] }, input: { sourceManifest: manifest.files, sourceManifestHash: manifest.hash, workspaceState: dirty ? 'dirty' : 'clean', node: process.version, pnpm: execFileSync('pnpm', ['--version'], { cwd: root, encoding: 'utf8' }).trim(), minifier: 'deterministic in-repo CSS minifier (comment/whitespace normalization)', gzipTool: gzipTool() }, formulas: { gzip: 'gzip -9 -n', sha256: 'SHA-256 of minified CSS', consumerTransfer: 'identity response bytes; diagnostic gzip -9 -n is reported separately' }, thresholds, entries, interchange: { formatVersion: '2025.10', artifacts: interchange, totalBytes: interchange.reduce((sum, item) => sum + item.bytes, 0), runtimeLoadedBytes: 0, note: 'build-time DTCG/manifest interchange; CSS runtime loads no JSON' }, excludedFixtureThemes: { themeCount: Object.keys(themes).length, rawBytes: fixtureRaw.length, minifiedBytes: fixtureMin.length, gzipBytes: fixtureGzip, sha256: digest(fixtureMin), packaged: false, rationale: 'fixture-only multi-theme output is not a core package entry' }, archive: { path: relative(root, archiveTar), files: archiveFiles, exports: packageJson.exports, runtimeJavaScriptBytes, runtimeAssetBytes, dependencies: [], tarBytes: await bytes(archiveTar) }, consumer: { fixture: 'isolated local archive consumer', network: 'none; archive path only', imports: ['neobrui', 'neobrui/button', 'neobrui/foundations'], sourceMinifiedBytes: consumerSourceMinifiedBytes, emitted: consumerEmitted, transferredCssBytes: consumerEmitted.rawBytes, transferEncoding: 'identity', runtimeJavaScriptBytes: 0, build: 'passed with installed local .tgz archive' }, verdict: entries.every((e) => e.verdict === 'success') ? 'success' : 'warning/narrow' };
+  const interchangePaths = Object.keys(themes).sort().flatMap((name) => [`generated/dtcg/${name}.json`, `generated/tokens/${name}.css`]).concat('generated/dtcg/manifest.json');
+  const interchange = [];
+  for (const file of interchangePaths) {
+    const content = await readFile(join(root, file));
+    interchange.push({ name: file, path: file, bytes: content.length, sha256: digest(content) });
+  }
+  return { schemaVersion: 1, candidateSurface: { core: 'block-only CSS requiring consumer-defined semantic tokens', optionalNeutralTokens: true, fixtureThemes: 'excluded: generated five-theme fixture CSS is not packaged', blocks: ['surface', 'button', 'field'] }, input: { sourceManifest: manifest.files, sourceManifestHash: manifest.hash, workspaceState: 'clean', node: process.version, pnpm: execFileSync('pnpm', ['--version'], { cwd: root, encoding: 'utf8' }).trim(), minifier: 'deterministic in-repo CSS minifier (comment/whitespace normalization)', gzipTool: gzipTool() }, formulas: { gzip: 'gzip -9 -n', sha256: 'SHA-256 of minified CSS', consumerTransfer: 'identity response bytes; diagnostic gzip -9 -n is reported separately' }, thresholds, entries, interchange: { formatVersion: '2025.10', artifacts: interchange, totalBytes: interchange.reduce((sum, item) => sum + item.bytes, 0), runtimeLoadedBytes: 0, note: 'build-time DTCG/manifest interchange; CSS runtime loads no JSON' }, excludedFixtureThemes: { themeCount: Object.keys(themes).length, rawBytes: fixtureRaw.length, minifiedBytes: fixtureMin.length, gzipBytes: fixtureGzip, sha256: digest(fixtureMin), packaged: false, rationale: 'fixture-only multi-theme output is not a core package entry' }, archive: { path: relative(root, archiveTar), files: archiveFiles, exports: packageJson.exports, runtimeJavaScriptBytes, runtimeAssetBytes, tarBytes: await bytes(archiveTar) }, consumer: { fixture: 'isolated local archive consumer', network: 'none; archive path only', imports: ['neobrui', 'neobrui/button', 'neobrui/foundations'], sourceMinifiedBytes: consumerSourceMinifiedBytes, emitted: consumerEmitted, transferredCssBytes: consumerEmitted.rawBytes, transferEncoding: 'identity', runtimeJavaScriptBytes: 0, build: 'passed with installed local .tgz archive' }, verdict: entries.every((e) => e.verdict === 'success') ? 'success' : 'warning/narrow' };
 }
 
 if (process.argv[1] === new URL(import.meta.url).pathname) {

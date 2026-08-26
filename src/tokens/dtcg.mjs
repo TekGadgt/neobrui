@@ -9,14 +9,15 @@ const clone = value => structuredClone(value);
 
 function tokenValue(value) { return value && typeof value === 'object' && '$value' in value ? value.$value : value; }
 function tokenType(family, value) { return value && typeof value === 'object' && value.$type ? value.$type : TYPE_BY_FAMILY[family]; }
-function sourceValue(value, path, all) {
+function sourceValue(value, path, all, stack = []) {
+  if (stack.includes(path)) throw new Error(`Alias cycle: ${[...stack, path].join(' -> ')}`);
   const raw = tokenValue(value);
   if (typeof raw !== 'string') throw new Error(`Invalid token value "${path}"`);
   const ref = raw.match(/^\{([^{}]+)\}$/)?.[1];
   if (!ref) return raw;
   const target = all.get(ref);
   if (target === undefined) throw new Error(`Unresolved token reference "${path}" -> "${ref}"`);
-  return sourceValue(target, ref, all);
+  return sourceValue(target, ref, all, [...stack, path]);
 }
 function resolvedTheme(tokens) {
   const normalized = new Set();
@@ -53,19 +54,29 @@ function sortedTokenObject(tokens) {
 }
 function assertDtcgObject(document) {
   if (!document || typeof document !== 'object' || Array.isArray(document)) throw new Error('DTCG document must be an object');
-  for (const key of Object.keys(document)) {
-    if (key.startsWith('$') && key !== '$extensions' && key !== '$schema') throw new Error(`Unknown DTCG property "${key}"`);
-  }
+  for (const key of Object.keys(document)) if (key.startsWith('$') && key !== '$extensions' && key !== '$schema') throw new Error(`Unknown DTCG property "${key}"`);
+  if (document.$schema !== `https://tr.designtokens.org/format/${DTCG_VERSION}`) throw new Error(`Unsupported DTCG schema; expected ${DTCG_VERSION}`);
   if (document.$extensions) {
     for (const key of Object.keys(document.$extensions)) if (key !== EXTENSION) throw new Error(`Unknown DTCG extension "${key}"`);
+    const ext = document.$extensions[EXTENSION];
+    if (!ext || typeof ext !== 'object') throw new Error(`Invalid ${EXTENSION} extension`);
+    for (const key of Object.keys(ext)) if (!['formatVersion', 'generator', 'sourceRevision', 'themes'].includes(key)) throw new Error(`Unknown ${EXTENSION} property "${key}"`);
+    if (typeof ext.generator !== 'string' || !ext.generator) throw new Error(`Invalid ${EXTENSION}.generator`);
+    if (!ext.themes || typeof ext.themes !== 'object' || Array.isArray(ext.themes)) throw new Error(`Invalid ${EXTENSION}.themes`);
+    for (const [name, theme] of Object.entries(ext.themes)) {
+      if (!theme || typeof theme !== 'object' || Object.keys(theme).some(key => key !== 'selector') || typeof theme.selector !== 'string') throw new Error(`Invalid theme metadata "${name}"`);
+    }
   }
   for (const [family, roles] of Object.entries(document)) {
     if (family.startsWith('$')) continue;
+    if (!Object.hasOwn(REQUIRED_ROLES, family)) throw new Error(`Unknown DTCG group "${family}"`);
     if (!roles || typeof roles !== 'object') throw new Error(`Invalid DTCG group "${family}"`);
     for (const [role, entry] of Object.entries(roles)) {
+      if (!REQUIRED_ROLES[family].includes(role)) throw new Error(`Unknown DTCG token "${family}.${role}"`);
       if (!entry || typeof entry !== 'object' || !('$value' in entry)) throw new Error(`Missing $value at ${family}.${role}`);
-      if (entry.$type && !Object.values(TYPE_BY_FAMILY).includes(entry.$type)) throw new Error(`Unknown type "${entry.$type}"`);
-      for (const property of Object.keys(entry)) if (!['$value', '$type', '$description'].includes(property)) throw new Error(`Unknown DTCG property "${property}"`);
+      if (entry.$type && entry.$type !== TYPE_BY_FAMILY[family]) throw new Error(`Unknown type "${entry.$type}" for ${family}`);
+      if (typeof entry.$value !== 'string' || (entry.$value.startsWith('{') && !/^\{[a-zA-Z0-9._-]+\}$/.test(entry.$value))) throw new Error(`Invalid alias syntax at ${family}.${role}`);
+      for (const property of Object.keys(entry)) if (!['$value', '$type'].includes(property)) throw new Error(`Unknown DTCG property "${property}"`);
     }
   }
   const ext = document.$extensions?.[EXTENSION];
@@ -75,6 +86,7 @@ function assertDtcgObject(document) {
 export function generateDtcg(themeMap, { selectors = {}, sourceRevision = null } = {}) {
   const names = Object.keys(themeMap).sort();
   if (!names.length) throw new Error('At least one theme is required');
+  if (names.length > 1) throw new Error('Ambiguous multi-theme export: use generateDtcgBundle() for one artifact per theme');
   const first = sortedTokenObject(themeMap[names[0]]);
   const themes = {};
   for (const name of names) {
@@ -86,6 +98,11 @@ export function generateDtcg(themeMap, { selectors = {}, sourceRevision = null }
   return first;
 }
 export function exportDtcg(themeMap, options = {}) { return `${JSON.stringify(generateDtcg(themeMap, options), null, 2)}\n`; }
+export function generateDtcgBundle(themeMap, options = {}) {
+  const artifacts = {};
+  for (const name of Object.keys(themeMap).sort()) artifacts[name] = generateDtcg({ [name]: themeMap[name] }, options);
+  return { artifacts, manifest: generateThemeManifest(themeMap, options) };
+}
 export function importDtcg(input) {
   const document = typeof input === 'string' ? JSON.parse(input) : clone(input);
   assertDtcgObject(document);

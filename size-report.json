@@ -18,11 +18,27 @@
       },
       {
         "path": "src/tokens/schema.mjs",
-        "sha256": "ee517cc4b944dbbe8fa7a80ad41225c052b2e3a78fa4e95796341afafa4e4505"
+        "sha256": "a406e4f71208e0a150acad4d789e85dd6a9f64db8f9cd7e6fe060a9e7f83b110"
       },
       {
         "path": "src/tokens/dtcg.mjs",
-        "sha256": "b3403e8df2a88e696c6cae21ab12603cb436ac57f3769bcf94ec0682672867f5"
+        "sha256": "a9c39bb95aca415196eb3f4da993f863f55be2ec59b60124ccb88034df3052bd"
+      },
+      {
+        "path": "src/compositions/stack.css",
+        "sha256": "832a3daecee0e09ea2b26175d317a3c20846b88f785058228f866119d6193cfb"
+      },
+      {
+        "path": "src/compositions/cluster.css",
+        "sha256": "9326ee43e7dacec1e2262722764908ee511adc11aef45bdc6730dd8d76ded606"
+      },
+      {
+        "path": "src/utilities/visually-hidden.css",
+        "sha256": "d3c68647ca84bfe6dd1e355208d642675a746523213b24bc358c6fcb67950521"
+      },
+      {
+        "path": "src/utilities/wrapper.css",
+        "sha256": "1a5bed727829c984a3d6df9a59ce2e7d20efc05f515151d5ecdb10dbf81ab439"
       },
       {
         "path": "src/blocks/surface.css",
@@ -38,7 +54,7 @@
       },
       {
         "path": "fixtures/inputs.mjs",
-        "sha256": "8fd6eaf2283fdd75f86eac339fa9fc4d7519becfc280ab78edb0595a46664136"
+        "sha256": "8e567753d9aeded2fec65199a676f37fb895a2582c15c83e745b4e829211bfea"
       },
       {
         "path": "fixtures/theme-manifest.mjs",
@@ -46,11 +62,11 @@
       },
       {
         "path": "scripts/size-package.mjs",
-        "sha256": "7d92527dfe3804c63b516c2493f713c04dc91782d80247f524038ad208574c22"
+        "sha256": "a5ef14917029063481e101533d271b3960ec324ec2f8b455c31480f325004e6e"
       }
     ],
-    "sourceManifestHash": "07c31c7064cb635f1bda7764f6514675be7a5ee361f17ded6ff776eeb45ba8a9",
-    "workspaceState": "dirty",
+    "sourceManifestHash": "9edb9ff2ffb3a2a348cf3cca03f349b1bf02ada32022bec92765c054b04376b5",
+    "workspaceState": "clean",
     "node": "v26.5.1",
     "pnpm": "11.24.0",
     "minifier": "deterministic in-repo CSS minifier (comment/whitespace normalization)",
@@ -67,6 +83,12 @@
       "minified": 3500,
       "gzip": 1500,
       "killGzip": 2500
+    },
+    "utility": {
+      "raw": 2000,
+      "minified": 700,
+      "gzip": 350,
+      "killGzip": 700
     },
     "block": {
       "raw": 3000,
@@ -86,16 +108,80 @@
     {
       "name": "foundations",
       "path": "dist/size-package/dist/foundations.css",
-      "rawBytes": 1596,
-      "minifiedBytes": 1413,
-      "gzipBytes": 539,
-      "sha256": "f7a75f6c173e55c1a373f225419e78d30c0ad2ebd140ba9798513f1f048022be",
+      "rawBytes": 1625,
+      "minifiedBytes": 1438,
+      "gzipBytes": 548,
+      "sha256": "857328a51a1dd7163f843a5e960a3692473d9326851e66eb88ddc0cd63142d72",
       "comments": "raw source comments excluded from minified artifact; no maps or licenses included",
       "budget": {
         "raw": 6000,
         "minified": 3500,
         "gzip": 1500,
         "killGzip": 2500
+      },
+      "verdict": "success"
+    },
+    {
+      "name": "stack",
+      "path": "dist/size-package/dist/stack.css",
+      "rawBytes": 218,
+      "minifiedBytes": 110,
+      "gzipBytes": 109,
+      "sha256": "802ae88bc53ae380cb545c663e17ee6cb511632adc6e211995d0a61cc955db9c",
+      "comments": "raw source comments excluded from minified artifact; no maps or licenses included",
+      "budget": {
+        "raw": 2000,
+        "minified": 700,
+        "gzip": 350,
+        "killGzip": 700
+      },
+      "verdict": "success"
+    },
+    {
+      "name": "cluster",
+      "path": "dist/size-package/dist/cluster.css",
+      "rawBytes": 326,
+      "minifiedBytes": 205,
+      "gzipBytes": 144,
+      "sha256": "5f437570c6e654fb1c56f567aa0b75a3afa4bf6bdf6ab4e4ffa3015d1e0147ce",
+      "comments": "raw source comments excluded from minified artifact; no maps or licenses included",
+      "budget": {
+        "raw": 2000,
+        "minified": 700,
+        "gzip": 350,
+        "killGzip": 700
+      },
+      "verdict": "success"
+    },
+    {
+      "name": "visuallyHidden",
+      "path": "dist/size-package/dist/visuallyHidden.css",
+      "rawBytes": 418,
+      "minifiedBytes": 260,
+      "gzipBytes": 198,
+      "sha256": "edc5f13cb0a1ef84cb2a5ca208a0ca9b3ec842adf3b5f14a15d241cc10bc7533",
+      "comments": "raw source comments excluded from minified artifact; no maps or licenses included",
+      "budget": {
+        "raw": 2000,
+        "minified": 700,
+        "gzip": 350,
+        "killGzip": 700
+      },
+      "verdict": "success"
+    },
+    {
+      "name": "wrapper",
+      "path": "dist/size-package/dist/wrapper.css",
+      "rawBytes": 292,
+      "minifiedBytes": 196,
+      "gzipBytes": 125,
+      "sha256": "6fee1efd54fbe2b30ad47f0ce3124805c25f108ad246351f850dd2dc6631cb78",
+      "comments": "raw source comments excluded from minified artifact; no maps or licenses included",
+      "budget": {
+        "raw": 2000,
+        "minified": 700,
+        "gzip": 350,
+        "killGzip": 700
       },
       "verdict": "success"
     },
@@ -150,10 +236,10 @@
     {
       "name": "blocks",
       "path": "dist/size-package/dist/blocks.css",
-      "rawBytes": 4964,
-      "minifiedBytes": 4537,
-      "gzipBytes": 1087,
-      "sha256": "f5d2b3d08e2e3b72313932d44b1f5cd3c251c63127d20f92f3fe6be315e2e4d6",
+      "rawBytes": 6222,
+      "minifiedBytes": 5304,
+      "gzipBytes": 1317,
+      "sha256": "338e763fee305ff6b1a2b98d32216f600454582deef2ca0ec6c6248d1eb3e0ad",
       "comments": "raw source comments excluded from minified artifact; no maps or licenses included",
       "budget": {
         "raw": 14000,
@@ -167,10 +253,10 @@
     {
       "name": "consumer",
       "path": "dist/size-package/dist/consumer.css",
-      "rawBytes": 6561,
-      "minifiedBytes": 5949,
-      "gzipBytes": 1457,
-      "sha256": "724c062c7b7a5fffb2213569918976b2408c3bb4c65d2792080f47107d1fc010",
+      "rawBytes": 7848,
+      "minifiedBytes": 6741,
+      "gzipBytes": 1689,
+      "sha256": "78d2b30bf203fb330cea500dd6f0fcfb70c321b3c2acc21a551f5f584e71b44d",
       "comments": "raw source comments excluded from minified artifact; no maps or licenses included",
       "budget": {
         "raw": 14000,
@@ -186,40 +272,82 @@
     "formatVersion": "2025.10",
     "artifacts": [
       {
-        "name": "nested-theme",
-        "bytes": 3879
+        "name": "generated/dtcg/nested-theme.json",
+        "path": "generated/dtcg/nested-theme.json",
+        "bytes": 3943,
+        "sha256": "eb53a5c780595a7a14deb8930efa6ac590434602bc061a74d0424ad2bbecfc2e"
       },
       {
-        "name": "neutralized",
-        "bytes": 3881
+        "name": "generated/tokens/nested-theme.css",
+        "path": "generated/tokens/nested-theme.css",
+        "bytes": 1685,
+        "sha256": "cd2c526fdec582795765997fd81b63dcbc61d2c44e8740ab021897d6691c37b8"
       },
       {
-        "name": "personal-dark",
-        "bytes": 3878
+        "name": "generated/dtcg/neutralized.json",
+        "path": "generated/dtcg/neutralized.json",
+        "bytes": 3945,
+        "sha256": "bedd21d5ac6c20f138627e52f013d79351f993c3ea3a2ee33ae9eae220a653a9"
       },
       {
-        "name": "personal-light",
-        "bytes": 3883
+        "name": "generated/tokens/neutralized.css",
+        "path": "generated/tokens/neutralized.css",
+        "bytes": 1688,
+        "sha256": "1c10b2911d516477f545397ca52a856237f867802ff5fa7ba92fb84aba83a726"
       },
       {
-        "name": "workshop",
-        "bytes": 3871
+        "name": "generated/dtcg/personal-dark.json",
+        "path": "generated/dtcg/personal-dark.json",
+        "bytes": 3942,
+        "sha256": "f3df4cd479a7bb3b714e0d90fac5b122cb8fe0492b9babcffbef8e6937a7a0c2"
       },
       {
-        "name": "manifest",
-        "bytes": 458
+        "name": "generated/tokens/personal-dark.css",
+        "path": "generated/tokens/personal-dark.css",
+        "bytes": 1683,
+        "sha256": "cc14f1db63cacc5d3405b39be333d11846a8a18d65145ce6b1fcbf7ec92bb7ed"
+      },
+      {
+        "name": "generated/dtcg/personal-light.json",
+        "path": "generated/dtcg/personal-light.json",
+        "bytes": 3947,
+        "sha256": "b209c5f94a1eb9c1d51802b9371bc6792a5b203a39af440f944a28e6d61d3358"
+      },
+      {
+        "name": "generated/tokens/personal-light.css",
+        "path": "generated/tokens/personal-light.css",
+        "bytes": 1687,
+        "sha256": "f0f352b1d8a2518c7bbf33b9517984b18a9f9f51fa9ff1e21160f3383f86c3e2"
+      },
+      {
+        "name": "generated/dtcg/workshop.json",
+        "path": "generated/dtcg/workshop.json",
+        "bytes": 3935,
+        "sha256": "8220a6440199573f36510971eb91410142dd28b1f1a49de6122e51548d376b4a"
+      },
+      {
+        "name": "generated/tokens/workshop.css",
+        "path": "generated/tokens/workshop.css",
+        "bytes": 1681,
+        "sha256": "ef33fd6151c2603e4dccdf0f0740de6771bd3143488ff0481cae5795e1a43cf8"
+      },
+      {
+        "name": "generated/dtcg/manifest.json",
+        "path": "generated/dtcg/manifest.json",
+        "bytes": 682,
+        "sha256": "3de5c5e796b45bb076bae88b7e0ad74db9e669d03a31d6535b46745fd6d158c3"
       }
     ],
-    "totalBytes": 19850,
+    "totalBytes": 28818,
     "runtimeLoadedBytes": 0,
     "note": "build-time DTCG/manifest interchange; CSS runtime loads no JSON"
   },
   "excludedFixtureThemes": {
     "themeCount": 5,
-    "rawBytes": 7600,
-    "minifiedBytes": 6709,
-    "gzipBytes": 856,
-    "sha256": "95ef88f2d7f5433e9638b89520c0ee1fa4b58c5c23bd92d51bb08a2d1e55c4f6",
+    "rawBytes": 7745,
+    "minifiedBytes": 6834,
+    "gzipBytes": 866,
+    "sha256": "1b98a6e5bf7790102326ebc68c4d466e0fd689cebfe34b323f627630a6f91f7f",
     "packaged": false,
     "rationale": "fixture-only multi-theme output is not a core package entry"
   },
@@ -232,11 +360,15 @@
       },
       {
         "path": "dist/blocks.css",
-        "bytes": 4537
+        "bytes": 5304
       },
       {
         "path": "dist/button.css",
         "bytes": 2322
+      },
+      {
+        "path": "dist/cluster.css",
+        "bytes": 205
       },
       {
         "path": "dist/field.css",
@@ -244,15 +376,27 @@
       },
       {
         "path": "dist/foundations.css",
-        "bytes": 1413
+        "bytes": 1438
+      },
+      {
+        "path": "dist/stack.css",
+        "bytes": 110
       },
       {
         "path": "dist/surface.css",
         "bytes": 736
       },
       {
+        "path": "dist/visually-hidden.css",
+        "bytes": 260
+      },
+      {
+        "path": "dist/wrapper.css",
+        "bytes": 196
+      },
+      {
         "path": "package.json",
-        "bytes": 366
+        "bytes": 580
       }
     ],
     "exports": {
@@ -261,12 +405,15 @@
       "./surface": "./dist/surface.css",
       "./button": "./dist/button.css",
       "./field": "./dist/field.css",
-      "./blocks": "./dist/blocks.css"
+      "./blocks": "./dist/blocks.css",
+      "./compositions/stack": "./dist/stack.css",
+      "./compositions/cluster": "./dist/cluster.css",
+      "./utilities/visually-hidden": "./dist/visually-hidden.css",
+      "./utilities/wrapper": "./dist/wrapper.css"
     },
     "runtimeJavaScriptBytes": 0,
     "runtimeAssetBytes": 0,
-    "dependencies": [],
-    "tarBytes": 2002
+    "tarBytes": 2421
   },
   "consumer": {
     "fixture": "isolated local archive consumer",
@@ -276,19 +423,19 @@
       "neobrui/button",
       "neobrui/foundations"
     ],
-    "sourceMinifiedBytes": 5949,
+    "sourceMinifiedBytes": 6741,
     "emitted": {
-      "filename": "assets/index--oFbmvgw.css",
-      "rawBytes": 4465,
-      "gzipBytes": 1071,
-      "sha256": "eaa050b2958bc22e56d17bb4d1dfbdaae9d31760a4c479b4bc277dbe8c7134bc",
+      "filename": "assets/index-CUl-3CH0.css",
+      "rawBytes": 5226,
+      "gzipBytes": 1301,
+      "sha256": "ca1ee6e8e6f203a6fc1ec6d54476641907d506d82f384eeb394d9ac73a6de803",
       "contentEncoding": "identity",
       "packageJsonSha256": "216be6adc98e34ce755b3e2b25f474a59179ab5358553b47a25cff07e0517084",
-      "lockfileSha256": "f709034e6a54cade3fa19a3159c88bc14d723ff3f7361292a838b822231085c1",
+      "lockfileSha256": "22f6a9104097a3f5a064486b4708a24ee7ad25a7496b531211f7ed788cd7d3f0",
       "runtimeDependency": "file:neobrui-private.tgz",
       "tooling": "root-harness Vite 7.3.6"
     },
-    "transferredCssBytes": 4465,
+    "transferredCssBytes": 5226,
     "transferEncoding": "identity",
     "runtimeJavaScriptBytes": 0,
     "build": "passed with installed local .tgz archive"
