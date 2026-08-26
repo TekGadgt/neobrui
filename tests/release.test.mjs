@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { buildRelease } from '../scripts/release.mjs';
 import { createDeterministicArchive } from '../scripts/create-archive.mjs';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, rm, symlink, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
 test('formal release has private personal-alpha metadata and explicit exports', async () => {
@@ -46,4 +46,48 @@ test('deterministic archive accepts explicit safe sorted files and rejects symli
   await tar.list({ file: 'tmp/archive-fixture.tgz', onReadEntry: entry => entries.push({ path: entry.path, mode: entry.mode, uid: entry.uid, gid: entry.gid, mtime: entry.mtime }) });
   assert.deepEqual(entries.map(entry => entry.path), result.files);
   assert.ok(entries.every(entry => entry.uid === undefined && entry.gid === undefined && entry.mtime.getTime() === 0));
+});
+
+test('archive rejects symlinked ancestors and unsafe member paths before creating output', async () => {
+  const root = 'tmp/archive-safety-root';
+  const outside = 'tmp/archive-safety-outside';
+  const output = 'tmp/archive-safety-invalid.tgz';
+  await rm(root, { recursive: true, force: true });
+  await rm(outside, { recursive: true, force: true });
+  await rm(output, { force: true });
+  await mkdir(join(root, 'nested'), { recursive: true });
+  await mkdir(join(outside, 'deep'), { recursive: true });
+  await writeFile(join(root, 'nested', 'valid.txt'), 'valid');
+  await writeFile(join(outside, 'secret.css'), 'must not be read');
+  await writeFile(join(outside, 'deep', 'secret.css'), 'must not be read');
+  await symlink(join('..', 'archive-safety-outside'), join(root, 'link'));
+  await symlink(join('..', 'outside-missing'), join(root, 'chain'));
+  await symlink(join('..', 'archive-safety-outside', 'deep'), join(root, 'link-to-deep'));
+
+  const rejects = [
+    ['symlinked parent escape', ['link/secret.css'], /symlink.*link/],
+    ['nested symlink chain', ['link-to-deep/secret.css'], /symlink.*link-to-deep/],
+    ['final symlink', ['link'], /symlink.*link/],
+    ['dot segment', ['nested/./valid.txt'], /unsafe archive path/],
+    ['parent segment', ['nested/../valid.txt'], /unsafe archive path/],
+    ['absolute path', ['/etc/passwd'], /unsafe archive path/],
+    ['backslash escape', ['nested\\\\..\\\\secret.css'], /unsafe archive path/],
+    ['drive path', ['C:\\\\secret.css'], /unsafe archive path/],
+    ['UNC path', ['\\\\\\\\server\\\\secret.css'], /unsafe archive path/],
+    ['NUL path', ['nested/valid.txt\0secret'], /unsafe archive path/],
+    ['case-ambiguous duplicate', ['nested/valid.txt', 'NESTED/VALID.TXT'], /duplicate archive path/],
+    ['missing path', ['chain/secret.css'], /symlink.*chain/],
+    ['directory final', ['nested'], /directory or unsupported/],
+  ];
+  for (const [name, files, diagnostic] of rejects) {
+    await assert.rejects(
+      () => createDeterministicArchive({ root, output, files }),
+      diagnostic,
+      name,
+    );
+    assert.equal(await readFile(output).catch(() => null), null, `${name} created an archive`);
+  }
+
+  const result = await createDeterministicArchive({ root, output, files: ['nested/valid.txt'] });
+  assert.deepEqual(result.files, ['nested/valid.txt']);
 });
