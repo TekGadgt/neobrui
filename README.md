@@ -33,6 +33,13 @@ pnpm verify:clean
 
 `pnpm test` includes unit contracts, token validation, and the configured Chromium/Firefox/WebKit Playwright projects. `pnpm verify:size` is fresh and non-mutating; `pnpm measure:size` intentionally regenerates `size-report.json`.
 
+## Repository boundaries
+
+- Connected/comparison projects are read-only evidence and are not imported or edited by this repository.
+- Container dependencies live in a container-only Linux `node_modules` volume.
+- Host dependency trees remain separate.
+- The declared darwin/linux and arm64/x64 architecture matrix supports a shared lockfile contract that remains portable, not synchronized dependency directories.
+
 ## Formal docs
 
 - [Current surface](docs/current-surface.md)
