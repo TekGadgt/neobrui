@@ -38,8 +38,11 @@ A later GitHub-source gate checks namespace, MIT, README, CI, secrets/history, p
 
 This ADR intentionally records proposed defaults and unresolved choices; it does not silently adopt an architecture or public-release policy. Ryan’s explicit choices are tracked in `docs/architecture-and-release-options.md`.
 
+The complete first-party CUBE review is recorded in `docs/cube-css-fit-review.md`. Its CUBE-primary recommendation is research input only: CUBE architecture acceptance remains pending Ryan’s decision, and this ADR remains Proposed.
+
 ## References
 
+- `docs/cube-css-fit-review.md`
 - `docs/architecture-and-release-options.md`
 - `docs/expansion-roadmap.md`
 - `docs/status-and-support.md`
