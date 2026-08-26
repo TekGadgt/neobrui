@@ -48,6 +48,16 @@ test.describe('Spike 3 shadow direction policy', () => {
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
   });
 
+  test('invalid shadow fixture field exposes visible correction text through aria-describedby', async ({ page }) => {
+    const field = page.locator('#shadow-invalid');
+    const describedBy = await field.getAttribute('aria-describedby');
+    expect(describedBy).toBe('shadow-invalid-error');
+    const correction = page.locator(`#${describedBy}`);
+    await expect(correction).toBeVisible();
+    await expect(correction).toContainText('Correction:');
+    expect(await field.evaluate(el => getComputedStyle(el).borderStyle)).toBe('dashed');
+  });
+
   test('shadow-disabled and forced-colors preserve non-shadow state cues', async ({ page, browserName }) => {
     const disabled = page.locator('#shadow-disabled');
     expect(await shadow(disabled.locator('._nb-spike-button').first())).toBe('none');

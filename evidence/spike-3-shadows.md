@@ -7,7 +7,7 @@
 
 ## Fixture and token contract
 
-`/shadows/` contains LTR and RTL logical defaults, nested LTR-in-RTL and RTL-in-LTR cases, fixed physical subtrees in both directions, rest/active controls, and a shadow-disabled state matrix. `fixtures/inputs.mjs` owns the temporary axis lengths; core does not regain project values. The generated CSS is deterministic and emits `--_nb-shadow-inline: 3px`, `--_nb-shadow-block: 4px`, `--_nb-shadow-pressInline: 1px`, and `--_nb-shadow-pressBlock: 1px`.
+`/shadows/` contains LTR and RTL logical defaults, nested LTR-in-RTL and RTL-in-LTR cases, fixed physical subtrees in both directions, rest/active controls, and a shadow-disabled state matrix. `fixtures/inputs.mjs` owns the temporary axis lengths; core does not regain project values. The temporary internal schema contract allows only `0` or finite decimal values with `px`, `rem`, `em`, `ch`, `ex`, `vw`, `vh`, `vmin`, and `vmax`. It rejects `%`, physical units, functions, colors, multi-token strings, and NaN/infinite-like text before CSS generation; this is not public API stability. The generated CSS is deterministic and emits `--_nb-shadow-inline: 3px`, `--_nb-shadow-block: 4px`, `--_nb-shadow-pressInline: 1px`, and `--_nb-shadow-pressBlock: 1px`.
 
 ## Automated checks
 
