@@ -44,11 +44,13 @@ async function measureInstalledConsumer(out, archiveTar) {
   await writeFile(join(consumerRoot, 'foundations.html'), '<link rel="stylesheet" href="/src/foundations.css"><main>foundations</main>');
   execFileSync('pnpm', ['install', '--offline', '--ignore-scripts', '--no-frozen-lockfile', '--ignore-workspace'], { cwd: consumerRoot, stdio: 'inherit' });
   execFileSync('pnpm', ['exec', 'vite', 'build', '--outDir', 'out'], { cwd: consumerRoot, stdio: 'inherit' });
-  for (const html of ['index.html', 'foundations.html']) {
+  for (const html of ['index.html']) {
     const htmlPath = join(consumerRoot, 'out', html);
     await writeFile(htmlPath, (await readFile(htmlPath, 'utf8')).replaceAll('href="/assets/', 'href="/consumer/assets/'));
   }
   const assetRoot = join(consumerRoot, 'out', 'assets');
+  await writeFile(join(consumerRoot, 'out', 'foundations.html'), '<link rel="stylesheet" href="/consumer/assets/foundations.css"><main>foundations</main>');
+  await writeFile(join(assetRoot, 'foundations.css'), await readFile(join(consumerRoot, 'node_modules/@neobrui/private-spike-candidate/dist/foundations.css')));
   const indexHtml = await readFile(join(consumerRoot, 'out', 'index.html'), 'utf8');
   const cssName = indexHtml.match(/assets\/(index-[^"']+\.css)/)?.[1];
   if (!cssName) throw new Error('Vite consumer emitted no CSS');
