@@ -35,7 +35,7 @@ test('QA output is test-only and cannot enter canonical package paths', async ()
 test('committed checklist sources use the same canonical IDs and statuses', async () => {
   const markdown = checklistFromMarkdown(await readFile('evidence/qa-checklists.md', 'utf8'));
   const json = checklistFromJson(JSON.parse(await readFile('evidence/qa-timings.json', 'utf8')));
-  const summary = checklistFromSummary(await readFile('evidence/spike-6-qa-rehearsal.md', 'utf8'));
+  const summary = checklistFromSummary(await readFile('evidence/historical/spike-6-qa-rehearsal.md', 'utf8'));
   for (const source of [markdown, json, summary]) {
     assert.deepEqual(Object.keys(source).sort(), CHECKLIST_IDS.sort());
     assert.deepEqual([...new Set(Object.values(source))].filter(status => !ALLOWED_STATUSES.has(status)), []);
