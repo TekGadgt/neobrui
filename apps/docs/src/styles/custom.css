@@ -24,11 +24,11 @@
 .showcase { border: 1px solid var(--nbr-color-border, currentColor); padding: 1.25rem; background: var(--nbr-color-surface, Canvas); }
 .showcase [data-nbr-level] { margin-block: 1rem; }
 
-@media (min-width: 72rem) {
+@media (min-width: 50rem) {
   /* Starlight's responsive TOC wrappers are utility classes. Keep the inactive
      mobile landmark out of the accessibility tree at desktop widths. */
-  .lg\:sl-hidden { display: none; }
-  .lg\:sl-block { display: block; }
+  .md\:sl-hidden { display: none; }
+  .md\:sl-block { display: block; }
 }
 
 @media (max-width: 30rem) {

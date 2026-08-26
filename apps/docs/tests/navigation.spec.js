@@ -49,12 +49,30 @@ test('responsive TOC exposes only the active navigation landmark', async ({ page
     const mobileLandmark = page.locator('mobile-starlight-toc > nav');
     const desktopLandmark = page.locator('.right-sidebar-panel nav');
     await expect(landmarks, `${viewport.name} visible TOC landmark count`).toHaveCount(1);
+    const displays = await page.evaluate(() => ({
+      mobile: {
+        display: getComputedStyle(document.querySelector('mobile-starlight-toc > nav')).display,
+        visible: document.querySelector('mobile-starlight-toc > nav').checkVisibility(),
+      },
+      desktop: {
+        display: getComputedStyle(document.querySelector('.right-sidebar-panel nav')).display,
+        visible: document.querySelector('.right-sidebar-panel nav').checkVisibility(),
+      },
+    }));
     if (viewport.name === 'mobile') {
       await expect(mobileLandmark, `${viewport.name} mobile TOC visibility`).toBeVisible();
       await expect(desktopLandmark, `${viewport.name} desktop TOC visibility`).toBeHidden();
+      expect(displays.mobile.display, `${viewport.name} mobile TOC computed display`).not.toBe('none');
+      expect(displays.mobile.visible, `${viewport.name} mobile TOC effective visibility`).toBe(true);
+      expect(displays.desktop.display, `${viewport.name} desktop TOC computed display`).toBe('block');
+      expect(displays.desktop.visible, `${viewport.name} desktop TOC effective visibility`).toBe(false);
     } else {
       await expect(mobileLandmark, `${viewport.name} mobile TOC visibility`).toBeHidden();
       await expect(desktopLandmark, `${viewport.name} desktop TOC visibility`).toBeVisible();
+      expect(displays.mobile.display, `${viewport.name} mobile TOC computed display`).toBe('block');
+      expect(displays.mobile.visible, `${viewport.name} mobile TOC effective visibility`).toBe(false);
+      expect(displays.desktop.display, `${viewport.name} desktop TOC computed display`).not.toBe('none');
+      expect(displays.desktop.visible, `${viewport.name} desktop TOC effective visibility`).toBe(true);
     }
   }
 });
@@ -74,7 +92,7 @@ test('interactive docs states have no axe violations', async ({ page }) => {
     await page.goto(sitePath(state.route));
     await page.getByRole('button', { name: 'Menu' }).click();
     const menuResults = await new AxeBuilder({ page }).analyze();
-    expect(menuResults.violations.find(({ id }) => id === 'landmark-unique'), `${state.name} mobile menu landmark uniqueness`).toBeUndefined();
+    expect(menuResults.violations, `${state.name} mobile menu: ${menuResults.violations.map(({ id }) => id).join(', ')}`).toEqual([]);
 
     await page.keyboard.press('Escape');
     await page.setViewportSize({ width: 1280, height: 800 });
@@ -82,6 +100,6 @@ test('interactive docs states have no axe violations', async ({ page }) => {
     await page.getByRole('button', { name: 'Search' }).click();
     await expect(page.getByRole('dialog')).toBeVisible();
     const searchResults = await new AxeBuilder({ page }).analyze();
-    expect(searchResults.violations.find(({ id }) => id === 'landmark-unique'), `${state.name} search landmark uniqueness`).toBeUndefined();
+    expect(searchResults.violations, `${state.name} search: ${searchResults.violations.map(({ id }) => id).join(', ')}`).toEqual([]);
   }
 });
