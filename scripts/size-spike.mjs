@@ -40,7 +40,7 @@ async function measureInstalledConsumer(out, archiveTar) {
   await writeFile(join(consumerRoot, 'src/index.css'), '@import "@neobrui/private-spike-candidate";\n@import "@neobrui/private-spike-candidate/button";');
   await writeFile(join(consumerRoot, 'src/main.js'), 'import "./index.css";');
   await writeFile(join(consumerRoot, 'src/foundations.css'), '@import "@neobrui/private-spike-candidate/foundations";');
-  await writeFile(join(consumerRoot, 'index.html'), '<link rel="stylesheet" href="/src/index.css"><main><button class="_nb-spike-button">local archive consumer</button></main>');
+  await writeFile(join(consumerRoot, 'index.html'), '<style>:root{--_nb-button-background:#8f2d2d;--_nb-border-control:2px solid #111;--_nb-radius-control:4px;--_nb-control-pad-block:8px;--_nb-control-pad-inline:16px;--_nb-color-onAction:#fff;--_nb-shadow-inline:0px;--_nb-shadow-block:0px;--_nb-color-shadow:transparent;--_nb-motion-pressDuration:0ms;}</style><link rel="stylesheet" href="/src/index.css"><main><button class="_nb-spike-button">local archive consumer</button></main>');
   await writeFile(join(consumerRoot, 'foundations.html'), '<link rel="stylesheet" href="/src/foundations.css"><main>foundations</main>');
   execFileSync('pnpm', ['install', '--offline', '--ignore-scripts', '--no-frozen-lockfile', '--ignore-workspace'], { cwd: consumerRoot, stdio: 'inherit' });
   execFileSync('pnpm', ['exec', 'vite', 'build', '--outDir', 'out'], { cwd: consumerRoot, stdio: 'inherit' });
