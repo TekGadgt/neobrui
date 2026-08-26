@@ -8,15 +8,18 @@ Status: validated personal-use pilot with CUBE Phase 1 namespace/layer/Block mig
 - Surface Block: opt-in `data-nbr-level="quiet|outlined|raised"` levels, with borders, semantic colors, hard shadows, and forced-colors fallback.
 - Button: native `button` and button-like `a` styling for hover, active, focus-visible, disabled/`aria-disabled`, busy, reduced motion, forced colors, logical RTL shadow direction, and a fixed-direction escape hatch.
 - Field: a wrapper plus label/description/error styling and text-like `input`, `textarea`, and `select` geometry, focus, disabled, invalid, adjacent-error, and forced-colors rules. The evidenced field is a labeled email `input`; other controls are not equivalently validated.
-- Aggregate Blocks: `src/blocks/index.css` combines the Block entries and predeclares exactly `nbr.tokens, nbr.compositions, nbr.utilities, nbr.blocks, nbr.exceptions`. Standalone source entries are available for Surface, Button, and Field.
+- Stack Composition: `.nbr-stack` nested-safe vertical flex flow with semantic `space-4` default and documented `--nbr-stack-gap` hook; margins remain consumer-owned.
+- Cluster Composition: `.nbr-cluster` wrapping flex row with semantic `space-3` default and bounded gap/alignment/justification hooks using logical, direction-safe behavior.
+- Utilities: `.nbr-u-visually-hidden` (non-focusable accessible hiding, no MVP focus reveal) and `.nbr-u-wrapper` (centered content measure with bounded logical padding/size hooks).
+- Neutral executable evidence route: `/neutral-site/`, CSS-only, no runtime JavaScript or external requests.
 
-The fixture and runtime surface uses the stable `nbr` names. This repository remains private and unpublished; no adopter migration is authorized by this Phase 1 change.
+The fixture and runtime surface uses the stable `nbr` names. This repository remains private and unpublished; no adopter migration is authorized by this Phase 3 change.
 
 ## Themes, direction, and layers
 
 Five fixture mappings (light, dark, workshop, nested, and neutralized) demonstrate token separation and nested direction behavior. Palette, typography, fonts, content, motifs, and theme state remain product-owned. The automated shadow matrix covers LTR, RTL, nested direction, fixed direction, and shadow removal; borders and focus/invalid/disabled cues remain when shadows are removed.
 
-Tokens emit `@layer nbr.tokens`; aggregate Blocks predeclare the complete ordered five-layer contract. Compositions and Utilities are reserved and empty in Phase 1. Unlayered consumer CSS or a later consumer layer wins. The Blocks intentionally avoid resets, IDs, broad `!important`, and hostile specificity.
+Tokens emit `@layer nbr.tokens`; the aggregate entry predeclares the complete ordered five-layer contract and imports Compositions, Utilities, then Blocks. Standalone entries own only their concern. Utilities cannot override Block state because `nbr.utilities` precedes `nbr.blocks`; unlayered consumer CSS or a later consumer layer wins. The Blocks intentionally avoid resets, IDs, broad `!important`, and hostile specificity.
 
 ## Semantic responsibilities
 
@@ -24,7 +27,7 @@ Neobrui is CSS-only. Native HTML and the consuming application own roles, access
 
 ## Integrations and exclusions
 
-Plain CSS, CSS Modules, Astro, and Tailwind coexistence are proven by isolated fixtures. These are integration evidence, not adapters, plugins, or blanket support for every configuration. There is no runtime JavaScript, reset, bundled identity, implemented layout primitive, implemented Utility, checkbox/radio block, implemented DTCG contract, public package, registry distribution, or publication promise. ADR-010 specifies the future Stack/Cluster, Utility, DTCG, and release contracts without claiming they exist.
+Plain CSS, CSS Modules, Astro, Tailwind, and the neutral-site route are proven by isolated fixtures. These are integration evidence, not adapters, plugins, or blanket support for every configuration. There is no runtime JavaScript, reset, bundled identity, generated utility matrix, checkbox/radio block, public package, registry distribution, or publication promise. DTCG remains build-time only and is not runtime-loaded.
 
 ## Evidence and misuse
 

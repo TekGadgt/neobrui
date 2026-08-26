@@ -11,6 +11,7 @@ const pages = {
   coexistence: 'fixtures/coexistence/index.html',
   shadows: 'fixtures/shadows/index.html',
   tailwind: 'fixtures/tailwind/index.html',
+  'neutral-site': 'fixtures/neutral-site/index.html',
 };
 
 const routeOutputPlugin = {

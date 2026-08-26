@@ -12,7 +12,7 @@ See [`docs/architecture-and-release-options.md`](architecture-and-release-option
 - Preserve foundations plus standalone/aggregate Surface, Button, and Field, with zero runtime JavaScript and product-owned semantics/identity.
 - Document token authoring, native markup, layers, RTL/no-shadow behavior, plain CSS and Astro use, and the manual QA boundary.
 - Add validated deterministic DTCG export, schema/alias/type and round-trip boundary tests, CSS equivalence checks, provenance, and size/maintenance accounting from the first formal implementation; do not maintain independently editable JS and DTCG sources.
-- Add only evidence-backed Stack and Cluster layout primitives if Ryan approves implementation; validate with the full browser matrix, size checks, and affected integration tests.
+- Add validated Stack and Cluster layout primitives, the two bounded Utilities, and a neutral executable example; validate with the full browser matrix, size checks, responsive/RTL/writing-mode evidence, and affected integration tests.
 - Prove a neutral example, then one bounded private adoption with rollback.
 
 ## Useful next (demand-gated)
@@ -29,7 +29,7 @@ Defer runtime component JavaScript, framework adapters/plugins while CSS coexist
 
 ## Current implementation gates
 
-The stable namespace, package posture, license intent, distribution, versioning, token authority, DTCG pin, product-owned theme scoping, and layout API are recorded in ADR-010. Phase 1 implements only the namespace/layer/Block migration; compositions, utilities, DTCG, and layout APIs remain future scope. Phase acceptance, rollback, and stop conditions must pass before any selector is exposed to another project; the neutral site precedes any separately authorized adopter.
+The stable namespace, package posture, license intent, distribution, versioning, token authority, DTCG pin, product-owned theme scoping, and Phase 3 layout/utility APIs are recorded in ADR-010. Phase 3 implements Stack, Cluster, the initial Utilities, and the neutral evidence site; adopter work remains future scope. Phase acceptance, rollback, and stop conditions must pass before any selector is exposed to another project.
 
 ## Gate discipline
 

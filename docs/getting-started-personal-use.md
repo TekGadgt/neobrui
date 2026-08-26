@@ -1,6 +1,6 @@
 # Getting started for personal use
 
-This repository is the local, private Phase 1 CUBE CSS pilot. Its stable current namespace is `nbr`, its source Blocks live under `src/blocks`, and the package/archive remain private and unpublished. Use a local checkout or the explicitly generated private archive only; do not resolve it from a registry or publish it.
+This repository is the local, private Phase 3 CUBE CSS pilot. Its stable current namespace is `nbr`, with Compositions under `src/compositions`, Utilities under `src/utilities`, and the package/archive remaining private and unpublished. Use a local checkout or the explicitly generated private archive only; do not resolve it from a registry or publish it.
 
 ## Local verification path
 
@@ -16,7 +16,7 @@ pnpm verify:size
 
 ## Define tokens and a theme
 
-The validated authoring path is a JavaScript token map checked by `src/tokens/schema.mjs` and emitted by `src/tokens/tokens.mjs`. Copy the shape from `fixtures/inputs.mjs`, supply every required semantic role, and keep palette aliases, fonts, content, and motifs in the consuming project. DTCG export remains deferred. Theme values should be scoped by the product's existing theme state rather than introducing a second state machine.
+The validated authoring path is a JavaScript token map checked by `src/tokens/schema.mjs` and emitted by `src/tokens/tokens.mjs`. Copy the shape from `fixtures/inputs.mjs`, supply every required semantic role, and keep palette aliases, fonts, content, and motifs in the consuming project. DTCG 2025.10 export/import is bounded and build-time only; generated JSON is not a second source.
 
 ## Consume CSS
 
@@ -37,15 +37,16 @@ CSS Modules: import the global block entry separately; use module classes for lo
 
 Tailwind: treat generated tokens/blocks as application-owned CSS input. Tailwind preflight and utility order remain consumer-owned; the fixture proves coexistence, not universal Tailwind support.
 
-Standalone versus aggregate: use the aggregate entry when all three blocks are needed; use standalone Surface, Button, or Field entries when the consumer needs a narrower CSS graph. The private archive's explicit CSS subpaths and zero-runtime-JS contents are measured in `size-report.json`.
+The current contract includes `.nbr-stack` and `.nbr-cluster` Compositions plus `.nbr-u-visually-hidden` and `.nbr-u-wrapper` Utilities. Stack defaults to `var(--nbr-space-4)` through `--nbr-stack-gap`; Cluster defaults to `var(--nbr-space-3)` and exposes only `--nbr-cluster-gap`, `--nbr-cluster-align`, and `--nbr-cluster-justify`. Wrapper uses `--nbr-size-content` and `--nbr-space-4`, with bounded `--nbr-wrapper-max-inline-size` and `--nbr-wrapper-padding-inline` hooks. Visually hidden is non-focusable content only; authors provide a product-owned reveal/skip-link pattern when focus visibility is needed.
+
+Standalone versus aggregate: use the aggregate entry when all approved Compositions, Utilities, and Blocks are needed; use `src/compositions/{stack,cluster}.css` or `src/utilities/{visually-hidden,wrapper}.css` for narrower graphs. The neutral executable evidence route is `/neutral-site/`; it is CSS-only and uses native semantics.
 
 ## Before actual project adoption
 
 - [x] Phase 1 selects the `nbr` CSS namespace and five-layer contract; review collisions before any adopter.
-- [ ] Ryan decides package/repository posture, package name, distribution method, versioning, and license; preserve `private: true` until then.
+- [x] Phase 3 adds only Stack/Cluster, the two one-job Utilities, and the neutral executable fixture; no generated utility matrix or adopter work is included.
+- [ ] Trigger the affected behavior QA slice for Composition wrapping/nesting, RTL and supported vertical writing modes, 320px reflow, keyboard/focus, forced colors, reduced motion, and no-shadow behavior; record manual runs separately from automation.
+- [ ] Keep each Utility within its 700 B minified / 350 B gzip budget and the combined Utility layer within 1,200 B minified / 600 B gzip; remove it if the contract needs a modifier matrix or `!important`.
 - [ ] Ryan selects the first adopter: neutral fixture (recommended) or one bounded slice of `htmlday-lite`/`personal_site`.
-- [ ] Write a migration map and bounded plan; keep product CSS and identity beside the migration.
-- [ ] Trigger the affected behavior QA slice, including a dated manual run when the behavior falls in the manual guide.
-- [ ] Define a one-commit rollback to the product-owned CSS and record duplication/glue/defects before expanding.
 
 See `docs/current-surface.md`, `docs/status-and-support.md`, and `docs/manual-accessibility-testing.md` before using the evidence as a contract.

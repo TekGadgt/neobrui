@@ -6,7 +6,7 @@ Neobrui is a validated, private, CSS-only personal-use pilot for Ryan's projects
 
 - Semantic token schema and deterministic generated CSS/DTCG 2025.10 interchange; themes, palettes, fonts, content, and motifs stay product-owned.
 - Product-owned theme selector manifest, bounded DTCG import/round-trip, aliases, types, provenance, and per-theme generated artifacts (see [theme authoring and DTCG](docs/theme-authoring-and-dtcg.md)).
-- Opt-in `Surface`, `Button`, and `Field` blocks, with standalone and aggregate CSS entries.
+- Opt-in `Surface`, `Button`, and `Field` blocks plus Stack/Cluster compositions and the initial visually-hidden/wrapper utilities, with standalone and aggregate CSS entries.
 - Native HTML contracts, RTL/nested/fixed shadow behavior, no-shadow safety cues, and explicit cascade-layer coexistence.
 - Plain CSS, CSS Modules, Astro, and Tailwind integration fixtures (evidence, not adapters or blanket compatibility).
 - Zero runtime JavaScript/assets/dependencies in the private CSS candidate.

@@ -4,6 +4,7 @@ export const REQUIRED_ROLES = Object.freeze({
   radius: ['control'],
   shadow: ['inline', 'block', 'pressInline', 'pressBlock'],
   space: ['1', '2', '3', '4', '5', '6'],
+  size: ['content'],
   control: ['padInline', 'padBlock'],
   region: ['gap'],
   font: ['body', 'display', 'mono'],

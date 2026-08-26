@@ -1,0 +1,10 @@
+@import '../plain/generated-tokens.css';
+@import '../../src/blocks/index.css';
+
+:root { font-family: var(--nbr-font-body); color: var(--nbr-color-text); background: var(--nbr-color-canvas); line-height: 1.5; }
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; padding-block: var(--nbr-space-5); }
+.nbr-button { text-decoration: none; }
+.nbr-surface { max-inline-size: 100%; }
+.nbr-cluster > * { max-inline-size: 100%; }
+.fixture-note { color: var(--nbr-color-text-muted); }

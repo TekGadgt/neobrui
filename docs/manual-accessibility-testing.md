@@ -2,7 +2,10 @@
 
 Status: personal-use pilot procedure. The procedures below are instructions, not evidence that a run has passed. Do not claim support for an assistive technology, operating system, browser, or device until its relevant run is recorded as passing.
 
-## Purpose and scope
+## Phase 3 manual QA triggers
+
+Start with `fixtures/neutral-site/` and record a dated run when Composition or Utility behavior changes. At minimum check nested Stack/Cluster instances, long unbroken content at 320px, LTR/RTL and supported vertical writing modes, keyboard focus and the non-focusable visually-hidden decision, forced-colors, reduced motion, native form semantics, and no-shadow affordances. Playwright/axe evidence complements but does not replace the manual procedure below.
+
 
 Use this guide for the validated `Surface`, `Button`, and `Field` Blocks and for representative integration fixtures that use them. Start with the neutral fixture and one bounded adopter. Preserve application-owned semantics and behavior: CSS does not create button/link roles, disable links, announce status, submit forms, or manage errors. Extend the same checks to a future Block only after its markup/state contract is written down; add a fixture and a run-log section rather than inferring coverage from a similar Block.
 

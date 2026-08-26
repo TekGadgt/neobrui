@@ -3,6 +3,10 @@
  * names, then put their own layers after the library or use unlayered CSS.
  */
 @layer nbr.tokens, nbr.compositions, nbr.utilities, nbr.blocks, nbr.exceptions;
+@import '../compositions/stack.css' layer(nbr.compositions);
+@import '../compositions/cluster.css' layer(nbr.compositions);
+@import '../utilities/visually-hidden.css' layer(nbr.utilities);
+@import '../utilities/wrapper.css' layer(nbr.utilities);
 @import './surface.css' layer(nbr.blocks);
 @import './button.css' layer(nbr.blocks);
 @import './field.css' layer(nbr.blocks);

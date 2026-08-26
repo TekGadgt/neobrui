@@ -1,7 +1,7 @@
 const shared = {
   border: { control:'2px solid var(--nbr-color-border)', region:'3px solid var(--nbr-color-border)' }, radius:{control:'0.15rem'},
   shadow:{inline:'3px',block:'4px',pressInline:'1px',pressBlock:'1px'},
-  space:{1:'0.25rem',2:'0.5rem',3:'0.75rem',4:'1rem',5:'1.5rem',6:'2rem'}, control:{padInline:'0.8rem',padBlock:'0.55rem'}, region:{gap:'1rem'},
+  space:{1:'0.25rem',2:'0.5rem',3:'0.75rem',4:'1rem',5:'1.5rem',6:'2rem'}, size:{content:'72rem'}, control:{padInline:'0.8rem',padBlock:'0.55rem'}, region:{gap:'1rem'},
   font:{body:'system-ui, sans-serif',display:'system-ui, sans-serif',mono:'ui-monospace, monospace'}, text:{body:'1rem',label:'0.8rem',heading:'clamp(1.6rem, 4vw, 3rem)'}, motion:{pressDuration:'120ms'}, focus:{width:'3px',offset:'3px'},
   surface:{background:'var(--nbr-color-surface)',border:'var(--nbr-color-border)',shadow:'none'}, button:{background:'var(--nbr-color-action)'}, field:{background:'var(--nbr-color-surface)'}
 };
