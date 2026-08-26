@@ -8,7 +8,7 @@ Measure a private candidate containing the three recipe entries (Surface, Button
 
 The size harness uses deterministic in-repo comment/whitespace normalization and the system `gzip -9 -n -c` command; reports record its version provenance. Each artifact records raw, minified, gzip, SHA-256, comment/map policy, thresholds, and verdict. The combined consumer candidate is measured separately from archive bytes. Consumer accounting is taken from the CSS emitted by the root harness's pinned Vite 7.3.6 test tooling after installing the local `.tgz` into a fresh consumer outside the workspace with an offline, frozen pnpm lockfile. The consumer application graph contains only that archive; Vite remains root-harness tooling. Raw emitted bytes are the observed identity-transfer bytes, while gzip is diagnostic only.
 
-Report provenance is intentionally non-recursive: `input.sourceManifest` and its SHA-256 identify measured source inputs (excluding `size-report.json`), and `input.workspaceState` records clean/dirty state at measurement time. `verify:size` regenerates in memory and compares byte-for-byte; it never rewrites the checked-in report.
+Report provenance is intentionally non-recursive: `input.sourceManifest` and its SHA-256 identify measured source inputs (excluding `size-report.json`), and `input.workspaceState` records clean/dirty state at measurement time. `measure:size` intentionally generates the report. `verify:size` performs one fresh, non-mutating build and compares the result byte-for-byte; it never rewrites the checked-in report. Repeated-build determinism for CSS, archive, consumer metadata, and hashes is asserted by `tests/size-package.test.mjs`; `verify:clean` runs both the tests and verifier.
 
 ## Budget response
 
