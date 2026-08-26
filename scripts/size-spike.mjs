@@ -44,6 +44,10 @@ async function measureInstalledConsumer(out, archiveTar) {
   await writeFile(join(consumerRoot, 'foundations.html'), '<link rel="stylesheet" href="/src/foundations.css"><main>foundations</main>');
   execFileSync('pnpm', ['install', '--offline', '--ignore-scripts', '--no-frozen-lockfile', '--ignore-workspace'], { cwd: consumerRoot, stdio: 'inherit' });
   execFileSync('pnpm', ['exec', 'vite', 'build', '--outDir', 'out'], { cwd: consumerRoot, stdio: 'inherit' });
+  for (const html of ['index.html', 'foundations.html']) {
+    const htmlPath = join(consumerRoot, 'out', html);
+    await writeFile(htmlPath, (await readFile(htmlPath, 'utf8')).replaceAll('href="/assets/', 'href="/consumer/assets/'));
+  }
   const assetRoot = join(consumerRoot, 'out', 'assets');
   const indexHtml = await readFile(join(consumerRoot, 'out', 'index.html'), 'utf8');
   const cssName = indexHtml.match(/assets\/(index-[^"']+\.css)/)?.[1];
