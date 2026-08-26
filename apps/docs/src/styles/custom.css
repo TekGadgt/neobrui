@@ -94,6 +94,7 @@ html[data-theme='dark'] {
 .sl-markdown-content :is(h1, h2, h3, h4) { color: var(--sl-color-white); letter-spacing: -0.02em; }
 .sl-markdown-content :is(h1, h2) { font-weight: 800; }
 .sl-markdown-content :is(p, li) { max-width: 72ch; }
+.sl-markdown-content :not(pre) > code { color: var(--sl-color-text); background: var(--sl-color-gray-6); }
 .sl-markdown-content a:not(.sl-link-button) { text-decoration-thickness: .12em; text-underline-offset: .16em; }
 .sl-markdown-content .showcase {
   max-width: none;
