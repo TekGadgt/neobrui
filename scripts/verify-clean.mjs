@@ -8,9 +8,9 @@ const run = (command, args) => {
 
 run('pnpm', ['install', '--frozen-lockfile']);
 run('pnpm', ['build:fixtures']);
+run('pnpm', ['verify:size']);
 run('pnpm', ['test']);
 run('pnpm', ['capture:chromium']);
-run('pnpm', ['verify:size']);
 
 try {
   const waitedChecks = await waitForOwnedPreviewExit({ repoRoot: process.cwd() });

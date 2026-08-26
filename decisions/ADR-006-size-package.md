@@ -6,7 +6,9 @@ Status: accepted for Spike 5 only
 
 Measure a private candidate containing the three recipe entries (Surface, Button, Field), their aggregate, and one optional neutral/reference token entry. The recipe core requires consumer-defined semantic tokens; the five generated fixture themes remain fixture-only and are explicitly excluded. The archive is `private: true`, has explicit CSS-only subpath exports, and is never published.
 
-The size harness uses deterministic in-repo comment/whitespace normalization and `gzip -9 -n`. Each artifact records raw, minified, gzip, SHA-256, comment/map policy, thresholds, and verdict. The combined consumer candidate is measured separately from archive bytes.
+The size harness uses deterministic in-repo comment/whitespace normalization and `gzip -9 -n`. Each artifact records raw, minified, gzip, SHA-256, comment/map policy, thresholds, and verdict. The combined consumer candidate is measured separately from archive bytes. Consumer accounting is taken from the CSS emitted by a Vite build after installing the local `.tgz`; raw emitted bytes are the observed identity-transfer bytes, while gzip is diagnostic only.
+
+Report provenance is intentionally non-recursive: `input.sourceManifest` and its SHA-256 identify measured source inputs (excluding `size-report.json`), and `input.workspaceState` records clean/dirty state at measurement time. `verify:size` regenerates in memory and compares byte-for-byte; it never rewrites the checked-in report.
 
 ## Budget response
 

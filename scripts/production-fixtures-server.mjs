@@ -7,6 +7,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const apps = {
   css: path.join(root, 'fixtures/css-modules/dist'),
   astro: path.join(root, 'fixtures/astro/dist'),
+  consumer: path.join(root, 'dist/size-spike/consumer/out'),
 };
 const port = Number(process.argv[2] ?? 4174);
 const contentTypes = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.map': 'application/json' };
@@ -27,6 +28,9 @@ function resolveFile(urlPath) {
   } else if (normalized.startsWith('/_astro/')) {
     base = apps.astro;
     relative = normalized.slice(1);
+  } else if (normalized === '/consumer/' || normalized.startsWith('/consumer/')) {
+    base = apps.consumer;
+    relative = normalized.replace(/^\/consumer\/?/, '') || 'index.html';
   } else {
     return null;
   }
