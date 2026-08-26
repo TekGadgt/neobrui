@@ -18,13 +18,17 @@ pnpm validate:tokens
 pnpm build:tokens
 pnpm build
 pnpm test
-# or all three, in order:
+# canonical full verification (includes every fixture build):
 pnpm verify
+# reproducible clean-tree verification, including capture:
+pnpm verify:clean
+# explicit, non-mutating Chromium evidence capture (44 tests):
+pnpm capture:chromium
 ```
 
 `pnpm test` validates required roles and runs Chromium, Firefox, and WebKit. It checks fixture content, JavaScript-disabled usability, absence of external requests, private/unpublishable project metadata, forbidden cross-project references, the built HTML entries, and isolated route identity/CSS delivery. The Tailwind fixture imports generated tokens as an application-owned input and the `/tailwind/` browser check proves recipe variables and the `p-4` utility resolve together. Generated CSS is `fixtures/plain/generated-tokens.css`; source and decision/evidence records are under `src/tokens/`, `scripts/`, `decisions/`, and `evidence/`.
 
-Normal verification is non-mutating: screenshot capture is gated behind `CAPTURE_EVIDENCE=1` and writes the producing engine into every evidence filename. Fixture `.astro/` metadata is ignored. Root Vite, Playwright, and axe tooling is exactly pinned to 7.3.6, 1.62.1, and 4.13.0 respectively; the frozen lockfile is authoritative.
+Normal verification is non-mutating. Explicit capture is only enabled by `pnpm capture:chromium` (the underlying command is `CAPTURE_EVIDENCE=1 pnpm exec playwright test --project=chromium`) and runs 44 Chromium tests. It writes engine-labelled images only under the ignored `.evidence-cache/screenshots/` directory; committed `evidence/screenshots/` files are never refreshed by verification. `pnpm verify:clean` owns the preview server through Playwright, runs frozen install, all fixture builds, the full suite, and Chromium capture, then fails on any non-empty `git status --porcelain` or surviving preview process. Fixture `.astro/` metadata is ignored. Root Vite, Playwright, and axe tooling is exactly pinned to 7.3.6, 1.62.1, and 4.13.0 respectively; the frozen lockfile is authoritative.
 
 DTCG export is deliberately deferred: no named consumer or authorized importer/exporter exists for this disposable spike. Core identifiers remain semantic and temporary (`_nb-spike`); application palette, fonts, content, motifs, and behavior stay fixture-owned.
 

@@ -26,6 +26,6 @@ Matrix route is checked at LTR/RTL and 320/1024px (8 cases) in every declared Pl
 
 ## Commands
 
-`pnpm install --frozen-lockfile`; `pnpm build`; `pnpm build:fixtures`; `pnpm test`; `CAPTURE_EVIDENCE=1 pnpm test -- --project=chromium`; `pnpm validate:tokens`.
+`pnpm install --frozen-lockfile`; `pnpm build:fixtures`; `pnpm test`; `pnpm capture:chromium`; `pnpm verify:clean`.
 
-No external requests are used by fixtures. Normal tests never write evidence. Explicit `CAPTURE_EVIDENCE=1` writes browser-specific paths (`*-chromium|firefox|webkit.png`); the documented refresh command intentionally captures Chromium only, so Chromium-labeled legacy evidence is not overwritten by other engines. Astro `.astro/` metadata is ignored. Manual residual checks: physical keyboard traversal, screen-reader announcements, forced-colors hardware, and human review at true browser zoom 200%.
+No external requests are used by fixtures. Normal tests never write evidence. `pnpm capture:chromium` expands to `CAPTURE_EVIDENCE=1 pnpm exec playwright test --project=chromium` and produces exactly 44 Chromium tests. Its browser-specific, engine-labelled paths are `.evidence-cache/screenshots/*-chromium.png`, an ignored generated directory outside committed `evidence/screenshots/`; Firefox and WebKit captures are not produced by this command, and no workflow refreshes tracked screenshots. `pnpm verify:clean` owns and terminates preview servers and passes only when `git status --porcelain` is empty. Astro `.astro/` metadata is ignored. Manual residual checks: physical keyboard traversal, screen-reader announcements, forced-colors hardware, and human review at true browser zoom 200%.

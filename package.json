@@ -12,7 +12,9 @@
     "build": "pnpm build:tokens && pnpm build:tailwind && vite build",
     "build:fixtures": "pnpm build && pnpm --filter neobrui-spike4-css-modules build && pnpm --filter neobrui-spike4-astro build && pnpm --filter neobrui-spike4-tailwind build",
     "test": "pnpm validate:tokens && playwright test",
-    "verify": "pnpm install --frozen-lockfile && pnpm build && pnpm test"
+    "verify": "pnpm install --frozen-lockfile && pnpm build:fixtures && pnpm test",
+    "capture:chromium": "CAPTURE_EVIDENCE=1 pnpm exec playwright test --project=chromium",
+    "verify:clean": "node scripts/verify-clean.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",

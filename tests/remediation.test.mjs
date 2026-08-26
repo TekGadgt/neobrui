@@ -57,4 +57,21 @@ assert.equal(packageJson.devDependencies['@axe-core/playwright'], '4.13.0');
 assert.match(await readFile('tests/coexistence.spec.js', 'utf8'), /CAPTURE_EVIDENCE/);
 assert.match(await readFile('tests/shadows.spec.js', 'utf8'), /CAPTURE_EVIDENCE/);
 
+// Evidence capture must be explicit, Chromium-scoped, ignored, and isolated
+// from committed screenshots. These contracts intentionally fail on the old
+// tracked-path capture implementation.
+const coexistenceSpec = await readFile('tests/coexistence.spec.js', 'utf8');
+const shadowsSpec = await readFile('tests/shadows.spec.js', 'utf8');
+const packageScripts = packageJson.scripts;
+const gitignore = await readFile('.gitignore', 'utf8');
+assert.match(packageScripts['capture:chromium'], /CAPTURE_EVIDENCE=1 pnpm exec playwright test --project=chromium/);
+assert.match(packageScripts.verify, /build:fixtures/);
+assert.match(packageScripts['verify:clean'], /scripts\/verify-clean\.mjs/);
+assert.match(coexistenceSpec, /[.]evidence-cache\/screenshots\/coexistence-matrix-\$\{browserName\}\.png/);
+assert.match(coexistenceSpec, /[.]evidence-cache\/screenshots\/coexistence-hostile-\$\{browserName\}\.png/);
+assert.match(shadowsSpec, /[.]evidence-cache\/screenshots\/shadows-\$\{browserName\}-\$\{name\}\.png/);
+assert.doesNotMatch(coexistenceSpec, /evidence\/screenshots\//);
+assert.doesNotMatch(shadowsSpec, /evidence\/screenshots\//);
+assert.match(gitignore, /^\.evidence-cache\/$/m);
+
 console.log(`remediation tests: ${boundaryFiles.length} files, ${Object.keys(REQUIRED_ROLES).length} families`);

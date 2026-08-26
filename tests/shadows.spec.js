@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { mkdir } from 'node:fs/promises';
 
 const shadow = locator => locator.evaluate(el => getComputedStyle(el).boxShadow);
 const inlineOffset = value => Number(value.match(/(?:rgb\([^)]*\)|rgba\([^)]*\))\s*(-?\d+(?:\.\d+)?)px/)?.[1]);
@@ -83,8 +84,9 @@ test.describe('Spike 3 shadow direction policy', () => {
   test('captures compact policy evidence only when explicitly requested', async ({ page, browserName }) => {
     await page.setViewportSize({ width: 640, height: 480 });
     if (process.env.CAPTURE_EVIDENCE === '1') {
+      await mkdir('.evidence-cache/screenshots', { recursive: true });
       for (const [name, selector] of [['ltr', '#ltr-default'], ['rtl', '#rtl-default'], ['fixed', '#fixed-rtl'], ['disabled', '#shadow-disabled']]) {
-        await page.locator(selector).screenshot({ path: `evidence/screenshots/shadows-${browserName}-${name}.png` });
+        await page.locator(selector).screenshot({ path: `.evidence-cache/screenshots/shadows-${browserName}-${name}.png` });
       }
     }
   });

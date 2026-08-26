@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { mkdir } from 'node:fs/promises';
 
 const cases = [
   ['normal', 'rgb(30, 64, 175)'],
@@ -34,8 +35,9 @@ test.describe('Spike 4 shared cascade matrix', () => {
   test('captures passing and expected-failure evidence only when explicitly requested', async ({ page, browserName }) => {
     await page.goto('/coexistence/');
     if (process.env.CAPTURE_EVIDENCE === '1') {
-      await page.screenshot({ path: `evidence/screenshots/coexistence-matrix-${browserName}.png`, fullPage: true });
-      await page.locator('.hostile').screenshot({ path: `evidence/screenshots/coexistence-hostile-${browserName}.png` });
+      await mkdir('.evidence-cache/screenshots', { recursive: true });
+      await page.screenshot({ path: `.evidence-cache/screenshots/coexistence-matrix-${browserName}.png`, fullPage: true });
+      await page.locator('.hostile').screenshot({ path: `.evidence-cache/screenshots/coexistence-hostile-${browserName}.png` });
     }
   });
 
