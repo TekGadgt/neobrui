@@ -10,6 +10,9 @@ export default defineConfig({
   integrations: [starlight({
     title: 'Neobrui',
     description: 'A small, semantic, CSS-only personal-alpha kit.',
+    // Pagefind 1.5.2 gives its generated input only a title. Keep the
+    // supported default Search implementation and add a scoped label fix.
+    components: { Search: './src/components/Search.astro' },
     customCss: ['./src/styles/custom.css'],
     sidebar: [
       { label: 'Overview', items: [{ label: 'Home', slug: 'index' }] },

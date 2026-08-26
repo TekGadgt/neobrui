@@ -41,6 +41,22 @@ test('mobile menu supports keyboard activation', async ({ page }) => {
   await expect(menuToggle).toHaveAttribute('aria-expanded', 'true');
 });
 
+test('search remains interactive and restores focus after closing', async ({ page }) => {
+  await page.goto(sitePath('/examples/'));
+  const openSearch = page.getByRole('button', { name: 'Search' });
+  await expect(page.locator('[data-pagefind-search-wrapper]')).toHaveCount(1);
+  await expect(page.locator('[data-pagefind-search-wrapper] site-search')).toHaveCount(1);
+  await openSearch.click();
+  const dialog = page.getByRole('dialog');
+  const searchInput = page.locator('.pagefind-ui__search-input');
+  await expect(dialog).toBeVisible();
+  await searchInput.fill('button');
+  await expect(page.locator('.pagefind-ui__result').first()).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(dialog).toBeHidden();
+  await expect(openSearch).toBeFocused();
+});
+
 test('responsive TOC exposes only the active navigation landmark', async ({ page }) => {
   for (const viewport of [{ width: 1280, height: 800, name: 'desktop' }, { width: 320, height: 800, name: 'mobile' }]) {
     await page.setViewportSize(viewport);
@@ -99,6 +115,10 @@ test('interactive docs states have no axe violations', async ({ page }) => {
     await page.goto(sitePath(state.route));
     await page.getByRole('button', { name: 'Search' }).click();
     await expect(page.getByRole('dialog')).toBeVisible();
+    const searchInput = page.locator('.pagefind-ui__search-input');
+    await expect(searchInput).toHaveAttribute('aria-label', 'Search');
+    await expect(searchInput).toHaveAttribute('placeholder', 'Search');
+    await expect(searchInput).toHaveCount(1);
     const searchResults = await new AxeBuilder({ page }).analyze();
     expect(searchResults.violations, `${state.name} search: ${searchResults.violations.map(({ id }) => id).join(', ')}`).toEqual([]);
   }
