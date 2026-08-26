@@ -125,6 +125,10 @@ html[data-theme='dark'] {
   outline: 3px solid var(--nbr-docs-focus);
   outline-offset: 3px;
 }
+.sl-markdown-content pre[data-language]:focus-visible {
+  outline: 3px solid var(--nbr-docs-focus);
+  outline-offset: 4px;
+}
 :where(.sidebar-content) a[aria-current='page'] {
   border-inline-start: 3px solid var(--sl-color-accent);
   background: var(--sl-color-accent-low);

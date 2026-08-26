@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
 const routes = ['/', '/getting-started/', '/foundations/', '/compositions/', '/utilities/', '/blocks/', '/examples/', '/accessibility/', '/release/', '/future/'];
+
 const basePath = process.env.PUBLIC_SITE_BASE || '/';
 const sitePath = (route) => `${basePath === '/' ? '' : basePath.replace(/\/$/, '')}${route}`;
 
@@ -26,6 +27,28 @@ test('examples links resolve to rendered anchors', async ({ page }) => {
   await page.goto(sitePath('/examples/'));
   const hrefs = await page.locator('a[href^="#"]').evaluateAll((links) => links.map((link) => link.getAttribute('href')));
   for (const href of hrefs) await expect(page.locator(href)).toHaveCount(1);
+});
+
+test('horizontally scrollable code regions are keyboard accessible', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 800 });
+  await page.goto(sitePath('/getting-started/'));
+  const codeRegions = page.locator('pre[data-language]');
+  await expect(codeRegions).not.toHaveCount(0);
+  for (const codeRegion of await codeRegions.all()) {
+    await expect(codeRegion).toHaveAttribute('tabindex', '0');
+    const overflow = await codeRegion.evaluate((element) => {
+      element.style.width = '160px';
+      element.style.overflowX = 'auto';
+      return element.scrollWidth > element.clientWidth;
+    });
+    if (overflow) {
+      await codeRegion.focus();
+      const before = await codeRegion.evaluate((element) => element.scrollLeft);
+      await page.keyboard.press('ArrowRight');
+      await expect.poll(() => codeRegion.evaluate((element) => element.scrollLeft)).toBeGreaterThan(before);
+      await expect(codeRegion).toBeFocused();
+    }
+  }
 });
 
 test('mobile menu supports keyboard activation', async ({ page }) => {
@@ -124,7 +147,7 @@ test('interactive docs states have no axe violations', async ({ page }) => {
   }
 });
 
-const docsRoutes = ['/', '/getting-started/', '/foundations/', '/compositions/', '/utilities/', '/blocks/', '/examples/', '/accessibility/', '/release/', '/future/'];
+const docsRoutes = routes;
 const contrast = (foreground, background) => {
   const channel = (value) => {
     const c = Number.parseInt(value, 16) / 255;
