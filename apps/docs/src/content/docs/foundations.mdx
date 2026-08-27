@@ -1,0 +1,20 @@
+---
+title: Foundations / Theming
+description: Semantic roles and tunable geometry.
+---
+
+## Semantic roles
+
+Override roles at a product or component scope instead of depending on a mandatory house palette.
+
+```css
+.product-theme {
+  --nbr-color-action: #173322;
+  --nbr-color-on-action: #fff;
+  --nbr-color-shadow: #173322;
+  --nbr-border-width-control: 2px;
+  --nbr-shadow-offset-small: 2px;
+}
+```
+
+Defaults use neutral system colors (`Canvas`, `CanvasText`, `ButtonFace`, and `Highlight`) so forced colors remain meaningful. Shadow direction follows writing mode; use `data-nbr-shadow-direction="fixed"` only when physical direction is intentional.

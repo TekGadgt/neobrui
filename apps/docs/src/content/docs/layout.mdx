@@ -1,0 +1,16 @@
+---
+title: Layout / Utilities
+description: Layout-only compositions and one utility.
+---
+
+## Compositions
+
+`.nbr-stack` creates vertical flow, `.nbr-cluster` wraps inline items, `.nbr-wrapper` owns a centered measure, and `.nbr-grid` supports intentionally irregular spans. They do not own color, type, borders, shadows, or application state.
+
+```html
+<section class="nbr-wrapper nbr-stack">
+  <div class="nbr-grid"><article>Primary</article><aside>Secondary</aside></div>
+</section>
+```
+
+The only initial utility is `.nbr-u-visually-hidden`, for accessible non-visual text and focusable skip links.

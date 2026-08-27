@@ -1,5 +1,4 @@
-@import 'neobrui/tokens';
-@import 'neobrui/blocks';
+@import '../../../../src/index.css';
 
 :root {
   --sl-color-accent-low: #e8eee9;
@@ -11,34 +10,7 @@
   --sl-color-gray-5: #d6ddd7;
   --sl-color-gray-6: #f3f6f3;
   --sl-color-black: #fbfdfb;
-  --nbr-docs-measure: 72rem;
 }
-
-:where(.sl-markdown-content) :is(a, button, [tabindex]):focus-visible {
-  outline: 3px solid var(--nbr-color-focus, #2d5941);
-  outline-offset: 3px;
-}
-
-.sl-markdown-content, .sl-markdown-content :where(p, li) { max-width: 72ch; }
-.sl-markdown-content .showcase { max-width: none; }
-.showcase { border: 1px solid var(--nbr-color-border, currentColor); padding: 1.25rem; background: var(--nbr-color-surface, Canvas); }
-.showcase [data-nbr-level] { margin-block: 1rem; }
-
-@media (min-width: 50rem) {
-  /* Starlight's responsive TOC wrappers are utility classes. Keep the inactive
-     mobile landmark out of the accessibility tree at desktop widths. */
-  .md\:sl-hidden { display: none; }
-  .md\:sl-block { display: block; }
-}
-
-@media (max-width: 30rem) {
-  .sl-markdown-content .showcase { padding: .75rem; }
-}
-
-@media (forced-colors: active) {
-  .showcase { border: 2px solid CanvasText; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .001ms !important; }
-}
+.demo { padding: 1rem; border: 2px solid currentColor; max-inline-size: 60rem; }
+.demo-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 1rem; }
+@media (max-width: 40rem) { .demo-grid { grid-template-columns: 1fr; } }
