@@ -1,0 +1,21 @@
+---
+import DefaultSearch from '@astrojs/starlight/components/Search.astro';
+---
+
+<DefaultSearch {...Astro.props} />
+
+<script is:inline>
+  (() => {
+    const labelSearchInput = () => {
+      const input = document.querySelector('.pagefind-ui__search-input');
+      if (!(input instanceof HTMLInputElement)) return false;
+      input.setAttribute('aria-label', input.getAttribute('title') || 'Search');
+      return true;
+    };
+    if (labelSearchInput()) return;
+    const observer = new MutationObserver(() => {
+      if (labelSearchInput()) observer.disconnect();
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  })();
+</script>

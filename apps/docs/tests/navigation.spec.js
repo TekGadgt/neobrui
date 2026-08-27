@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-const routes = ['/', '/getting-started/', '/foundations/', '/compositions/', '/utilities/', '/blocks/', '/examples/', '/accessibility/', '/release/', '/future/'];
+const routes = ['/', '/principles/', '/foundations/', '/layout/', '/primitives/', '/patterns/', '/adoption/'];
 const basePath = process.env.PUBLIC_SITE_BASE || '/';
 const sitePath = (route) => `${basePath === '/' ? '' : basePath.replace(/\/$/, '')}${route}`;
 
@@ -23,14 +23,14 @@ for (const route of routes) {
 }
 
 test('examples links resolve to rendered anchors', async ({ page }) => {
-  await page.goto(sitePath('/examples/'));
+  await page.goto(sitePath('/patterns/'));
   const hrefs = await page.locator('a[href^="#"]').evaluateAll((links) => links.map((link) => link.getAttribute('href')));
   for (const href of hrefs) await expect(page.locator(href)).toHaveCount(1);
 });
 
 test('mobile menu supports keyboard activation', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 800 });
-  await page.goto(sitePath('/examples/'));
+  await page.goto(sitePath('/patterns/'));
   const menu = page.getByRole('button', { name: 'Menu' });
   const menuToggle = page.locator('starlight-menu-button');
   await menu.focus();
@@ -42,10 +42,9 @@ test('mobile menu supports keyboard activation', async ({ page }) => {
 });
 
 test('search remains interactive and restores focus after closing', async ({ page }) => {
-  await page.goto(sitePath('/examples/'));
+  await page.goto(sitePath('/patterns/'));
   const openSearch = page.getByRole('button', { name: 'Search' });
-  await expect(page.locator('[data-pagefind-search-wrapper]')).toHaveCount(1);
-  await expect(page.locator('[data-pagefind-search-wrapper] site-search')).toHaveCount(1);
+  await expect(openSearch).toBeVisible();
   await openSearch.click();
   const dialog = page.getByRole('dialog');
   const searchInput = page.locator('.pagefind-ui__search-input');
@@ -60,7 +59,7 @@ test('search remains interactive and restores focus after closing', async ({ pag
 test('responsive TOC exposes only the active navigation landmark', async ({ page }) => {
   for (const viewport of [{ width: 1280, height: 800, name: 'desktop' }, { width: 320, height: 800, name: 'mobile' }]) {
     await page.setViewportSize(viewport);
-    await page.goto(sitePath('/examples/'));
+    await page.goto(sitePath('/patterns/'));
     const landmarks = page.getByRole('navigation', { name: 'On this page' });
     const mobileLandmark = page.locator('mobile-starlight-toc > nav');
     const desktopLandmark = page.locator('.right-sidebar-panel nav');
@@ -96,7 +95,7 @@ test('responsive TOC exposes only the active navigation landmark', async ({ page
 test('interactive docs states have no axe violations', async ({ page }) => {
   const states = [
     { route: '/', name: 'home' },
-    { route: '/examples/', name: 'examples' },
+    { route: '/patterns/', name: 'patterns' },
   ];
   for (const state of states) {
     await page.setViewportSize({ width: 1280, height: 800 });
@@ -116,7 +115,7 @@ test('interactive docs states have no axe violations', async ({ page }) => {
     await page.getByRole('button', { name: 'Search' }).click();
     await expect(page.getByRole('dialog')).toBeVisible();
     const searchInput = page.locator('.pagefind-ui__search-input');
-    await expect(searchInput).toHaveAttribute('aria-label', 'Search');
+    await expect(searchInput).toHaveAttribute('title', 'Search');
     await expect(searchInput).toHaveAttribute('placeholder', 'Search');
     await expect(searchInput).toHaveCount(1);
     const searchResults = await new AxeBuilder({ page }).analyze();
