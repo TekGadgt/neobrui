@@ -1,0 +1,19 @@
+@layer docs {
+  :root {
+    --sl-color-accent-low: light-dark(#e8eee9, #1d2d23);
+    --sl-color-accent: light-dark(#173322, #b7e5c2);
+    --sl-color-accent-high: light-dark(#173322, #e9fff0);
+    --sl-color-white: light-dark(#172019, #f0fff3);
+    --sl-color-gray-1: light-dark(#334039, #d2e0d5);
+    --sl-color-gray-2: light-dark(#5a665f, #aebeb2);
+    --sl-color-gray-5: light-dark(#d6ddd7, #344238);
+    --sl-color-gray-6: light-dark(#f3f6f3, #18221b);
+    --sl-color-black: light-dark(#fbfdfb, #101611);
+  }
+  .nbr-demo { border: var(--nbr-border-rule, 2px) solid currentColor; padding: 1rem; max-inline-size: 60rem; }
+  .nbr-gallery { display: grid; grid-template-columns: 1.7fr 1fr; gap: 1rem; }
+  .nbr-gallery > :first-child { grid-row: span 2; }
+  .nbr-good { border-inline-start: 4px solid var(--nbr-color-positive, currentColor); }
+  .nbr-bad { opacity: .72; }
+  @media (max-width: 40rem) { .nbr-gallery { grid-template-columns: 1fr; } .nbr-gallery > :first-child { grid-row: auto; } }
+}
