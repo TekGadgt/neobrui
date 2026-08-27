@@ -1,0 +1,24 @@
+---
+import StarlightSearch from '@astrojs/starlight/components/Search.astro';
+---
+
+<StarlightSearch {...Astro.props} />
+
+<script is:inline>
+  (() => {
+    const host = document.querySelector('site-search');
+    if (!host) return;
+    const label = host.getAttribute('aria-label') || 'Search';
+    const apply = () => {
+      const input = host.querySelector('input.pagefind-ui__search-input');
+      if (!input) return false;
+      if (!input.getAttribute('aria-label')) input.setAttribute('aria-label', label);
+      return true;
+    };
+    if (apply()) return;
+    const observer = new MutationObserver(() => {
+      if (apply()) observer.disconnect();
+    });
+    observer.observe(host, { childList: true, subtree: true });
+  })();
+</script>
