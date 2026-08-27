@@ -1,0 +1,8 @@
+{
+  "identities": {
+    "neutral": {"score": 17, "out_of": 18, "observations": ["Neutral semantic fallbacks keep demos product-agnostic", "Native links and buttons remain the interaction boundary", "Stacked 320px gallery has no horizontal overflow"]},
+    "product": {"score": 17, "out_of": 18, "observations": ["Role mapping is documented as a scoped product concern", "Hierarchy reserves raised treatment for the featured region", "Verification covers keyboard, reduced motion, forced colors, and three engines"]}
+  },
+  "dimensions": ["hierarchy", "intentional irregularity", "restraint", "semantic roles", "responsive layout", "native interaction", "accessibility", "product identity", "removability"],
+  "evidence": "routes.spec.js and search.spec.js; manual screenshot capture remains opt-in"
+}
