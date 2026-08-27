@@ -15,8 +15,10 @@
   },
   "files": ["src", "README.md", "LICENSE", "docs/design-system/0001-centralized-neobrui-reset.md", "skills/neobrui"],
   "scripts": {
-    "test": "node --test tests/design-system-reset.test.mjs",
+    "test": "node --test tests/*.test.mjs",
     "build": "pnpm --filter neobrui-docs build",
+    "check": "pnpm test && pnpm --filter neobrui-docs check",
+    "test:docs": "pnpm --filter neobrui-docs test",
     "pack:check": "npm pack --dry-run"
   },
   "devDependencies": {

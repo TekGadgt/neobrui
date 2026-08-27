@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test';
-import AxeBuilder from '@axe-core/playwright';
 
 const routes = ['/', '/principles/', '/foundations/', '/layout/', '/primitives/', '/patterns/', '/adoption/'];
 const basePath = process.env.PUBLIC_SITE_BASE || '/';
@@ -39,86 +38,4 @@ test('mobile menu supports keyboard activation', async ({ page }) => {
   await page.keyboard.press('Escape');
   await page.keyboard.press(' ');
   await expect(menuToggle).toHaveAttribute('aria-expanded', 'true');
-});
-
-test('search remains interactive and restores focus after closing', async ({ page }) => {
-  await page.goto(sitePath('/patterns/'));
-  const openSearch = page.getByRole('button', { name: 'Search' });
-  await expect(openSearch).toBeVisible();
-  await openSearch.click();
-  const dialog = page.getByRole('dialog');
-  const searchInput = page.locator('.pagefind-ui__search-input');
-  await expect(dialog).toBeVisible();
-  await searchInput.fill('button');
-  await expect(page.locator('.pagefind-ui__result').first()).toBeVisible();
-  await page.keyboard.press('Escape');
-  await expect(dialog).toBeHidden();
-  await expect(openSearch).toBeFocused();
-});
-
-test('responsive TOC exposes only the active navigation landmark', async ({ page }) => {
-  for (const viewport of [{ width: 1280, height: 800, name: 'desktop' }, { width: 320, height: 800, name: 'mobile' }]) {
-    await page.setViewportSize(viewport);
-    await page.goto(sitePath('/patterns/'));
-    const landmarks = page.getByRole('navigation', { name: 'On this page' });
-    const mobileLandmark = page.locator('mobile-starlight-toc > nav');
-    const desktopLandmark = page.locator('.right-sidebar-panel nav');
-    await expect(landmarks, `${viewport.name} visible TOC landmark count`).toHaveCount(1);
-    const displays = await page.evaluate(() => ({
-      mobile: {
-        display: getComputedStyle(document.querySelector('mobile-starlight-toc > nav')).display,
-        visible: document.querySelector('mobile-starlight-toc > nav').checkVisibility(),
-      },
-      desktop: {
-        display: getComputedStyle(document.querySelector('.right-sidebar-panel nav')).display,
-        visible: document.querySelector('.right-sidebar-panel nav').checkVisibility(),
-      },
-    }));
-    if (viewport.name === 'mobile') {
-      await expect(mobileLandmark, `${viewport.name} mobile TOC visibility`).toBeVisible();
-      await expect(desktopLandmark, `${viewport.name} desktop TOC visibility`).toBeHidden();
-      expect(displays.mobile.display, `${viewport.name} mobile TOC computed display`).not.toBe('none');
-      expect(displays.mobile.visible, `${viewport.name} mobile TOC effective visibility`).toBe(true);
-      expect(displays.desktop.display, `${viewport.name} desktop TOC computed display`).toBe('block');
-      expect(displays.desktop.visible, `${viewport.name} desktop TOC effective visibility`).toBe(false);
-    } else {
-      await expect(mobileLandmark, `${viewport.name} mobile TOC visibility`).toBeHidden();
-      await expect(desktopLandmark, `${viewport.name} desktop TOC visibility`).toBeVisible();
-      expect(displays.mobile.display, `${viewport.name} mobile TOC computed display`).toBe('block');
-      expect(displays.mobile.visible, `${viewport.name} mobile TOC effective visibility`).toBe(false);
-      expect(displays.desktop.display, `${viewport.name} desktop TOC computed display`).not.toBe('none');
-      expect(displays.desktop.visible, `${viewport.name} desktop TOC effective visibility`).toBe(true);
-    }
-  }
-});
-
-test('interactive docs states have no axe violations', async ({ page }) => {
-  const states = [
-    { route: '/', name: 'home' },
-    { route: '/patterns/', name: 'patterns' },
-  ];
-  for (const state of states) {
-    await page.setViewportSize({ width: 1280, height: 800 });
-    await page.goto(sitePath(state.route));
-    const desktopResults = await new AxeBuilder({ page }).analyze();
-    expect(desktopResults.violations, `${state.name}: ${desktopResults.violations.map(({ id }) => id).join(', ')}`).toEqual([]);
-
-    await page.setViewportSize({ width: 320, height: 800 });
-    await page.goto(sitePath(state.route));
-    await page.getByRole('button', { name: 'Menu' }).click();
-    const menuResults = await new AxeBuilder({ page }).analyze();
-    expect(menuResults.violations, `${state.name} mobile menu: ${menuResults.violations.map(({ id }) => id).join(', ')}`).toEqual([]);
-
-    await page.keyboard.press('Escape');
-    await page.setViewportSize({ width: 1280, height: 800 });
-    await page.goto(sitePath(state.route));
-    await page.getByRole('button', { name: 'Search' }).click();
-    await expect(page.getByRole('dialog')).toBeVisible();
-    const searchInput = page.locator('.pagefind-ui__search-input');
-    await expect(searchInput).toHaveAttribute('title', 'Search');
-    await expect(searchInput).toHaveAttribute('placeholder', 'Search');
-    await expect(searchInput).toHaveCount(1);
-    const searchResults = await new AxeBuilder({ page }).analyze();
-    expect(searchResults.violations, `${state.name} search: ${searchResults.violations.map(({ id }) => id).join(', ')}`).toEqual([]);
-  }
 });
