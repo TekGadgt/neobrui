@@ -26,6 +26,15 @@ test('showcase contract covers every public CSS export and finite attribute', as
   }
 });
 
+test('visually hidden showcase presents contextual status without a fake action', async () => {
+  const source = await read(`${routesRoot}/utilities/index.mdx`);
+  assert.equal(source.includes('<button'), false);
+  assert.equal(source.includes('aria-hidden="true"'), true);
+  assert.equal(source.includes('<span class="nbr-u-visually-hidden">Status:</span>'), true);
+  assert.equal(source.includes('Draft saved.</p>'), true);
+  assert.equal(source.includes('Status:</span> Draft saved.'), true);
+});
+
 test('docs consume only the prepared archive and record its checksum', async () => {
   const sources = await Promise.all(contract.docsSources.map(read));
   for (const source of sources) assert.doesNotMatch(source, /(?:\.\.\/)+packages\//);

@@ -7,9 +7,8 @@ title: Utilities
 `.nbr-u-visually-hidden` preserves non-focusable content in the accessibility tree while removing it from visual flow. It is not `display: none`, and it does not provide a focus-reveal mode.
 
 <div class="showcase nbr-stack">
-  <p><button class="nbr-button" type="button" aria-describedby="hidden-status">Reveal the explanation</button></p>
-  <p id="hidden-status" class="nbr-u-visually-hidden">Status: the explanation is available to assistive technology and remains meaningful when the visual control changes.</p>
-  <p><small>The status has a real accessible relationship; hiding is not used as a visual hide/show gimmick.</small></p>
+  <p><span aria-hidden="true">●</span> <span class="nbr-u-visually-hidden">Status:</span> Draft saved.</p>
+  <p><small>The hidden prefix adds context in the accessibility tree; it is not a visual hide/show gimmick.</small></p>
 </div>
 
 ## Wrapper
