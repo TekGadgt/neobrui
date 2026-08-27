@@ -1,0 +1,27 @@
+{
+  "exports": [
+    { "export": ".", "route": "", "selector": "nbr-stack" },
+    { "export": "./tokens", "route": "foundations", "selector": "--nbr-color-text" },
+    { "export": "./compositions/stack", "route": "compositions", "selector": "nbr-stack" },
+    { "export": "./compositions/cluster", "route": "compositions", "selector": "nbr-cluster" },
+    { "export": "./utilities/visually-hidden", "route": "utilities", "selector": "nbr-u-visually-hidden" },
+    { "export": "./utilities/wrapper", "route": "utilities", "selector": "nbr-u-wrapper" },
+    { "export": "./blocks/surface", "route": "blocks", "selector": "nbr-surface" },
+    { "export": "./blocks/button", "route": "blocks", "selector": "nbr-button" },
+    { "export": "./blocks/field", "route": "blocks", "selector": "nbr-field" },
+    { "export": "./blocks", "route": "blocks", "selector": "nbr-surface" }
+  ],
+  "attributes": [
+    { "name": "surface level", "route": "blocks", "pattern": "data-nbr-level=\\\"(quiet|outlined|raised)\\\"" },
+    { "name": "fixed shadow direction", "route": "", "pattern": "data-nbr-shadow-direction=\\\"fixed\\\"" }
+  ],
+  "docsSources": [
+    "apps/docs/src/styles/custom.css",
+    "apps/docs/src/content/docs/index.mdx",
+    "apps/docs/src/content/docs/foundations/index.mdx",
+    "apps/docs/src/content/docs/compositions/index.mdx",
+    "apps/docs/src/content/docs/utilities/index.mdx",
+    "apps/docs/src/content/docs/blocks/index.mdx",
+    "apps/docs/src/content/docs/examples/index.mdx"
+  ]
+}

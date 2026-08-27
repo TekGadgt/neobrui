@@ -263,3 +263,60 @@ test.describe('static code block accessibility', () => {
     }
   }
 });
+
+test('showcase primitives are package-owned and remain usable at narrow RTL sizes', async ({ page }) => {
+  const expectations = [
+    { route: '/', selector: '.nbr-surface' },
+    { route: '/foundations/', selector: '.token-swatch' },
+    { route: '/compositions/', selector: '.nbr-stack' },
+    { route: '/utilities/', selector: '.nbr-u-wrapper' },
+    { route: '/blocks/', selector: '.nbr-field' },
+    { route: '/examples/', selector: '.nbr-button' },
+  ];
+  for (const { route, selector } of expectations) {
+    await page.setViewportSize({ width: 320, height: 900 });
+    await page.goto(sitePath(route));
+    await expect(page.locator(selector).first(), `${route} ${selector}`).toBeVisible();
+    const result = await page.evaluate((target) => {
+      const element = document.querySelector(target);
+      const style = getComputedStyle(element);
+      return { overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth, display: style.display };
+    }, selector);
+    expect(result.overflow, `${route} must not overflow at 320px`).toBe(false);
+    expect(result.display, `${route} ${selector} must have computed package styling`).not.toBe('inline');
+  }
+  await page.goto(sitePath('/examples/'));
+  await page.locator('[dir="rtl"]').evaluate((element) => { element.style.inlineSize = '280px'; });
+  expect(await page.locator('[dir="rtl"]').evaluate((element) => getComputedStyle(element).direction)).toBe('rtl');
+  await page.goto(sitePath('/blocks/'));
+  await page.locator('input[aria-invalid="true"]').focus();
+  await expect(page.locator('input[aria-invalid="true"]')).toBeFocused();
+  await expect(page.locator('input[aria-invalid="true"]')).toHaveAttribute('aria-describedby', 'docs-invalid-error');
+});
+
+test('button and field showcase states expose native semantics', async ({ page }) => {
+  await page.goto(sitePath('/blocks/'));
+  await expect(page.locator('button.nbr-button[disabled]')).toBeDisabled();
+  await expect(page.locator('button[aria-disabled="true"]')).toHaveJSProperty('disabled', false);
+  await expect(page.locator('button[aria-busy="true"]')).toHaveAttribute('aria-busy', 'true');
+  await expect(page.locator('input[required]')).toHaveAttribute('aria-describedby', 'docs-email-help');
+  await expect(page.locator('input[aria-invalid="true"]')).toHaveAttribute('aria-describedby', 'docs-invalid-error');
+  await expect(page.locator('[data-nbr-level="quiet"]')).toHaveCount(1);
+  await expect(page.locator('[data-nbr-level="outlined"]')).toHaveCount(1);
+  await expect(page.locator('[data-nbr-level="raised"]')).toHaveCount(1);
+});
+
+test('captures required showcase pages in light and dark desktop/mobile', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'chromium' || process.env.CAPTURE_EVIDENCE !== '1', 'evidence capture is opt-in Chromium only');
+  const pages = [['home', '/'], ['foundations', '/foundations/'], ['compositions', '/compositions/'], ['utilities', '/utilities/'], ['blocks', '/blocks/'], ['examples', '/examples/']];
+  for (const theme of ['light', 'dark']) {
+    for (const [name, route] of pages) {
+      for (const viewport of [{ label: 'desktop', width: 1280, height: 900 }, { label: 'mobile', width: 320, height: 900 }]) {
+        await page.setViewportSize(viewport);
+        await page.goto(sitePath(route));
+        await page.evaluate((value) => { document.documentElement.dataset.theme = value; }, theme);
+        await page.screenshot({ path: `.evidence-cache/screenshots/showcase-${name}-${viewport.label}-${theme}.png`, fullPage: true });
+      }
+    }
+  }
+});
