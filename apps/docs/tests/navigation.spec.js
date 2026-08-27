@@ -29,6 +29,23 @@ test('examples links resolve to rendered anchors', async ({ page }) => {
   for (const href of hrefs) await expect(page.locator(href)).toHaveCount(1);
 });
 
+test('authored main-content links stay inside the Pages project base', async ({ page, baseURL }) => {
+  for (const route of ['/', '/blocks/']) {
+    await page.goto(sitePath(route));
+    const links = await page.locator('main a[href]').evaluateAll((elements) => elements.map((element) => ({
+      href: element.href,
+      raw: element.getAttribute('href'),
+    })).filter(({ raw }) => raw && !raw.startsWith('#') && !raw.startsWith('http')));
+    for (const { href, raw } of links) {
+      await page.goto(href);
+      expect(new URL(page.url()).pathname, raw).toContain(new URL(baseURL).pathname.replace(/\/$/, ''));
+      await expect(page.locator('main h1, main h2').first(), raw).toBeVisible();
+      if (new URL(href).hash) await expect(page.locator(new URL(href).hash)).toHaveCount(1);
+      await page.goBack();
+    }
+  }
+});
+
 test('horizontally scrollable code regions are keyboard accessible', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 800 });
   await page.goto(sitePath('/getting-started/'));
