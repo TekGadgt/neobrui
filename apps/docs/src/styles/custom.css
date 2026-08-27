@@ -1,28 +1,149 @@
 @import 'neobrui/tokens';
 @import 'neobrui/blocks';
 
+/* Docs identity is intentionally application-owned. These maps are not part of
+   the CSS package: Starlight owns the shell and this site owns its palette. */
 :root {
-  --sl-color-accent-low: #e8eee9;
-  --sl-color-accent: #2d5941;
-  --sl-color-accent-high: #173322;
-  --sl-color-white: #172019;
-  --sl-color-gray-1: #334039;
-  --sl-color-gray-2: #5a665f;
-  --sl-color-gray-5: #d6ddd7;
-  --sl-color-gray-6: #f3f6f3;
-  --sl-color-black: #fbfdfb;
   --nbr-docs-measure: 72rem;
+  --nbr-docs-border: #18212b;
+  --nbr-docs-shadow: 4px 4px 0 #18212b;
+  --nbr-docs-focus: #a64200;
+  --nbr-docs-control-border: #18212b;
 }
 
-:where(.sl-markdown-content) :is(a, button, [tabindex]):focus-visible {
-  outline: 3px solid var(--nbr-color-focus, #2d5941);
+html[data-theme='light'],
+html[data-theme='auto'] {
+  --sl-color-accent-low: #d8f2e6;
+  --sl-color-accent: #0b6b4b;
+  --sl-color-accent-high: #06432f;
+  --sl-color-white: #18212b;
+  --sl-color-gray-1: #263544;
+  --sl-color-gray-2: #405061;
+  --sl-color-gray-3: #657789;
+  --sl-color-gray-4: #9aa9b7;
+  /* Keep native Starlight control boundaries distinct from paper. */
+  --sl-color-gray-5: #526273;
+  --sl-color-gray-6: #f1f5f7;
+  --sl-color-black: #fffdf7;
+  --sl-color-text: #18212b;
+  --sl-color-text-accent: #06432f;
+  --sl-color-bg: #fffdf7;
+  --sl-color-bg-nav: #fffdf7;
+  --sl-color-bg-sidebar: #f1f5f7;
+  --sl-color-hairline-light: #526273;
+  --sl-color-hairline: #18212b;
+  --nbr-docs-border: #18212b;
+  --nbr-docs-shadow: 4px 4px 0 #18212b;
+  --nbr-docs-focus: #a64200;
+  --nbr-docs-control-border: #18212b;
+}
+
+html[data-theme='dark'] {
+  --sl-color-accent-low: #183b30;
+  --sl-color-accent: #70e1b5;
+  --sl-color-accent-high: #d4ffea;
+  --sl-color-white: #f4f7fb;
+  --sl-color-gray-1: #e7eef5;
+  --sl-color-gray-2: #c3d0dc;
+  --sl-color-gray-3: #9eafbd;
+  --sl-color-gray-4: #718493;
+  --sl-color-gray-5: #9eafbd;
+  --sl-color-gray-6: #263541;
+  --sl-color-black: #101820;
+  --sl-color-text: #f4f7fb;
+  --sl-color-text-accent: #d4ffea;
+  --sl-color-bg: #101820;
+  --sl-color-bg-nav: #101820;
+  --sl-color-bg-sidebar: #17232d;
+  --sl-color-hairline-light: #9eafbd;
+  --sl-color-hairline: #dbe7f2;
+  --nbr-docs-border: #dbe7f2;
+  --nbr-docs-shadow: 4px 4px 0 #dbe7f2;
+  --nbr-docs-focus: #ffb86b;
+  --nbr-docs-control-border: #dbe7f2;
+}
+
+@media (prefers-color-scheme: dark) {
+  html[data-theme='auto'] {
+    --sl-color-accent-low: #183b30;
+    --sl-color-accent: #70e1b5;
+    --sl-color-accent-high: #d4ffea;
+    --sl-color-white: #f4f7fb;
+    --sl-color-gray-1: #e7eef5;
+    --sl-color-gray-2: #c3d0dc;
+    --sl-color-gray-3: #9eafbd;
+    --sl-color-gray-4: #718493;
+    --sl-color-gray-5: #9eafbd;
+    --sl-color-gray-6: #263541;
+    --sl-color-black: #101820;
+    --sl-color-text: #f4f7fb;
+    --sl-color-text-accent: #d4ffea;
+    --sl-color-bg: #101820;
+    --sl-color-bg-nav: #101820;
+    --sl-color-bg-sidebar: #17232d;
+    --sl-color-hairline-light: #9eafbd;
+    --sl-color-hairline: #dbe7f2;
+    --nbr-docs-border: #dbe7f2;
+    --nbr-docs-shadow: 4px 4px 0 #dbe7f2;
+    --nbr-docs-focus: #ffb86b;
+  --nbr-docs-control-border: #dbe7f2;
+  }
+}
+
+/* Stronger hierarchy and tactile surfaces, scoped to the documentation app. */
+.sl-markdown-content :is(h1, h2, h3, h4) { color: var(--sl-color-white); letter-spacing: -0.02em; }
+.sl-markdown-content :is(h1, h2) { font-weight: 800; }
+.sl-markdown-content :is(p, li) { max-width: 72ch; }
+.sl-markdown-content :not(pre) > code { color: var(--sl-color-text); background: var(--sl-color-gray-6); }
+.sl-markdown-content a:not(.sl-link-button) { text-decoration-thickness: .12em; text-underline-offset: .16em; }
+.sl-markdown-content .showcase {
+  max-width: none;
+  border: 2px solid var(--nbr-docs-border);
+  padding: 1.25rem;
+  background: var(--sl-color-bg-sidebar);
+  box-shadow: var(--nbr-docs-shadow);
+}
+.showcase [data-nbr-level] { margin-block: 1rem; }
+.token-swatches { align-items: stretch; }
+.token-swatch { display: grid; gap: .25rem; min-inline-size: 8rem; flex: 1 1 8rem; min-block-size: 5rem; padding: .75rem; border: 2px solid var(--nbr-docs-border); color: var(--swatch-text, var(--sl-color-white)); background: var(--swatch-bg, var(--sl-color-bg)); }
+.token-swatch small { color: inherit; opacity: .86; }
+.token-swatch[data-token-role="canvas"] { --swatch-bg: var(--sl-color-bg); --swatch-text: var(--sl-color-text); }
+.token-swatch[data-token-role="surface"] { --swatch-bg: var(--sl-color-bg-sidebar); --swatch-text: var(--sl-color-text); }
+.token-swatch[data-token-role="action"] { --swatch-bg: var(--sl-color-accent); --swatch-text: var(--sl-color-black); }
+.token-swatch[data-token-role="focus"] { --swatch-bg: var(--nbr-docs-focus); --swatch-text: var(--sl-color-black); }
+.surface-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+.surface-grid .nbr-surface { margin: 0; }
+.wrapper-demo { border: 2px dashed var(--nbr-docs-border); padding-block: 1rem; }
+
+/* Native Starlight controls use a dedicated boundary token. Keep this scoped
+   to controls so page separators can remain quieter. */
+:where(starlight-theme-select label, starlight-menu-button button, .pagefind-ui__search-input) {
+  border: 2px solid var(--nbr-docs-control-border);
+}
+
+/* Preserve usable landmarks and controls while making active states obvious. */
+:where(.sl-markdown-content, .sidebar-content) :is(a, button, [tabindex]):focus-visible {
+  outline: 3px solid var(--nbr-docs-focus);
   outline-offset: 3px;
 }
-
-.sl-markdown-content, .sl-markdown-content :where(p, li) { max-width: 72ch; }
-.sl-markdown-content .showcase { max-width: none; }
-.showcase { border: 1px solid var(--nbr-color-border, currentColor); padding: 1.25rem; background: var(--nbr-color-surface, Canvas); }
-.showcase [data-nbr-level] { margin-block: 1rem; }
+.sl-markdown-content pre[data-language]:focus-visible {
+  outline: 3px solid var(--nbr-docs-focus);
+  outline-offset: 4px;
+}
+:where(.sidebar-content) a[aria-current='page'] {
+  border-inline-start: 3px solid var(--sl-color-accent);
+  background: var(--sl-color-accent-low);
+  color: var(--sl-color-text-accent);
+  font-weight: 700;
+}
+:where(.sl-link-button, .showcase button, .showcase a.nbr-button) {
+  border: 2px solid var(--nbr-docs-border);
+  box-shadow: 3px 3px 0 var(--nbr-docs-border);
+}
+:where(.sl-link-button, .showcase button, .showcase a.nbr-button):active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--nbr-docs-border);
+}
 
 @media (min-width: 50rem) {
   /* Starlight's responsive TOC wrappers are utility classes. Keep the inactive
@@ -32,13 +153,15 @@
 }
 
 @media (max-width: 30rem) {
-  .sl-markdown-content .showcase { padding: .75rem; }
+  .sl-markdown-content .showcase { padding: .75rem; box-shadow: 3px 3px 0 var(--nbr-docs-border); }
+  .surface-grid { grid-template-columns: 1fr; }
 }
 
 @media (forced-colors: active) {
-  .showcase { border: 2px solid CanvasText; }
+  .showcase { border: 2px solid CanvasText; box-shadow: none; }
+  :where(.sl-link-button, .showcase button, .showcase a.nbr-button) { border: 2px solid ButtonText; box-shadow: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .001ms !important; }
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .001ms !important; animation-duration: .001ms !important; }
 }

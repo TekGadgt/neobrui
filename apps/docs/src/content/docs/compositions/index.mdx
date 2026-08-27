@@ -6,6 +6,17 @@ title: Compositions
 
 `.nbr-stack` is a nested-safe vertical flex flow. It uses `--nbr-space-4` by default and accepts the bounded `--nbr-stack-gap` hook. Child margins remain yours.
 
+<div class="showcase nbr-stack" style="--nbr-stack-gap: 1rem">
+  <section class="nbr-surface" data-nbr-level="outlined" aria-labelledby="stack-heading">
+    <h2 id="stack-heading">A clear vertical rhythm</h2>
+    <p>Spacing comes from the composition, not child resets.</p>
+    <div class="nbr-stack" style="--nbr-stack-gap: .5rem">
+      <small>Nested stack</small>
+      <p>Long content stays readable and wraps naturally without forcing a minimum width.</p>
+    </div>
+  </section>
+</div>
+
 ```html
 <section class="nbr-stack" aria-labelledby="heading">
   <h2 id="heading">A clear vertical rhythm</h2>
@@ -16,3 +27,12 @@ title: Compositions
 ## Cluster
 
 `.nbr-cluster` wraps inline actions and tags. Its default gap is `--nbr-space-3`; use `--nbr-cluster-align` and `--nbr-cluster-justify` for bounded alignment changes.
+
+<div class="showcase">
+  <div class="nbr-cluster" style="--nbr-cluster-justify: space-between" aria-label="Wrapping actions">
+    <a class="nbr-button" href="#stack-heading">Save changes</a>
+    <a class="nbr-button" href="#stack-heading">Review details</a>
+    <a class="nbr-button" href="#stack-heading">Open history</a>
+    <span>wraps at narrow widths</span>
+  </div>
+</div>

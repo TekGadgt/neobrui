@@ -1,6 +1,6 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
-import { accessSync } from 'node:fs';
+import { accessSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 const generatedRoot = fileURLToPath(new URL('./.generated/neobrui', import.meta.url));
@@ -16,6 +16,30 @@ try {
 
 const base = process.env.PUBLIC_SITE_BASE || '/';
 const site = process.env.PUBLIC_SITE_URL || undefined;
+
+// Expressive Code renders code blocks at build time. Keep keyboard focusability in
+// that same pipeline rather than mutating every page at runtime.
+function keyboardAccessibleCodeBlocks() {
+  return {
+    name: 'docs-keyboard-accessible-code-blocks',
+    hooks: {
+      'astro:build:done': ({ dir }) => {
+        const visit = (directory) => {
+          for (const entry of readdirSync(directory, { withFileTypes: true })) {
+            const path = `${directory}/${entry.name}`;
+            if (entry.isDirectory()) visit(path);
+            else if (entry.isFile() && entry.name.endsWith('.html')) {
+              const html = readFileSync(path, 'utf8');
+              const accessible = html.replace(/<pre data-language=/g, '<pre tabindex="0" data-language=');
+              if (accessible !== html) writeFileSync(path, accessible);
+            }
+          }
+        };
+        visit(fileURLToPath(dir));
+      },
+    },
+  };
+}
 
 export default defineConfig({
   base,
@@ -43,5 +67,5 @@ export default defineConfig({
         { label: 'Future path', slug: 'future' },
       ] },
     ],
-  })],
+  }), keyboardAccessibleCodeBlocks()],
 });

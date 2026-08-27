@@ -54,6 +54,25 @@ test('docs information architecture is represented in content routes', async () 
   assert.match(config, /customCss/);
 });
 
+test('authored docs links are base-safe internal links', async () => {
+  const files = [];
+  async function collect(directory) {
+    for (const entry of await readdir(resolve(root, directory), { withFileTypes: true })) {
+      const path = `${directory}/${entry.name}`;
+      if (entry.isDirectory()) await collect(path);
+      else if (/\.mdx?$/.test(entry.name)) files.push(path);
+    }
+  }
+  await collect('apps/docs/src/content/docs');
+  const rootAbsoluteHref = /href=[\"']\/(?!\/)/m;
+  const rootAbsoluteFrontmatterLink = /(?:^|\s)link:\s*\/(?!\/)/m;
+  for (const file of files) {
+    const content = await text(file);
+    assert.doesNotMatch(content, rootAbsoluteHref, `${file} contains a host-root href`);
+    assert.doesNotMatch(content, rootAbsoluteFrontmatterLink, `${file} contains a host-root frontmatter link`);
+  }
+});
+
 test('GitHub workflows are present with separate CI and Pages deployment jobs', async () => {
   const workflows = await readdir(resolve(root, '.github/workflows'));
   assert.deepEqual(workflows.sort(), ['ci.yml', 'pages.yml']);

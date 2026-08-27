@@ -6,6 +6,17 @@ title: Foundations
 
 Tokens describe roles rather than a brand palette: text, canvas, surface, focus, spacing, control geometry, and motion. Product-owned values are mapped into those roles by the consuming application.
 
+<div class="showcase nbr-stack" aria-label="Semantic token roles">
+  <div class="token-swatches nbr-cluster">
+    <div class="token-swatch" data-token-role="canvas"><strong>Canvas</strong><small>page background</small></div>
+    <div class="token-swatch" data-token-role="surface"><strong>Surface</strong><small>content region</small></div>
+    <div class="token-swatch" data-token-role="action"><strong>Action</strong><small>interactive emphasis</small></div>
+    <div class="token-swatch" data-token-role="focus"><strong>Focus</strong><small>keyboard indicator</small></div>
+  </div>
+  <p><strong>Docs identity is product-owned:</strong> these swatches demonstrate mapping, not Neobrui defaults.</p>
+  <p><strong>DTCG provenance:</strong> <code>color.text</code> is mapped by the consuming product; provenance stays in the generated DTCG file.</p>
+</div>
+
 ```css
 @layer nbr.tokens {
   :root {
