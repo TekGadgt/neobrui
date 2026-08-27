@@ -1,34 +1,23 @@
 {
-  "name": "neobrui-cube-harness",
-  "version": "0.0.0",
-  "private": true,
-  "packageManager": "pnpm@11.24.0",
+  "name": "neobrui",
+  "version": "1.0.0",
+  "description": "Opt-in, reset-free Neobrutalist design system",
   "type": "module",
+  "license": "MIT",
+  "sideEffects": ["*.css"],
+  "exports": {
+    ".": { "style": "./src/index.css", "default": "./src/index.css" },
+    "./foundations.css": "./src/foundations.css",
+    "./layout.css": "./src/layout.css",
+    "./primitives.css": "./src/primitives.css",
+    "./utilities.css": "./src/utilities.css",
+    "./package.json": "./package.json"
+  },
+  "files": ["src", "README.md", "LICENSE", "docs/design-system/0001-centralized-neobrui-reset.md", "skills/neobrui"],
   "scripts": {
-    "install:frozen": "pnpm install --frozen-lockfile",
-    "build:tokens": "node scripts/build-tokens.mjs",
-    "build:tailwind": "pnpm --filter neobrui-cube-tailwind build",
-    "validate:tokens": "node tests/token-schema.test.mjs",
-    "build": "pnpm build:tokens && pnpm build:tailwind && vite build",
-    "build:fixtures": "pnpm build && pnpm --filter neobrui-cube-css-modules build && pnpm --filter neobrui-cube-astro build && pnpm --filter neobrui-cube-tailwind build && node scripts/build-consumer-fixture.mjs",
-    "test": "node --test tests/*.test.mjs && pnpm validate:tokens && pnpm test:e2e",
-    "verify": "pnpm install --frozen-lockfile && pnpm test",
-    "test:e2e": "pnpm build:fixtures && playwright test",
-    "capture:chromium": "pnpm build:fixtures && CAPTURE_EVIDENCE=1 pnpm exec playwright test --project=chromium",
-    "build:package": "node scripts/release.mjs",
-    "release:local": "node scripts/release.mjs",
-    "measure:size": "node scripts/size-package.mjs",
-    "verify:size": "node scripts/verify-size.mjs",
-    "verify:clean": "node scripts/verify-clean.mjs",
-    "verify:pages": "node scripts/verify-pages.mjs",
-    "qa:baseline": "node scripts/qa-rehearsal.mjs baseline",
-    "qa:seeded": "node scripts/qa-rehearsal.mjs seeded",
-    "qa:rehearsal": "node scripts/qa-rehearsal.mjs rehearsal",
-    "prepare:docs": "node scripts/prepare-docs-package.mjs",
-    "build:docs": "pnpm release:local && pnpm prepare:docs && pnpm exec astro build --root apps/docs",
-    "build:docs:pages": "PUBLIC_SITE_BASE=/neobrui/ PUBLIC_SITE_URL=https://tekgadgt.github.io/neobrui/ pnpm run build:docs",
-    "preview:docs": "pnpm run build:docs && pnpm exec astro preview --root apps/docs",
-    "preview:docs:pages": "pnpm run build:docs:pages && PUBLIC_SITE_BASE=/neobrui/ PUBLIC_SITE_URL=https://tekgadgt.github.io/neobrui/ pnpm exec astro preview --root apps/docs"
+    "test": "node --test tests/design-system-reset.test.mjs",
+    "build": "pnpm --filter neobrui-docs build",
+    "pack:check": "npm pack --dry-run"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.10",
@@ -36,8 +25,7 @@
     "@axe-core/playwright": "4.13.0",
     "@playwright/test": "1.62.1",
     "astro": "7.2.7",
-    "tar": "7.5.22",
-    "typescript": "5.9.3",
     "vite": "7.3.6"
-  }
+  },
+  "packageManager": "pnpm@11.24.0"
 }

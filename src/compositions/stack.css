@@ -1,8 +1,0 @@
-/* Stack Composition: vertical flow only; child margins and visual ownership stay with consumers. */
-@layer nbr.compositions {
-  .nbr-stack {
-    display: flex;
-    flex-direction: column;
-    gap: var(--nbr-stack-gap, var(--nbr-space-4));
-  }
-}

@@ -3,6 +3,7 @@ packages:
   - "fixtures/css-modules"
   - "fixtures/astro"
   - "fixtures/tailwind"
+  - "apps/docs"
 supportedArchitectures:
   os: [darwin, linux]
   cpu: [arm64, x64]

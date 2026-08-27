@@ -1,0 +1,2 @@
+.nbr-u-visually-hidden { position: absolute; inline-size: 1px; block-size: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+.nbr-u-visually-hidden:focus, .nbr-u-visually-hidden:focus-visible { position: fixed; inset-block-start: 1rem; inset-inline-start: 1rem; inline-size: auto; block-size: auto; margin: 0; padding: .5rem 1rem; clip-path: none; z-index: 1; }
