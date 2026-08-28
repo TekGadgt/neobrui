@@ -1,10 +1,21 @@
-# Neobrui verification record
+# Neobrui verification template
 
-- [ ] Static CSS/API contract passes.
-- [ ] No reset, bare-element selector, `!important`, runtime JS, or dependency is shipped.
-- [ ] `npm pack --dry-run` contains only reviewed files.
-- [ ] Fresh tiny consumer installs and imports the aggregate CSS.
-- [ ] Docs root and `/neobrui/` builds and links pass.
-- [ ] Representative gallery passes Chromium, Firefox, and WebKit in light/dark, narrow/wide, keyboard, axe, RTL, forced colors, and reduced motion.
-- [ ] Removing classes/import preserves semantic HTML and application behavior.
-- [ ] Neutral and product theme rubric scores recorded; accessibility, responsive, and interaction are non-zero.
+## Static and package
+
+- [ ] CSS/API contract extracts every public class, attribute, custom property, and package export.
+- [ ] Every extracted item appears in the relevant human page and `references/api.md`.
+- [ ] No reset, bare-element selector, `!important`, runtime JS, or unreviewed dependency.
+- [ ] `npm pack --dry-run` is allowlisted and package smoke imports aggregate and subpaths.
+
+## Documentation
+
+- [ ] All seven routes build at root and `/neobrui/` Pages base.
+- [ ] Internal links, anchors, headings, code examples, and generated search/sitemap/404 boundaries pass.
+- [ ] Tables and code blocks do not create horizontal overflow at 320px.
+
+## Browser and manual
+
+- [ ] Representative Playwright projects pass Chromium, Firefox, and WebKit.
+- [ ] Keyboard focus and native semantics reviewed; axe is supplemental, not a conformance claim.
+- [ ] 320px, wide, light/dark, RTL, forced colors, and reduced motion reviewed.
+- [ ] Removing imports/classes leaves semantic HTML and application behavior.

@@ -1,17 +1,24 @@
-# Examples and anti-examples
+# Examples reference
 
-Good:
-
-```html
-<button class="nbr-pressable" type="button">Save</button>
-<article class="nbr-surface" data-nbr-level="raised">Content</article>
-```
-
-Bad:
+Use native semantics first and scope product identity. These examples are intentionally complete enough to paste into a fixture.
 
 ```html
-<div class="nbr-pressable" onclick="save()">Save</div>
-<button class="nbr-button nbr-shadow-lg">Save</button>
+<main class="nbr-wrapper nbr-stack">
+  <h1>Review queue</h1>
+  <article class="nbr-surface" data-nbr-level="raised">
+    <h2>Lead item</h2><p>Important content.</p>
+    <a class="nbr-pressable" href="/details">Open details</a>
+  </article>
+</main>
 ```
 
-The good example keeps native semantics and uses only the public API. The bad example invents a legacy alias and broad utility, or replaces button behavior with a non-semantic element.
+```css
+[data-product="coral-ledger"] {
+  --nbr-color-action: #e85d3f;
+  --nbr-color-on-action: #201814;
+  --nbr-color-border: #201814;
+  --nbr-color-shadow: #201814;
+}
+```
+
+Bad: `<div class="nbr-pressable" onclick="save()">Save</div>` (no native semantics); a shadow-only focus treatment; a global reset bundled with an opt-in class; or leaving equivalent product CSS in place and claiming the primitive owns it.

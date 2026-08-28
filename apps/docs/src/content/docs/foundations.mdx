@@ -1,28 +1,75 @@
 ---
 title: Foundations
-description: Semantic roles with tunable geometry.
+description: Neutral semantic tokens, exact defaults, and theme ownership.
 ---
 
-## Roles, not brand colors
+## Contract
 
-Foundations are authored semantic custom properties. Neutral fallbacks keep examples runnable; products own palette, type, theme switching, and meaning.
+`foundations.css` only defines custom properties on `:root`; it does not reset elements. Set variables on a product/theme ancestor or an individual instance. The values below are the source-of-truth fallbacks.
+
+## Complete token table
+
+| Custom property | Fallback/default | Consumed by | Effect / accepted shape |
+| --- | --- | --- | --- |
+| `--nbr-color-canvas` | `Canvas` | product/app | Canvas role; any `<color>` |
+| `--nbr-color-surface` | `Canvas` | Surface | default surface background |
+| `--nbr-color-surface-raised` | `Canvas` | product/app | raised surface role |
+| `--nbr-color-text` | `CanvasText` | Surface | default text color |
+| `--nbr-color-text-muted` | `GrayText` | product/app | muted semantic text |
+| `--nbr-color-border` | `CanvasText` | Surface/Pressable | boundary color |
+| `--nbr-color-focus` | `Highlight` | Pressable | visible focus outline |
+| `--nbr-color-action` | `ButtonFace` | Pressable | action background |
+| `--nbr-color-on-action` | `ButtonText` | Pressable | action foreground |
+| `--nbr-color-shadow` | `CanvasText` | Surface/Pressable | shadow color |
+| `--nbr-border-width-structural` | `2px` | Surface | structural border width |
+| `--nbr-border-width-control` | `2px` | Pressable | control border width |
+| `--nbr-border-style` | `solid` | Surface/Pressable | any supported border style |
+| `--nbr-shadow-offset-small` | `2px` | Pressable | inline/block small shadow offset |
+| `--nbr-shadow-offset-raised` | `4px` | raised Surface/fixed direction | raised offset |
+| `--nbr-press-translation` | `2px` | Pressable | active translation |
+| `--nbr-radius` | `0px` | Pressable | control radius |
+| `--nbr-space-1` | `.25rem` | product/app | smallest spacing |
+| `--nbr-space-2` | `.5rem` | Pressable | control padding fallback |
+| `--nbr-space-3` | `.75rem` | Cluster | cluster gap fallback |
+| `--nbr-space-4` | `1rem` | Stack/Wrapper/Grid/Surface | primary spacing fallback |
+| `--nbr-content-measure` | `70rem` | Wrapper | maximum inline measure |
+| `--nbr-motion-duration` | `160ms` | Pressable | transition duration |
+
+## Why system colors are intentional
+
+`Canvas`, `CanvasText`, `ButtonFace`, `ButtonText`, `GrayText`, and `Highlight` are browser/system colors. They provide a runnable neutral layer that can adapt to user agents and forced-colors modes. They are not a product palette and do not guarantee contrast for arbitrary product overrides: verify semantic foreground/background pairs.
+
+## Theme maps
+
+Neutral fallback map:
 
 ```css
-.product-theme {
-  --nbr-color-action: #173322;
-  --nbr-color-on-action: #fff;
-  --nbr-color-shadow: #173322;
+:root { color-scheme: light dark; /* retain the source defaults */ }
+```
+
+A distinct product map keeps the same roles but changes identity:
+
+```css
+[data-product="coral-ledger"] {
+  --nbr-color-canvas: #fff8ee;
+  --nbr-color-surface: #fff8ee;
+  --nbr-color-surface-raised: #ffe4d3;
+  --nbr-color-text: #201814;
+  --nbr-color-text-muted: #765f52;
+  --nbr-color-border: #201814;
+  --nbr-color-focus: #005fcc;
+  --nbr-color-action: #e85d3f;
+  --nbr-color-on-action: #201814;
+  --nbr-color-shadow: #201814;
+  --nbr-radius: 0.35rem;
+}
+@media (prefers-color-scheme: dark) {
+  [data-product="coral-ledger"] { --nbr-color-canvas: #1d1712; --nbr-color-surface: #261e18; --nbr-color-text: #fff8ee; --nbr-color-border: #f0d8bd; --nbr-color-action: #ff967c; --nbr-color-on-action: #201814; --nbr-color-shadow: #f0d8bd; }
 }
 ```
 
-## Small tactile defaults
+Modern `light-dark()` can combine the map with `color-scheme`; scoped selectors are the fallback when explicit theme state is application-owned. Borders default to 2px, small shadows to 2px, raised shadows to 4px, and press translation to 2px. A quieter theme can use `1px` structural borders and `1px` offsets; a stronger theme can use at most a bounded `3px` small / `5px` raised offset. Keep shadow offsets and active translation coherent so pressed controls do not appear detached.
 
-The default grammar uses a 2px rule, 2px small offset, 4px raised offset, and 2px press offset. Product scopes may tune these values without exposing a raw property-per-instance API.
+## Ownership and removal
 
-| Role | Default intent |
-| --- | --- |
-| `outlined` | A meaningful boundary without elevation |
-| `raised` | A focal task region or primary card |
-| `quiet` | A first-class low-chroma treatment |
-
-Shadow direction is logical by default, so RTL remains coherent. A fixed physical direction is an explicit scoped product decision.
+Foundations owns names, neutral fallbacks, and token contracts. It does not own brand meaning, font families, element margins, reset behavior, or contrast claims. Remove the import and all consuming classes to remove the visual layer; token declarations that are otherwise unused can remain or be deleted with the product scope.

@@ -1,22 +1,46 @@
 ---
 title: Primitives
-description: Surface and Pressable, with native semantics.
+description: Surface and Pressable contracts for native HTML.
 ---
 
-## Surface
+## `.nbr-surface` (Surface)
 
-Surface levels are `quiet`, `outlined`, and `raised`. A Surface is generic content; it does not become clickable through CSS.
+**Purpose/markup:** use generic content surfaces, not controls: `<article class="nbr-surface" data-nbr-level="raised"><h2>...</h2></article>`. The base owns `color`, `background`, `border`, and `padding`: `--nbr-surface-text` falls back to `--nbr-color-text`; background to `--nbr-color-surface`; border to `--nbr-border-width-structural var(--nbr-border-style) var(--nbr-color-border)`; padding to `--nbr-space-4`.
 
-```html
-<article class="nbr-surface" data-nbr-level="raised">A focal region</article>
+| Hook | Fallback | Effect |
+| --- | --- | --- |
+| `--nbr-surface-text` | `--nbr-color-text` | text color |
+| `--nbr-surface-background` | `--nbr-color-surface` | background |
+| `--nbr-surface-border` | structural width/style/border color | full border |
+| `--nbr-surface-padding` | `--nbr-space-4` | padding |
+| `--nbr-surface-border-color` | `--nbr-color-border` | outlined border color |
+| `--nbr-shadow-inline` | raised offset (`4px`) | inline raised shadow offset |
+| `--nbr-shadow-block` | raised offset (`4px`) | block raised shadow offset |
+| `--nbr-shadow-color` | `--nbr-color-shadow` | shadow color |
+
+`data-nbr-level="quiet"` makes the border transparent but preserves geometry; `outlined` selects its border color; `raised` adds `inline block 0 color` shadow. Missing or invalid levels receive only base styling. Surface is not interactive: do not make it clickable with CSS; put a native link/button inside.
+
+```css
+.product-card { --nbr-surface-padding: 1.5rem; --nbr-shadow-color: #201814; }
 ```
 
-## Pressable
+## `.nbr-pressable` (Pressable)
 
-Use a native `<button>` for actions and a native `<a>` for navigation. `.nbr-pressable` coordinates visible focus, hover, active, disabled, RTL, reduced motion, and forced-colors behavior without claiming the element's semantics.
+Use `<button class="nbr-pressable" type="button">Save</button>` for an action and `<a class="nbr-pressable" href="/reports">Reports</a>` for navigation. A disabled button is behaviorally disabled by HTML; `aria-disabled="true"` only styles this class and the application must prevent activation. Do not put the class on a `div`.
 
-```html
-<button class="nbr-pressable" type="button">Save changes</button>
+The class emits inline flex centering, `min-block-size:2.75rem`, padding `--nbr-pressable-padding` → `--nbr-space-2 var(--nbr-space-3)`, border `--nbr-pressable-border` → control width/style/border color, radius `--nbr-pressable-radius` → `--nbr-radius`, colors via `--nbr-pressable-text/background` → action roles, inherited font with `font-weight:700`, no text decoration, pointer cursor, and transform/shadow transitions using `--nbr-motion-duration` (`160ms`).
+
+| State/selector | Behavior |
+| --- | --- |
+| `:hover` | `filter:brightness(1.08)` |
+| `:active` | logical translation by `--nbr-press-translation` and `box-shadow:none` |
+| `:focus-visible` | 3px `--nbr-color-focus` outline, 3px offset |
+| `:disabled`, `[aria-disabled="true"]` | `opacity:.55`, `cursor:not-allowed`; aria-disabled behavior remains application-owned |
+
+RTL sets the press sign to `-1` through `--nbr-press-sign` (default `1`) and mirrors inline shadows. `[data-nbr-shadow-direction="fixed"]` sets a physical positive raised inline offset on that element and descendants' inherited scope; use only for an intentional physical product decision. Reduced motion removes transition and active transform. Forced colors remove shadows, use `CanvasText` border and `ButtonFace`/`ButtonText`, and use `Highlight` focus. Logical block direction remains product/CSS-owned.
+
+```css
+[data-product="coral-ledger"] .save { --nbr-pressable-background:#e85d3f; --nbr-pressable-text:#201814; --nbr-pressable-padding:.6rem 1rem; --nbr-pressable-radius:.35rem; --nbr-shadow-offset-small:2px; --nbr-press-translation:2px; }
 ```
 
-Field is explicitly deferred: labels, descriptions, errors, and validation remain application-owned until a coordinated contract proves reusable.
+The optional `--nbr-press-inline` and `--nbr-press-block` hooks accept lengths and override the active translation axes; otherwise both fall back to `--nbr-press-translation`. Remove the class and import to restore native control defaults; restore only product declarations that were intentionally delegated. **Field is deferred:** labels, descriptions, errors, validation, and form state remain application-owned.

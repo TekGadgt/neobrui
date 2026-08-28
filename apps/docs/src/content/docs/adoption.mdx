@@ -3,16 +3,53 @@ title: Adoption
 description: Introduce, verify, and remove Neobrui safely.
 ---
 
-## Project identity wins
+## Stepwise adoption
 
-A product's identity and explicit brief outrank resemblance to a demo. Then prioritize native semantics and accessibility, Neobrui principles, and finally a recipe's visual suggestion.
+1. Inventory existing CSS ownership: list resets, element rules, spacing, surfaces, controls, and state behavior.
+2. Choose aggregate or selected modules; map semantic tokens to product roles.
+3. Apply one class to native markup.
+4. Remove declarations that the class now owns. Adding classes while equivalent CSS remains does not prove ownership (the HTML Day lesson).
+5. Preserve product exceptions in a scoped selector.
+6. Verify behavior and accessibility, then record the boundary.
+7. Roll back by removing import/classes/token scope; native semantics and application behavior must remain.
 
-## Opt in and remove cleanly
+## Ownership matrix
 
-Import the public `neobrui` export once and adopt classes or a scoped role mapping intentionally. Removing the import, classes, and theme scope must preserve semantic HTML, links, controls, and application behavior.
+| Concern | Neobrui | Product/application |
+| --- | --- | --- |
+| Layout relationships | Stack, Cluster, Wrapper, Grid | content order, widths, overflow exceptions |
+| Surface/control geometry | border, padding, shadow, motion states | component meaning and product exceptions |
+| Semantics | none supplied | native elements, names, roles, form behavior |
+| Identity | neutral fallbacks and role hooks | palette, type, theme switching, contrast sign-off |
+| Runtime state | visual selectors only | disabled behavior, validation, loading, events |
 
-## AI path and verification
+## Theming scopes
 
-The repository-owned guidance lives at `skills/neobrui/SKILL.md`. Use it only for explicit Neobrui or Ryan-design-language briefs. Verify a representative page across light/dark, wide/320px, keyboard focus, unfiltered axe, RTL logical shadows, forced colors, reduced motion, and Chromium/Firefox/WebKit.
+Global: `[data-product="coral-ledger"] { --nbr-color-action: ... }`. Section: `.billing { ... }`. One instance: `.save { --nbr-pressable-background: ... }`. Prefer semantic roles and keep overrides near the product scope; core variables remain neutral fallbacks.
 
-Do not claim full accessibility conformance from automation alone; pair evidence with targeted manual review.
+## Integration examples
+
+Plain HTML links `app.css` after the chosen package CSS. Vite imports `import 'neobrui';` from the app entry. Astro imports the CSS once in the shared layout. A monorepo can use `{ "neobrui": "workspace:*" }`. There is no Tailwind adapter claim; write normal CSS custom-property overrides.
+
+## Verification checklist
+
+Automate static contracts, Astro check, root and Pages builds, package smoke, and Playwright projects for Chromium, Firefox, and WebKit. Manually verify semantic markup, keyboard/focus, unfiltered axe results, 320px width, light/dark, RTL, forced colors, and reduced motion. Automation is evidence, not a full conformance claim.
+
+```sh
+pnpm test
+pnpm --filter neobrui-docs check
+pnpm --filter neobrui-docs build:root
+pnpm --filter neobrui-docs build:pages
+pnpm --filter neobrui-docs test --project=chromium
+pnpm --filter neobrui-docs test --project=firefox
+pnpm --filter neobrui-docs test --project=webkit
+pnpm pack:smoke
+```
+
+## AI and repository guidance
+
+The repository skill is `skills/neobrui/SKILL.md`; its concise lookup is [`references/api.md`](https://github.com/TekGadgt/neobrui/blob/4a3b42e/skills/neobrui/references/api.md). Consult it when a brief explicitly requests Neobrui or Ryan's design language; opt out for unrelated work. Precedence is explicit product brief, native semantics/accessibility, charter principles, then recipe suggestion. Read source CSS and package exports when a detail is uncertain.
+
+## Upgrade, removal, and publication boundary
+
+Upgrade only after reviewing the Git ref and lockfile, rerunning the matrix, and checking changed defaults. Roll back by restoring the prior ref and removing classes/scopes. Current support is public source plus reviewed Git/local use; official npm registry publication is future work, not a current guarantee.

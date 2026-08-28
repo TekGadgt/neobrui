@@ -1,24 +1,43 @@
 ---
 title: Layout
-description: Compositions for purposeful flow.
+description: Relationship primitives with exact CSS, variables, and boundaries.
 ---
 
-## Four compositions
+Layout classes own relationships only: flow, wrapping, measure, and spans. They do not set color, typography, borders, child margins, reorder, or application state.
 
-- **Stack** — vertical flow with one gap hook; it does not reorder or reset child margins.
-- **Cluster** — wrapping inline flow with bounded gap and alignment.
-- **Wrapper** — centered measure with logical inline padding.
-- **Grid** — intrinsic columns with named spans for meaningful emphasis.
+## `.nbr-stack`
 
-Compositions own relationships, not color, typography, borders, or application state.
+**Use:** vertical groups. **Markup:** any container with semantic children, e.g. `<section class="nbr-stack"><h2>...</h2><p>...</p></section>`. It emits `display:flex; flex-direction:column; gap: var(--nbr-stack-gap, var(--nbr-space-4))`. It owns direction and gap; it does not reset child margins, so native heading margins add to `gap`. Override per instance or product scope with `--nbr-stack-gap: .5rem`. It is writing-mode-safe for flow, has no breakpoint or motion behavior, and disappears cleanly when removed.
+
+## `.nbr-cluster`
+
+**Use:** tags, toolbar actions, and inline groups that may wrap. **Markup:** `<div class="nbr-cluster" role="toolbar" aria-label="Filters">...</div>` only when the role is appropriate. It emits `display:flex; flex-wrap:wrap; align-items:var(--nbr-cluster-align, center); justify-content:var(--nbr-cluster-justify, flex-start); gap:var(--nbr-cluster-gap, var(--nbr-space-3))`. Variables accept normal CSS alignment values; gap accepts a length. It owns wrapping/alignment, not button semantics or child widths. Override `--nbr-cluster-align:start; --nbr-cluster-justify:space-between`. Wrapping is available at every width; writing mode follows flex logical flow. Remove it to restore block flow.
+
+## `.nbr-wrapper`
+
+**Use:** bounded page/content measure. **Markup:** `<main class="nbr-wrapper">...</main>`. It emits `box-sizing:border-box; inline-size:100%; max-inline-size:var(--nbr-wrapper-max,var(--nbr-content-measure)); margin-inline:auto; padding-inline:var(--nbr-wrapper-gutter,var(--nbr-space-4))`. `--nbr-wrapper-max` accepts a `<length>`; gutter accepts a length. At wide widths it centers a maximum measure; at narrow widths it remains 100% with logical gutters. Nested wrappers each add gutters; avoid accidental double padding. It is logical for RTL/writing modes and has no motion/state. It does not own block padding, overflow, or child margins.
+
+## `.nbr-grid`
+
+**Use:** deliberate hierarchy in a 12-column grid. **Markup:** place meaningful source-order children in `<div class="nbr-grid"><article>Lead</article><aside>Support</aside></div>`. It emits `display:grid; grid-template-columns:repeat(var(--nbr-grid-columns, 12), minmax(0, 1fr)); gap:var(--nbr-grid-gap,var(--nbr-space-4))`; first child spans `var(--nbr-grid-span, 7)`, second spans `var(--nbr-grid-span-secondary, 5)`. Under `max-width:40rem`, columns become `1fr` and every child is `grid-column:1 / -1`. Variables accept integer spans/columns and a length gap. This is not intrinsic: `nth-child` defaults make only the first two children special. Override spans when content hierarchy differs and preserve source order for CSS removal.
+
+## Composition example
 
 ```html
 <section class="nbr-wrapper nbr-stack">
+  <h1>Editorial desk</h1>
   <div class="nbr-grid">
-    <article class="lead">Featured work</article>
-    <aside>Related notes</aside>
+    <article class="nbr-surface" data-nbr-level="raised">Lead</article>
+    <aside class="nbr-surface" data-nbr-level="quiet">Related</aside>
   </div>
+  <div class="nbr-cluster"><a class="nbr-pressable" href="/archive">Archive</a></div>
 </section>
 ```
 
-The only initial utility is `.nbr-u-visually-hidden`, for accessible text and skip links. Source order remains meaningful when CSS is removed.
+## `.nbr-u-visually-hidden`
+
+Use for skip-link text or a label that must remain available to assistive technology: `<span class="nbr-u-visually-hidden">Skip to content</span>`. It uses `position:absolute; inline-size:block-size:1px; margin:-1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; border:0`. On `:focus`/`:focus-visible` it restores `position:fixed`, `inset-block-start:1rem`, `inset-inline-start:1rem`, auto size, padding `.5rem 1rem`, `clip-path:none`, and `z-index:1`. It does not hide decorative content with `aria-hidden`, and fixed restoration may need a product z-index override.
+
+## FAQ
+
+**Do margins disappear?** No; Stack gap and child margins can combine. **Can layouts overflow?** Wrapper is border-box but children can overflow; ownership remains with the child/product. **How many grid children?** Any number, but only children one and two receive default spans. **RTL?** Logical inline sizing/margins/padding adapt; grid source order remains. **Breakpoint?** Exactly `40rem`. **Removal?** Delete the class and module import; native block/flex/grid declarations or product replacements decide the fallback.

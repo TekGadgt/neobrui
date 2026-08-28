@@ -26,6 +26,53 @@ for (const route of routes) {
   });
 }
 
+test('reference blocks fit at narrow widths and retain desktop measure', async ({ page }) => {
+  for (const route of routes) {
+    await page.goto(mounted(route));
+    await page.setViewportSize({ width: 320, height: 800 });
+    const narrow = await page.locator('main').evaluate(main => {
+      const inspect = selector => [...main.querySelectorAll(selector)].map(element => {
+        const style = getComputedStyle(element);
+        return {
+          selector,
+          scrollWidth: element.scrollWidth,
+          clientWidth: element.clientWidth,
+          whiteSpace: style.whiteSpace,
+          overflowWrap: style.overflowWrap,
+          tabIndex: element.tabIndex,
+        };
+      });
+      return {
+        pre: inspect('pre'),
+        frames: inspect('.expressive-code'),
+        tables: inspect('table'),
+        documentOverflow: document.documentElement.scrollWidth > document.documentElement.clientWidth,
+      };
+    });
+    for (const element of [...narrow.pre, ...narrow.frames, ...narrow.tables]) {
+      expect(element.scrollWidth, `${route} ${element.selector} ${JSON.stringify(element)}`).toBeLessThanOrEqual(element.clientWidth);
+    }
+    expect(narrow.pre.every(element => element.whiteSpace === 'pre-wrap' && element.overflowWrap === 'anywhere')).toBeTruthy();
+    expect([...narrow.pre, ...narrow.frames, ...narrow.tables].every(element => element.tabIndex === -1)).toBeTruthy();
+    expect(narrow.documentOverflow, route).toBeFalsy();
+    for (const control of await page.locator('.expressive-code button').all()) {
+      await expect(control).toBeVisible();
+      await expect(control).toBeEnabled();
+    }
+
+    await page.setViewportSize({ width: 1280, height: 800 });
+    const wide = await page.locator('main').evaluate(main => [...main.querySelectorAll('pre, table')].map(element => ({
+      clientWidth: element.clientWidth,
+      scrollWidth: element.scrollWidth,
+      height: element.getBoundingClientRect().height,
+    })));
+    for (const element of wide) {
+      expect(element.scrollWidth).toBeLessThanOrEqual(element.clientWidth);
+      expect(element.clientWidth).toBeGreaterThan(0);
+    }
+  }
+});
+
 test('patterns representative gallery supports responsive interaction and accessibility', async ({ page }) => {
   await page.goto(mounted('/patterns/'));
   await expect(page.locator('h1')).toHaveText('Patterns');

@@ -1,20 +1,100 @@
 ---
 title: Patterns
-description: Recipes for asymmetric, native HTML interfaces.
+description: Copyable recipes, not versioned component APIs.
 ---
 
-Patterns are copyable recipes, not package APIs. Each recipe keeps behavior with native HTML and lets the product own content, identity, and application state.
+Patterns are recipes assembled from public classes and native semantics. They are not versioned component APIs; copy the anatomy, then let product CSS own identity and application state.
 
-<div class="nbr-gallery" data-specimen="neutral">
-  <article class="nbr-demo nbr-surface" data-nbr-level="raised"><p class="eyebrow">Featured / 01</p><h2>Editorial lead</h2><p>Give the primary story more space, then lead into evidence.</p><a href="#recipe">Read the case study</a></article>
-  <aside class="nbr-demo nbr-surface" data-nbr-level="outlined"><h3>Callout</h3><p>Pair tone with a textual label; urgency belongs to the application.</p></aside>
-  <div class="nbr-demo"><h3>Badge</h3><p><span class="nbr-pressable">In progress</span> is not color-only status.</p></div>
+| Need | Recipe | Primary owner |
+| --- | --- | --- |
+| One important story | Card/editorial lead | content + grid |
+| Explanation or warning | Callout | product semantics |
+| Compact state | Badge/status | application text/state |
+| Actions | Nav vs toolbar | native links/buttons |
+| Opening statement | Hero | product typography |
+| Unequal related content | Mixed-span grid | layout primitive |
+
+## Recipe playground
+
+<div class="nbr-gallery">
+  <article class="nbr-demo nbr-surface" data-nbr-level="raised"><h2>Editorial lead</h2><p>The primary story gets more space.</p><a href="#integrated-example">Read the case study</a></article>
+  <aside class="nbr-demo nbr-surface" data-nbr-level="outlined"><h2>Callout</h2><p>Supporting guidance stays bounded.</p></aside>
 </div>
 
-<section class="nbr-demo nbr-surface" data-specimen="product" data-nbr-example-theme="product" aria-label="Product identity: Coral Ledger"><h2>Product mapping</h2><p>Product-owned identity can map tokens without changing native semantics.</p><button type="button">Try the pattern</button></section>
+## Recipe anatomy
 
-## Recipe set
+### Card / editorial lead
 
-Cards, callouts, badges, navigation/toolbars, editorial sections, heroes, and mixed-span galleries all follow the same contract: purpose, anatomy, good/bad comparison, responsive behavior, native semantics, applicable states, theming hooks, and a removal note.
+Purpose: give one article a meaningful lead. Use `<article>` with a heading and link; `.nbr-grid` gives the first child 7 columns and a supporting `<aside>` 5. Product hook: `.editorial-lead`. At 40rem all children stack. Avoid making every card raised. Remove classes and the article remains readable.
 
-<section id="recipe"><h2>Removal note</h2><p>Remove the Neobrui classes and role mapping; the headings, links, and content still work as semantic HTML.</p></section>
+### Callout
+
+```html
+<aside class="nbr-surface callout" data-nbr-level="outlined" aria-labelledby="tip-title">
+  <h2 id="tip-title">Before you publish</h2><p>Review keyboard focus and contrast.</p>
+</aside>
+```
+
+The `aside` and heading provide semantics; the product owns tone and urgency. Use text, not color alone. `outlined` preserves a boundary without elevation.
+
+### Badge/status
+
+```html
+<span class="status" data-state="in-progress">In progress</span>
+```
+
+A badge is not inherently a button. Product CSS can map `data-state`, but visible text and accessible naming remain required. Do not use `.nbr-pressable` merely to make a span look tactile.
+
+### Navigation vs toolbar
+
+```html
+<nav aria-label="Primary"><div class="nbr-cluster"><a class="nbr-pressable" href="/">Home</a></div></nav>
+<div class="nbr-cluster" role="toolbar" aria-label="Editor actions"><button class="nbr-pressable" type="button">Save</button></div>
+```
+
+Navigation owns links and destinations; toolbar owns grouped actions. The cluster only wraps/alines. Use native disabled buttons; `aria-disabled` still needs application prevention.
+
+### Hero and mixed-span grid
+
+```html
+<header class="hero nbr-stack"><p>Issue 04</p><h1>Coral Ledger</h1><p>Evidence before decoration.</p></header>
+<section class="nbr-grid"><article class="nbr-surface" data-nbr-level="raised">Lead</article><aside class="nbr-surface" data-nbr-level="quiet">Evidence</aside></section>
+```
+
+The product owns hero type and identity; layout owns relationships. The grid is explicit 12-column, not intrinsic.
+
+## Neutral and Coral Ledger mapping
+
+The same anatomy can be neutral (system color fallbacks) or product-scoped:
+
+```css
+[data-product="coral-ledger"] { --nbr-color-action:#e85d3f; --nbr-color-on-action:#201814; --nbr-color-border:#201814; --nbr-color-shadow:#201814; }
+```
+
+Verify both light and dark mappings for contrast. Recipes do not alter semantics, responsive source order, or state behavior.
+
+## Integrated example
+
+The two rendered specimens below deliberately share the same semantic anatomy and content. The neutral example is the default; the Coral Ledger example adds only a scoped role mapping, so identity can be removed without changing source order or interaction behavior.
+
+<div class="nbr-specimen nbr-stack" data-specimen="neutral" aria-label="Neutral identity example">
+  <header class="hero nbr-stack"><p>Issue 04</p><h2>Release desk</h2><p class="specimen-marker">Neutral identity: default</p></header>
+  <div class="nbr-grid">
+    <article class="nbr-surface" data-nbr-level="raised"><h3>Editorial lead</h3><p>Primary story with evidence before decoration.</p><a class="nbr-pressable" href="#integrated-example">Open the case study</a></article>
+    <aside class="nbr-surface" data-nbr-level="outlined" aria-label="Neutral supporting callout"><h3>Callout</h3><p>Supporting note stays bounded and readable.</p><span class="status" data-state="in-progress">In progress</span></aside>
+  </div>
+  <nav aria-label="Neutral specimen navigation"><div class="nbr-cluster"><a class="nbr-pressable" href="#integrated-example">Overview</a><a href="#integrated-example">Evidence</a></div></nav>
+  <div class="nbr-cluster" role="toolbar" aria-label="Specimen actions"><button class="nbr-pressable" type="button">Save</button><button type="button">Share</button></div>
+</div>
+
+<div class="nbr-specimen nbr-stack" data-specimen="product" data-nbr-example-theme="product" aria-label="Product identity: Coral Ledger">
+  <header class="hero nbr-stack"><p>Issue 04</p><h2>Release desk</h2><p class="specimen-marker">Product identity: Coral Ledger</p></header>
+  <div class="nbr-grid">
+    <article class="nbr-surface" data-nbr-level="raised"><h3>Editorial lead</h3><p>Primary story with evidence before decoration.</p><a class="nbr-pressable" href="#integrated-example">Open the case study</a></article>
+    <aside class="nbr-surface" data-nbr-level="outlined" aria-label="Coral Ledger supporting callout"><h3>Callout</h3><p>Supporting note stays bounded and readable.</p><span class="status" data-state="in-progress">In progress</span></aside>
+  </div>
+  <nav aria-label="Coral Ledger specimen navigation"><div class="nbr-cluster"><a class="nbr-pressable" href="#integrated-example">Overview</a><a href="#integrated-example">Evidence</a></div></nav>
+  <div class="nbr-cluster" role="toolbar" aria-label="Specimen actions"><button class="nbr-pressable" type="button">Save</button><button type="button">Share</button></div>
+</div>
+
+Test semantics, keyboard, responsive collapse, RTL, forced colors, and reduced motion. To remove a recipe, delete classes/imports and restore any product declarations; content and native controls remain.

@@ -9,10 +9,10 @@
     "route": "/patterns/",
     "h1": "Patterns",
     "file": "screenshots/neutral-desktop-light.png",
-    "sha256": "40c06097db87e5008f60566e0cf31bee864a08cbdf7219c08fcedf74a7b40d9f",
+    "sha256": "320594fa74e5a81a28b106e69377de90efbad6b6b33306a1d6673f41c1d632ca",
     "dimensions": {
       "width": 1280,
-      "height": 1437
+      "height": 3901
     }
   },
   {
@@ -25,10 +25,10 @@
     "route": "/patterns/",
     "h1": "Patterns",
     "file": "screenshots/neutral-mobile-light.png",
-    "sha256": "26337577d506c26f925072b4fecbc8ae52a9c6e7a16748bba0bbf71faa850065",
+    "sha256": "9be2d1c02c4030f7deeab87a7c3facdc211edefffa975ff372807afb5d2f9eb9",
     "dimensions": {
       "width": 320,
-      "height": 2046
+      "height": 6036
     }
   },
   {
@@ -41,10 +41,10 @@
     "route": "/patterns/",
     "h1": "Patterns",
     "file": "screenshots/neutral-desktop-dark.png",
-    "sha256": "b6f51106e57b46259db32da6d6d84fec0aa081accd5dcd58b56624b5b0cfe945",
+    "sha256": "82136a710e03d8a19ddcbec5135febd5bc1a2026b9cdf0f23a1f114dd7b07c85",
     "dimensions": {
       "width": 1280,
-      "height": 1437
+      "height": 3901
     }
   },
   {
@@ -57,10 +57,10 @@
     "route": "/patterns/",
     "h1": "Patterns",
     "file": "screenshots/neutral-mobile-dark.png",
-    "sha256": "6b923a7cfcf8302ede7029a082dff65778f18756410d3ce4f1a61325f240a862",
+    "sha256": "4d5781287b9a3d4beeda714b567dd63c383f13f3664371d4a3a4bdf8f4ef6401",
     "dimensions": {
       "width": 320,
-      "height": 2046
+      "height": 6036
     }
   },
   {
@@ -73,10 +73,10 @@
     "route": "/patterns/",
     "h1": "Patterns",
     "file": "screenshots/product-desktop-light.png",
-    "sha256": "31d71fa25c7d14dc501248bdf7c41f959f42df56d42e11fe575f88e94b048ca5",
+    "sha256": "e47690fe91af336d11b20bc4be8047306dc7f3adfb217a3ef7707f8c0ee23f3a",
     "dimensions": {
       "width": 1280,
-      "height": 1437
+      "height": 3901
     },
     "marker": "Product identity: Coral Ledger",
     "tokens": {
@@ -102,10 +102,10 @@
     "route": "/patterns/",
     "h1": "Patterns",
     "file": "screenshots/product-mobile-light.png",
-    "sha256": "19c7f6f9ad13a19fe1645bbfe523d554a90a5eba0745ab9211dfbb7fa899d97d",
+    "sha256": "38093d7dcab06c385dc2099b55ec08fd7741cb800c41ee35a4f3872168bfa57c",
     "dimensions": {
       "width": 320,
-      "height": 2046
+      "height": 6036
     },
     "marker": "Product identity: Coral Ledger",
     "tokens": {
@@ -131,10 +131,10 @@
     "route": "/patterns/",
     "h1": "Patterns",
     "file": "screenshots/product-desktop-dark.png",
-    "sha256": "176d9d992386773206ff148b9f04dc403d4b835fd57f85ebe09f51d4a8534e43",
+    "sha256": "b6e221780510aec5605df0676fecaa381deef62013d86709a6677fa98b996483",
     "dimensions": {
       "width": 1280,
-      "height": 1437
+      "height": 3901
     },
     "marker": "Product identity: Coral Ledger",
     "tokens": {
@@ -145,7 +145,7 @@
       "--nbr-radius-control": ".65rem",
       "color": "rgb(255, 244, 223)",
       "backgroundColor": "rgb(24, 35, 51)",
-      "borderTopColor": "rgb(255, 244, 223)",
+      "borderTopColor": "rgb(242, 223, 193)",
       "boxShadow": "rgb(113, 208, 198) 5px 6px 0px 0px",
       "borderRadius": "10.4px"
     }
@@ -160,10 +160,10 @@
     "route": "/patterns/",
     "h1": "Patterns",
     "file": "screenshots/product-mobile-dark.png",
-    "sha256": "91ba607cf6b9dd39f204f9a9088cb787ff9df91034d0b31db4dbefa3819bf418",
+    "sha256": "353730cb3802f6ff1b63a438d697418dab888b935f5f05e9666583a4a18a5741",
     "dimensions": {
       "width": 320,
-      "height": 2046
+      "height": 6036
     },
     "marker": "Product identity: Coral Ledger",
     "tokens": {
@@ -174,7 +174,7 @@
       "--nbr-radius-control": ".65rem",
       "color": "rgb(255, 244, 223)",
       "backgroundColor": "rgb(24, 35, 51)",
-      "borderTopColor": "rgb(255, 244, 223)",
+      "borderTopColor": "rgb(242, 223, 193)",
       "boxShadow": "rgb(113, 208, 198) 5px 6px 0px 0px",
       "borderRadius": "10.4px"
     }

@@ -4,9 +4,9 @@
       "score": 17,
       "out_of": 18,
       "observations": [
-        "Neutral semantic fallbacks remain product-agnostic and the four baseline screenshot hashes are preserved",
+        "Neutral semantic fallbacks remain product-agnostic and the four current screenshot hashes are unique",
         "Native links and buttons remain the interaction boundary",
-        "Stacked 320px gallery has no horizontal overflow"
+        "Stacked 320px specimen grids have no horizontal overflow"
       ]
     },
     "product": {
@@ -17,12 +17,12 @@
       "scope": "[data-nbr-example-theme=product]",
       "observations": [
         "Scoped ink-navy, warm-cream, coral, and teal role mapping has explicit light/dark values",
-        "Computed role snapshots differ from neutral in both themes and product hashes differ from paired neutral hashes",
-        "Same route, anatomy, viewport dimensions, and native controls preserve responsive and interaction evidence",
+        "Computed role snapshots differ from neutral in both themes and all four product hashes differ from paired neutral hashes",
+        "Same content, semantic anatomy, viewport dimensions, and native controls preserve responsive and interaction evidence",
         "Visual review confirms distinct readable light/dark panels, restrained 5–6px shadows, no clipping, and no 404 artifacts"
       ]
     }
   },
   "dimensions": ["hierarchy", "intentional irregularity", "restraint", "semantic roles", "responsive layout", "native interaction", "accessibility", "product identity", "removability"],
-  "evidence": "capture.spec.js, routes.spec.js, and search.spec.js; capture contract preserves neutral hashes, records product tokens, rejects duplicate hashes, and remains opt-in"
+  "evidence": "capture.spec.js, routes.spec.js, and search.spec.js; capture contract asserts eight current captures, same paired dimensions/anatomy, product tokens, contrast, and unique hashes"
 }
