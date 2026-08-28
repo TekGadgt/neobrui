@@ -1,24 +1,95 @@
 ---
 title: Start
-description: Opt in to a small, reset-free design language.
+description: Install, import, and adopt Neobrui without surrendering native HTML.
 hero:
-  title: Small CSS. Clear boundaries.
-  tagline: Neobrui gives native HTML a tactile visual grammar without taking over the product.
+  title: A developer reference for small, opt-in CSS
+  tagline: Neobrui supplies layout relationships, tactile primitives, and neutral semantic tokens. Your product keeps ownership of meaning, content, type, and behavior.
 ---
 
-## Opt in, then stay native
+## Status and support boundary
 
-Neobrui is deliberately scoped. Import the package, add an explicit class or theme scope, and remove either without changing semantics or behavior.
+The public source and design system are live. **An official npm registry install is not launched yet.** Do not use `npm install @tekgadgt/neobrui` as a current setup command; the future package identity is planned, not published.
 
-<div class="nbr-demo nbr-stack">
-  <h2>Neutral playground</h2>
-  <p>Product identity belongs to the product. This example uses semantic roles and native controls.</p>
-  <div class="nbr-cluster">
-    <button class="nbr-pressable" type="button">Try an action</button>
-    <a class="nbr-pressable" href="/neobrui/principles/">Read principles</a>
-  </div>
-</div>
+## Choose your entry
 
-## Live product mapping
+| Entry | Use when | Import |
+| --- | --- | --- |
+| Aggregate | You want every public module in a small consumer | `import 'neobrui'` or `@import 'neobrui';` |
+| Selected modules | You want explicit CSS ownership and a smaller cascade | `@import 'neobrui/foundations.css';` then selected modules |
 
-A product scope can map the same roles to its own palette while the markup stays unchanged. See [Foundations](/neobrui/foundations/) for the small set of tunable defaults.
+The source package exports `neobrui`, `foundations.css`, `layout.css`, `primitives.css`, `utilities.css`, and `package.json`. CSS order is foundations, layout, primitives, utilities; the aggregate index preserves that order. The package declares CSS `sideEffects`, so bundlers must retain CSS imports.
+
+## Current reproducible installation
+
+Use a reviewed Git ref (replace the placeholder; pin a commit or reviewed tag in your lockfile):
+
+```sh
+pnpm add 'github:TekGadgt/neobrui#<commit-or-tag>'
+npm install 'github:TekGadgt/neobrui#<commit-or-tag>'
+```
+
+For Ryan's monorepo projects, a workspace dependency is local-only:
+
+```json
+{ "dependencies": { "neobrui": "workspace:*" } }
+```
+
+A non-monorepo local path is also local-only, for example `pnpm add ../neobrui` (commit the resulting lockfile and path policy only when that is intentional). Git refs and lockfiles make builds reproducible; a moving branch does not. Registry publication instructions will be added separately after launch.
+
+## Imports
+
+```css
+/* app.css: explicit order */
+@import 'neobrui/foundations.css';
+@import 'neobrui/layout.css';
+@import 'neobrui/primitives.css';
+@import 'neobrui/utilities.css';
+```
+
+```js
+// CSS bundler entry; the import is intentionally side-effectful.
+import 'neobrui';
+// Or select a module:
+import 'neobrui/layout.css';
+```
+
+## Minimal runnable native HTML
+
+```html
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Neobrui example</title><link rel="stylesheet" href="app.css"></head>
+<body>
+  <main class="nbr-wrapper nbr-stack">
+    <h1>Review queue</h1>
+    <p class="nbr-surface" data-nbr-level="outlined">Native content remains the contract.</p>
+    <div class="nbr-cluster">
+      <button class="nbr-pressable" type="button">Approve</button>
+      <a class="nbr-pressable" href="/help">Read the guide</a>
+    </div>
+  </main>
+</body>
+</html>
+```
+
+Neobrui has no reset, bare-element rules, runtime JavaScript, or required framework. Add classes explicitly; keep headings, labels, button behavior, focus, and application state in the native/product layer. The browser contract is modern CSS with logical properties, custom properties, `:focus-visible`, media queries, and system colors; test the engines your product supports.
+
+## A product theme is a scope
+
+Core values are neutral fallbacks. Set roles on a product ancestor or one instance, never by editing the package:
+
+```css
+[data-product="coral-ledger"] {
+  color-scheme: light dark;
+  --nbr-color-canvas: light-dark(#fff8ee, #1d1712);
+  --nbr-color-text: light-dark(#201814, #fff8ee);
+  --nbr-color-border: light-dark(#201814, #f0d8bd);
+  --nbr-color-action: light-dark(#e85d3f, #ff967c);
+  --nbr-color-on-action: light-dark(#201814, #201814);
+  --nbr-color-shadow: light-dark(#201814, #f0d8bd);
+}
+```
+
+## Removal and next references
+
+Remove the CSS import, Neobrui classes, and product token scope. Native semantics and application behavior remain; re-add any product declarations you intentionally delegated. Continue with [Principles](/neobrui/principles/), [Foundations](/neobrui/foundations/), [Layout](/neobrui/layout/), [Primitives](/neobrui/primitives/), [Patterns](/neobrui/patterns/), and [Adoption](/neobrui/adoption/).
