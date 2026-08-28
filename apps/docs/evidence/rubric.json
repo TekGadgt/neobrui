@@ -1,8 +1,28 @@
 {
   "identities": {
-    "neutral": {"score": 17, "out_of": 18, "observations": ["Neutral semantic fallbacks keep demos product-agnostic", "Native links and buttons remain the interaction boundary", "Stacked 320px gallery has no horizontal overflow"]},
-    "product": {"score": 17, "out_of": 18, "observations": ["Role mapping is documented as a scoped product concern", "Hierarchy reserves raised treatment for the featured region", "Verification covers keyboard, reduced motion, forced colors, and three engines"]}
+    "neutral": {
+      "score": 17,
+      "out_of": 18,
+      "observations": [
+        "Neutral semantic fallbacks remain product-agnostic and the four baseline screenshot hashes are preserved",
+        "Native links and buttons remain the interaction boundary",
+        "Stacked 320px gallery has no horizontal overflow"
+      ]
+    },
+    "product": {
+      "name": "Coral Ledger",
+      "score": 17,
+      "out_of": 18,
+      "marker": "Product identity: Coral Ledger",
+      "scope": "[data-nbr-example-theme=product]",
+      "observations": [
+        "Scoped ink-navy, warm-cream, coral, and teal role mapping has explicit light/dark values",
+        "Computed role snapshots differ from neutral in both themes and product hashes differ from paired neutral hashes",
+        "Same route, anatomy, viewport dimensions, and native controls preserve responsive and interaction evidence",
+        "Visual review confirms distinct readable light/dark panels, restrained 5–6px shadows, no clipping, and no 404 artifacts"
+      ]
+    }
   },
   "dimensions": ["hierarchy", "intentional irregularity", "restraint", "semantic roles", "responsive layout", "native interaction", "accessibility", "product identity", "removability"],
-  "evidence": "routes.spec.js and search.spec.js; manual screenshot capture remains opt-in"
+  "evidence": "capture.spec.js, routes.spec.js, and search.spec.js; capture contract preserves neutral hashes, records product tokens, rejects duplicate hashes, and remains opt-in"
 }

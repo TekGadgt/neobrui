@@ -16,5 +16,31 @@
   .nbr-good { border-inline-start: 4px solid var(--nbr-color-positive, currentColor); }
   .nbr-bad { opacity: .72; }
   [data-specimen="product"] { --nbr-color-positive: #9a3412; background: color-mix(in srgb, currentColor 4%, transparent); }
+
+  /* Product identity is an opt-in example mapping, never a core default. */
+  [data-nbr-example-theme="product"] {
+    --nbr-border-control: 3px solid var(--nbr-color-border);
+    --nbr-border-region: 4px solid var(--nbr-color-border);
+    --nbr-button-background: var(--nbr-color-action);
+    --nbr-color-action: light-dark(#b83f32, #f27c68);
+    --nbr-color-border: light-dark(#14263d, #f2dfc1);
+    --nbr-color-canvas: light-dark(#f8efdf, #182333);
+    --nbr-color-focus: light-dark(#176b72, #71d0c6);
+    --nbr-color-on-action: light-dark(#fffaf0, #182333);
+    --nbr-color-shadow: light-dark(#176b72, #71d0c6);
+    --nbr-color-surface: light-dark(#fffaf0, #22334a);
+    --nbr-color-surface-raised: light-dark(#fff4df, #2c4058);
+    --nbr-color-text: light-dark(#14263d, #fff4df);
+    --nbr-color-text-muted: light-dark(#40566e, #c8d1d9);
+    --nbr-radius-control: 0.65rem;
+    --nbr-shadow-block: 6px;
+    --nbr-shadow-inline: 5px;
+    --nbr-shadow-press-block: 2px;
+    --nbr-shadow-press-inline: 2px;
+    background: var(--nbr-color-canvas);
+    color: var(--nbr-color-text);
+    border-radius: var(--nbr-radius-control);
+    box-shadow: var(--nbr-shadow-inline) var(--nbr-shadow-block) 0 var(--nbr-color-shadow);
+  }
   @media (max-width: 40rem) { .nbr-gallery { grid-template-columns: 1fr; } .nbr-gallery > :first-child { grid-row: auto; } }
 }
