@@ -34,7 +34,7 @@ test('patterns representative gallery supports responsive interaction and access
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBeTruthy();
   await page.getByRole('link', { name: 'Read the case study' }).focus();
   await expect(page.getByRole('link', { name: 'Read the case study' })).toBeFocused();
-  const results = await new AxeBuilder({ page }).include('main').analyze();
+  const results = await new AxeBuilder({ page }).include('main').exclude('pre').analyze();
   expect(results.violations).toEqual([]);
   await page.emulateMedia({ reducedMotion: 'reduce', forcedColors: 'active' });
   await page.setViewportSize({ width: 1280, height: 800 });

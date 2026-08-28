@@ -15,6 +15,10 @@
   .nbr-gallery > :first-child { grid-row: span 2; }
   .nbr-good { border-inline-start: 4px solid var(--nbr-color-positive, currentColor); }
   .nbr-bad { opacity: .72; }
+  /* Reference tables and code remain readable at the 320px contract. */
+  .sl-markdown-content table { inline-size: 100%; table-layout: fixed; overflow-wrap: anywhere; }
+  .sl-markdown-content pre { max-inline-size: 100%; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .sl-markdown-content pre code { white-space: pre-wrap; overflow-wrap: anywhere; }
   [data-specimen="product"] { --nbr-color-positive: #9a3412; background: color-mix(in srgb, currentColor 4%, transparent); }
 
   /* Product identity is an opt-in example mapping, never a core default. */
