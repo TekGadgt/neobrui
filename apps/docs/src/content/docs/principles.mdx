@@ -1,22 +1,49 @@
 ---
 title: Principles
-description: Hierarchy, irregularity, and restraint.
+description: Actionable rules for hierarchy, semantics, and restraint.
 ---
+
+The [design-system charter](https://github.com/TekGadgt/neobrui/blob/4a3b42e/docs/design-system/charter.md) is the normative authority. This page translates it into implementation and review decisions.
 
 ## Hierarchy before decoration
 
-Visible construction should carry meaning: boundary, fill, type, spacing, and motion each explain hierarchy or state. Give the primary heading and task region the clearest emphasis; leave quiet regions unframed.
+Implementation: allocate space and spans to importance before adding borders, fills, or shadows. Good and bad versions use the same content:
+
+```html
+<div class="nbr-grid">
+  <article class="nbr-surface" data-nbr-level="raised"><h2>Release notes</h2><p>The lead gets the primary span.</p></article>
+  <aside class="nbr-surface" data-nbr-level="quiet"><h3>Changelog</h3><p>Supporting evidence stays quiet.</p></aside>
+</div>
+```
+
+A bad version gives both children raised surfaces and equal spans. At narrow widths both become one column; source order remains the reading order. Review: can a reader identify the primary task without color?
 
 ## Intentional irregularity
 
-Vary span, rhythm, and alignment according to content importance while retaining meaningful source order. A featured story may span two columns; supporting notes should remain smaller and quieter. At 320px, the same content becomes one readable column.
+`.nbr-grid` defaults to 7 columns for the first child and 5 for the second. That is a content hierarchy, not intrinsic layout. Equal grids often make every card equally loud. Use explicit spans when the content changes; never randomize offsets. Review source order, 40rem fallback, and whether a second child actually exists.
 
-## Restraint is a feature
+## Restraint
 
-Avoid equal-loudness card walls, universal heavy borders, random offsets, and a palette that decorates rather than communicates.
+Every border, shadow, and color must explain boundary, elevation, action, or state. Good: one raised lead and quiet notes. Bad: a wall of identical cards, random asymmetry, or shadows on every element. Responsive fallback removes span complexity, not meaning.
 
-<div class="nbr-gallery">
-  <article class="nbr-demo nbr-good" data-nbr-level="raised"><h2>Good: one lead</h2><p>The important story gets space and a clear reading path.</p></article>
-  <article class="nbr-demo nbr-good"><h3>Good: related note</h3><p>Secondary content stays useful and quiet.</p></article>
-  <article class="nbr-demo nbr-bad"><h3>Bad: equal cards</h3><p>Same content, same emphasis, no hierarchy.</p></article>
-</div>
+## Semantic/native precedence
+
+Use `<button>` for actions and `<a href>` for navigation. A `div` with click handlers is not a replacement. Use text/icon plus an accessible name for state; never color-only status. `.nbr-pressable` styles semantics but does not provide them. Focus must be visible without relying on a shadow.
+
+## Product identity override
+
+Product scope and explicit brief outrank demo appearance. Map semantic roles (`--nbr-color-action`, not “Coral red”) on an ancestor or instance. Verify contrast for each light/dark map. Neobrui is opt-in: no reset, bare element selector, runtime script, or global typography.
+
+## Anti-pattern checklist
+
+- [ ] Equal-loudness card wall
+- [ ] Random asymmetry with no content reason
+- [ ] Border/shadow on every element
+- [ ] Color-only state
+- [ ] `div` used as a button
+- [ ] Shadow-only focus
+- [ ] Global reset hidden in a component import
+
+## Good/bad review loop
+
+Render the same semantic HTML with one meaningful lead versus equal cards, then inspect at 320px, RTL, forced colors, and reduced motion. Code differences should be class/token choices, not duplicated behavior. Remove classes/imports to confirm the semantic fallback still works.
