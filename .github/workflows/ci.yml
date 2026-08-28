@@ -31,8 +31,9 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm test
+      - run: pnpm pack:smoke
       - run: pnpm --filter neobrui-docs check
-      - run: pnpm --filter neobrui-docs build
+      - run: pnpm --filter neobrui-docs build:root
       - run: PUBLIC_SITE_BASE=/neobrui/ PUBLIC_SITE_URL=https://tekgadgt.github.io/neobrui/ pnpm --filter neobrui-docs build
 
   browsers:
@@ -54,4 +55,5 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec playwright install --with-deps ${{ matrix.browser }}
+      - run: pnpm --filter neobrui-docs build:pages
       - run: PUBLIC_SITE_BASE=/neobrui/ pnpm --filter neobrui-docs test --project=${{ matrix.browser }}

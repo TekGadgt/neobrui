@@ -15,5 +15,6 @@
   .nbr-gallery > :first-child { grid-row: span 2; }
   .nbr-good { border-inline-start: 4px solid var(--nbr-color-positive, currentColor); }
   .nbr-bad { opacity: .72; }
+  [data-specimen="product"] { --nbr-color-positive: #9a3412; background: color-mix(in srgb, currentColor 4%, transparent); }
   @media (max-width: 40rem) { .nbr-gallery { grid-template-columns: 1fr; } .nbr-gallery > :first-child { grid-row: auto; } }
 }

@@ -11,4 +11,8 @@ test('docs workflows use authored build and docs-local browser boundaries', () =
   }
   const ci = fs.readFileSync(workflows[0], 'utf8');
   assert.match(ci, /pnpm --filter neobrui-docs test --project=\$\{\{ matrix\.browser \}\}/);
+  assert.match(ci, /pnpm --filter neobrui-docs build:root[\s\S]*pnpm --filter neobrui-docs test/);
+  assert.match(ci, /pnpm pack:smoke/);
+  const pages = fs.readFileSync(workflows[1], 'utf8');
+  assert.match(pages, /pnpm --filter neobrui-docs build:pages/);
 });

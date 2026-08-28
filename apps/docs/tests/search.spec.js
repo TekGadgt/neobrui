@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
 test('search opens, names its input, and remains keyboard accessible', async ({ page }) => {
-  await page.goto('/');
+  await page.goto(`${process.env.PUBLIC_SITE_BASE || '/'}`);
   const trigger = page.getByRole('button', { name: /search/i }).first();
   await trigger.click();
   const input = page.locator('input:visible').first();

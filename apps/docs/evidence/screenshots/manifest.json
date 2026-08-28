@@ -1,0 +1,130 @@
+[
+  {
+    "identity": "neutral",
+    "theme": "light",
+    "viewport": {
+      "width": 1280,
+      "height": 900
+    },
+    "route": "/patterns/",
+    "h1": "Patterns",
+    "file": "screenshots/neutral-desktop-light.png",
+    "sha256": "40c06097db87e5008f60566e0cf31bee864a08cbdf7219c08fcedf74a7b40d9f",
+    "dimensions": {
+      "width": 1280,
+      "height": 1437
+    }
+  },
+  {
+    "identity": "neutral",
+    "theme": "light",
+    "viewport": {
+      "width": 320,
+      "height": 900
+    },
+    "route": "/patterns/",
+    "h1": "Patterns",
+    "file": "screenshots/neutral-mobile-light.png",
+    "sha256": "26337577d506c26f925072b4fecbc8ae52a9c6e7a16748bba0bbf71faa850065",
+    "dimensions": {
+      "width": 320,
+      "height": 2046
+    }
+  },
+  {
+    "identity": "neutral",
+    "theme": "dark",
+    "viewport": {
+      "width": 1280,
+      "height": 900
+    },
+    "route": "/patterns/",
+    "h1": "Patterns",
+    "file": "screenshots/neutral-desktop-dark.png",
+    "sha256": "b6f51106e57b46259db32da6d6d84fec0aa081accd5dcd58b56624b5b0cfe945",
+    "dimensions": {
+      "width": 1280,
+      "height": 1437
+    }
+  },
+  {
+    "identity": "neutral",
+    "theme": "dark",
+    "viewport": {
+      "width": 320,
+      "height": 900
+    },
+    "route": "/patterns/",
+    "h1": "Patterns",
+    "file": "screenshots/neutral-mobile-dark.png",
+    "sha256": "6b923a7cfcf8302ede7029a082dff65778f18756410d3ce4f1a61325f240a862",
+    "dimensions": {
+      "width": 320,
+      "height": 2046
+    }
+  },
+  {
+    "identity": "product",
+    "theme": "light",
+    "viewport": {
+      "width": 1280,
+      "height": 900
+    },
+    "route": "/patterns/",
+    "h1": "Patterns",
+    "file": "screenshots/product-desktop-light.png",
+    "sha256": "40c06097db87e5008f60566e0cf31bee864a08cbdf7219c08fcedf74a7b40d9f",
+    "dimensions": {
+      "width": 1280,
+      "height": 1437
+    }
+  },
+  {
+    "identity": "product",
+    "theme": "light",
+    "viewport": {
+      "width": 320,
+      "height": 900
+    },
+    "route": "/patterns/",
+    "h1": "Patterns",
+    "file": "screenshots/product-mobile-light.png",
+    "sha256": "26337577d506c26f925072b4fecbc8ae52a9c6e7a16748bba0bbf71faa850065",
+    "dimensions": {
+      "width": 320,
+      "height": 2046
+    }
+  },
+  {
+    "identity": "product",
+    "theme": "dark",
+    "viewport": {
+      "width": 1280,
+      "height": 900
+    },
+    "route": "/patterns/",
+    "h1": "Patterns",
+    "file": "screenshots/product-desktop-dark.png",
+    "sha256": "b6f51106e57b46259db32da6d6d84fec0aa081accd5dcd58b56624b5b0cfe945",
+    "dimensions": {
+      "width": 1280,
+      "height": 1437
+    }
+  },
+  {
+    "identity": "product",
+    "theme": "dark",
+    "viewport": {
+      "width": 320,
+      "height": 900
+    },
+    "route": "/patterns/",
+    "h1": "Patterns",
+    "file": "screenshots/product-mobile-dark.png",
+    "sha256": "6b923a7cfcf8302ede7029a082dff65778f18756410d3ce4f1a61325f240a862",
+    "dimensions": {
+      "width": 320,
+      "height": 2046
+    }
+  }
+]

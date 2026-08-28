@@ -19,7 +19,8 @@
     "build": "pnpm --filter neobrui-docs build",
     "check": "pnpm test && pnpm --filter neobrui-docs check",
     "test:docs": "pnpm --filter neobrui-docs test",
-    "pack:check": "npm pack --dry-run"
+    "pack:check": "npm pack --dry-run",
+    "pack:smoke": "node --test tests/package-smoke.test.mjs"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.10",
