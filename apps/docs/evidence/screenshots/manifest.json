@@ -1,0 +1,182 @@
+[
+  {
+    "identity": "neutral",
+    "theme": "light",
+    "viewport": {
+      "width": 1280,
+      "height": 900
+    },
+    "route": "/patterns/",
+    "h1": "Patterns",
+    "file": "screenshots/neutral-desktop-light.png",
+    "sha256": "40c06097db87e5008f60566e0cf31bee864a08cbdf7219c08fcedf74a7b40d9f",
+    "dimensions": {
+      "width": 1280,
+      "height": 1437
+    }
+  },
+  {
+    "identity": "neutral",
+    "theme": "light",
+    "viewport": {
+      "width": 320,
+      "height": 900
+    },
+    "route": "/patterns/",
+    "h1": "Patterns",
+    "file": "screenshots/neutral-mobile-light.png",
+    "sha256": "26337577d506c26f925072b4fecbc8ae52a9c6e7a16748bba0bbf71faa850065",
+    "dimensions": {
+      "width": 320,
+      "height": 2046
+    }
+  },
+  {
+    "identity": "neutral",
+    "theme": "dark",
+    "viewport": {
+      "width": 1280,
+      "height": 900
+    },
+    "route": "/patterns/",
+    "h1": "Patterns",
+    "file": "screenshots/neutral-desktop-dark.png",
+    "sha256": "b6f51106e57b46259db32da6d6d84fec0aa081accd5dcd58b56624b5b0cfe945",
+    "dimensions": {
+      "width": 1280,
+      "height": 1437
+    }
+  },
+  {
+    "identity": "neutral",
+    "theme": "dark",
+    "viewport": {
+      "width": 320,
+      "height": 900
+    },
+    "route": "/patterns/",
+    "h1": "Patterns",
+    "file": "screenshots/neutral-mobile-dark.png",
+    "sha256": "6b923a7cfcf8302ede7029a082dff65778f18756410d3ce4f1a61325f240a862",
+    "dimensions": {
+      "width": 320,
+      "height": 2046
+    }
+  },
+  {
+    "identity": "product",
+    "theme": "light",
+    "viewport": {
+      "width": 1280,
+      "height": 900
+    },
+    "route": "/patterns/",
+    "h1": "Patterns",
+    "file": "screenshots/product-desktop-light.png",
+    "sha256": "31d71fa25c7d14dc501248bdf7c41f959f42df56d42e11fe575f88e94b048ca5",
+    "dimensions": {
+      "width": 1280,
+      "height": 1437
+    },
+    "marker": "Product identity: Coral Ledger",
+    "tokens": {
+      "--nbr-color-text": "light-dark(#14263d,#fff4df)",
+      "--nbr-color-canvas": "light-dark(#f8efdf,#182333)",
+      "--nbr-color-border": "light-dark(#14263d,#f2dfc1)",
+      "--nbr-color-shadow": "light-dark(#176b72,#71d0c6)",
+      "--nbr-radius-control": ".65rem",
+      "color": "rgb(20, 38, 61)",
+      "backgroundColor": "rgb(248, 239, 223)",
+      "borderTopColor": "rgb(20, 38, 61)",
+      "boxShadow": "rgb(23, 107, 114) 5px 6px 0px 0px",
+      "borderRadius": "10.4px"
+    }
+  },
+  {
+    "identity": "product",
+    "theme": "light",
+    "viewport": {
+      "width": 320,
+      "height": 900
+    },
+    "route": "/patterns/",
+    "h1": "Patterns",
+    "file": "screenshots/product-mobile-light.png",
+    "sha256": "19c7f6f9ad13a19fe1645bbfe523d554a90a5eba0745ab9211dfbb7fa899d97d",
+    "dimensions": {
+      "width": 320,
+      "height": 2046
+    },
+    "marker": "Product identity: Coral Ledger",
+    "tokens": {
+      "--nbr-color-text": "light-dark(#14263d,#fff4df)",
+      "--nbr-color-canvas": "light-dark(#f8efdf,#182333)",
+      "--nbr-color-border": "light-dark(#14263d,#f2dfc1)",
+      "--nbr-color-shadow": "light-dark(#176b72,#71d0c6)",
+      "--nbr-radius-control": ".65rem",
+      "color": "rgb(20, 38, 61)",
+      "backgroundColor": "rgb(248, 239, 223)",
+      "borderTopColor": "rgb(20, 38, 61)",
+      "boxShadow": "rgb(23, 107, 114) 5px 6px 0px 0px",
+      "borderRadius": "10.4px"
+    }
+  },
+  {
+    "identity": "product",
+    "theme": "dark",
+    "viewport": {
+      "width": 1280,
+      "height": 900
+    },
+    "route": "/patterns/",
+    "h1": "Patterns",
+    "file": "screenshots/product-desktop-dark.png",
+    "sha256": "176d9d992386773206ff148b9f04dc403d4b835fd57f85ebe09f51d4a8534e43",
+    "dimensions": {
+      "width": 1280,
+      "height": 1437
+    },
+    "marker": "Product identity: Coral Ledger",
+    "tokens": {
+      "--nbr-color-text": "light-dark(#14263d,#fff4df)",
+      "--nbr-color-canvas": "light-dark(#f8efdf,#182333)",
+      "--nbr-color-border": "light-dark(#14263d,#f2dfc1)",
+      "--nbr-color-shadow": "light-dark(#176b72,#71d0c6)",
+      "--nbr-radius-control": ".65rem",
+      "color": "rgb(255, 244, 223)",
+      "backgroundColor": "rgb(24, 35, 51)",
+      "borderTopColor": "rgb(255, 244, 223)",
+      "boxShadow": "rgb(113, 208, 198) 5px 6px 0px 0px",
+      "borderRadius": "10.4px"
+    }
+  },
+  {
+    "identity": "product",
+    "theme": "dark",
+    "viewport": {
+      "width": 320,
+      "height": 900
+    },
+    "route": "/patterns/",
+    "h1": "Patterns",
+    "file": "screenshots/product-mobile-dark.png",
+    "sha256": "91ba607cf6b9dd39f204f9a9088cb787ff9df91034d0b31db4dbefa3819bf418",
+    "dimensions": {
+      "width": 320,
+      "height": 2046
+    },
+    "marker": "Product identity: Coral Ledger",
+    "tokens": {
+      "--nbr-color-text": "light-dark(#14263d,#fff4df)",
+      "--nbr-color-canvas": "light-dark(#f8efdf,#182333)",
+      "--nbr-color-border": "light-dark(#14263d,#f2dfc1)",
+      "--nbr-color-shadow": "light-dark(#176b72,#71d0c6)",
+      "--nbr-radius-control": ".65rem",
+      "color": "rgb(255, 244, 223)",
+      "backgroundColor": "rgb(24, 35, 51)",
+      "borderTopColor": "rgb(255, 244, 223)",
+      "boxShadow": "rgb(113, 208, 198) 5px 6px 0px 0px",
+      "borderRadius": "10.4px"
+    }
+  }
+]

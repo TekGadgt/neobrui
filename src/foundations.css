@@ -1,0 +1,25 @@
+:root {
+  --nbr-color-canvas: Canvas;
+  --nbr-color-surface: Canvas;
+  --nbr-color-surface-raised: Canvas;
+  --nbr-color-text: CanvasText;
+  --nbr-color-text-muted: GrayText;
+  --nbr-color-border: CanvasText;
+  --nbr-color-focus: Highlight;
+  --nbr-color-action: ButtonFace;
+  --nbr-color-on-action: ButtonText;
+  --nbr-color-shadow: CanvasText;
+  --nbr-border-width-structural: 2px;
+  --nbr-border-width-control: 2px;
+  --nbr-border-style: solid;
+  --nbr-shadow-offset-small: 2px;
+  --nbr-shadow-offset-raised: 4px;
+  --nbr-press-translation: 2px;
+  --nbr-radius: 0px;
+  --nbr-space-1: .25rem;
+  --nbr-space-2: .5rem;
+  --nbr-space-3: .75rem;
+  --nbr-space-4: 1rem;
+  --nbr-content-measure: 70rem;
+  --nbr-motion-duration: 160ms;
+}

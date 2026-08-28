@@ -1,32 +1,24 @@
 ---
-import DefaultSearch from '@astrojs/starlight/components/Search.astro';
+import StarlightSearch from '@astrojs/starlight/components/Search.astro';
 ---
 
-<div data-pagefind-search-wrapper style="display: contents">
-  <DefaultSearch {...Astro.props} />
-</div>
+<StarlightSearch {...Astro.props} />
 
 <script is:inline>
   (() => {
-    const wrapper = document.querySelector('[data-pagefind-search-wrapper]');
-    const mount = wrapper?.querySelector('#starlight__search');
-    if (!(wrapper instanceof HTMLElement) || !(mount instanceof HTMLElement)) return;
-
-    const label = wrapper.querySelector('button[data-open-modal]')?.getAttribute('aria-label');
-    if (!label) return;
-
-    const labelSearchInput = () => {
-      const input = mount.querySelector('.pagefind-ui__search-input');
-      if (!(input instanceof HTMLInputElement)) return false;
+    const host = document.querySelector('site-search');
+    if (!host) return;
+    const label = host.getAttribute('aria-label') || 'Search';
+    const apply = () => {
+      const input = host.querySelector('input.pagefind-ui__search-input');
+      if (!input) return false;
       if (!input.getAttribute('aria-label')) input.setAttribute('aria-label', label);
       return true;
     };
-
-    if (labelSearchInput()) return;
-
+    if (apply()) return;
     const observer = new MutationObserver(() => {
-      if (labelSearchInput()) observer.disconnect();
+      if (apply()) observer.disconnect();
     });
-    observer.observe(mount, { childList: true, subtree: true });
+    observer.observe(host, { childList: true, subtree: true });
   })();
 </script>

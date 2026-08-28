@@ -1,0 +1,280 @@
+{
+  "schema_version": "1.1",
+  "artifact": "neobrui-design-language-charter",
+  "status": "proposed-for-review",
+  "date": "2026-08-27",
+  "authority": {
+    "product": "Neobrui",
+    "definition": "Ryan McGovern's centralized, public, opt-in Neobrutalism design system",
+    "success": [
+      "fidelity",
+      "consistency",
+      "reuse of design decisions",
+      "lower design decision cost",
+      "cross-project reproducibility without identity loss"
+    ],
+    "not_primary_success_metrics": [
+      "utility token count",
+      "LOC",
+      "package bytes",
+      "milliseconds",
+      "minimum product CSS at all costs"
+    ],
+    "precedence": [
+      "project identity and explicit brief",
+      "accessibility and native semantics",
+      "Neobrui principles",
+      "recipe examples"
+    ]
+  },
+  "classification": {
+    "forces": ["MUST", "SHOULD/default", "MAY/option", "AVOID"],
+    "provenance": ["Ryan", "Accessibility", "History", "Repository evidence", "Recommendation", "Definition"],
+    "contract": {
+      "normative_clause": "exactly one force and at least one provenance",
+      "descriptive_assertion": "at least one provenance and no implied requirement"
+    }
+  },
+  "sections": [
+    "Purpose and opt-in boundary",
+    "Ryan's Neobrutalism principles",
+    "Foundations/tokens",
+    "Layout and composition grammar",
+    "Surface and shape grammar",
+    "Typography and hierarchy",
+    "Color and contrast",
+    "Interaction and motion",
+    "Accessibility and native semantics",
+    "Utilities/compositions/primitives boundary",
+    "Pattern recipes",
+    "Anti-patterns and failure modes",
+    "Cross-project theming/adoption",
+    "Documentation information architecture",
+    "AI ingestion contract",
+    "Acceptance/evaluation rubric"
+  ],
+  "core_rules": {
+    "opt_in": [
+      {"force": "MUST", "provenance": "Ryan", "rule": "Do not reset or take over bare elements."},
+      {"force": "MUST", "provenance": "Ryan", "rule": "Apply no visual effect without an opt-in class or configured scope."},
+      {"force": "MUST", "provenance": "Ryan", "rule": "Installation or import alone does not adopt Neobrutalism."},
+      {"force": "MAY/option", "provenance": "Ryan", "rule": "Consumers may remove Neobrui classes and mappings while preserving semantic HTML and application behavior."}
+    ],
+    "visual_language": [
+      {"force": "MUST", "provenance": "Ryan", "rule": "Establish strong visible hierarchy before decoration."},
+      {"force": "SHOULD/default", "provenance": "Ryan", "rule": "Use bold compact display and label typography while keeping body reading calm."},
+      {"force": "SHOULD/default", "provenance": "Ryan", "rule": "Use thick meaningful boundaries and hard unblurred offset shadows on focal surfaces."},
+      {"force": "MUST", "provenance": "Ryan", "rule": "Make focus and applicable interaction states obvious without relying on shadow alone."},
+      {"force": "SHOULD/default", "provenance": "Ryan", "rule": "Use high-energy palettes bounded by semantic roles."},
+      {"force": "SHOULD/default", "provenance": "Ryan", "rule": "Default to square or small-radius geometry."}
+    ],
+    "intentional_irregularity": [
+      {"force": "MUST", "provenance": "Ryan", "rule": "Vary span, size, alignment, rhythm, and emphasis according to content hierarchy; keep it structured and purposeful."},
+      {"force": "AVOID", "provenance": "Ryan", "rule": "Do not use equal-card walls as the default, random offsets, meaning-changing CSS reordering, or overflow-causing overlap."},
+      {"force": "MUST", "provenance": "Accessibility", "rule": "Preserve meaningful source and task order and narrow-width reflow."},
+      {"force": "SHOULD/default", "provenance": "Recommendation", "rule": "At narrow widths remove ornamental offsets, reduce large gaps and shadows, and preserve action/result proximity."}
+    ],
+    "restraint": [
+      {"force": "AVOID", "provenance": "Ryan", "rule": "Do not give every element a border, shadow, accent, uppercase text, or motion."},
+      {"force": "MUST", "provenance": "Ryan", "rule": "Identify hierarchy and focal surfaces before decorative treatment."},
+      {"force": "SHOULD/default", "provenance": "Ryan", "rule": "Keep 30-50% of visible regions quiet, unframed, rule-only, or low-chroma."}
+    ],
+    "shadow": [
+      {"force": "SHOULD/default", "provenance": "Recommendation", "rule": "Default to logical down-and-inline-end shadow and press direction."},
+      {"force": "MAY/option", "provenance": "Recommendation", "rule": "A product with physical light-source intent may scope fixed down-right shadows."},
+      {"force": "MUST", "provenance": "Recommendation", "rule": "Keep rest offset, active translation, and shadow collapse on the same direction/sign convention."},
+      {"force": "MUST", "provenance": "Accessibility", "rule": "Keep focus independent and suppress nonessential translation under reduced motion."}
+    ],
+    "product_identity": [
+      {"force": "MUST", "provenance": "Ryan", "rule": "Product identity and explicit brief override Neobrui defaults and recipe examples."},
+      {"force": "MUST", "provenance": "Accessibility", "rule": "Accessibility and native semantics override Neobrui visual principles."}
+    ]
+  },
+  "system_model": {
+    "principles": "Canonical prose rules and good/bad examples",
+    "foundations": "Directly authored semantic CSS custom properties",
+    "tools": {
+      "compositions": ["Stack", "Cluster", "Wrapper", "intentionally irregular Grid"],
+      "utilities_initial": ["visually-hidden"],
+      "utilities_later_gate": "Only truly one-job signature helpers with two-consumer evidence",
+      "semantic_primitives": ["Surface", "Pressable/Button", "Field if justified"]
+    },
+    "recipes": [
+      "cards",
+      "alerts/callouts",
+      "badges/status labels",
+      "nav/toolbars",
+      "editorial sections",
+      "hero",
+      "mixed-span content grid"
+    ],
+    "ai_contract": "Condensed rules, examples, anti-examples, lookup, decision procedure, and verification"
+  },
+  "candidate_api": {
+    "namespace": "nbr",
+    "compositions": {
+      "Stack": ".nbr-stack",
+      "Cluster": ".nbr-cluster",
+      "Wrapper": ".nbr-wrapper",
+      "Grid": ".nbr-grid"
+    },
+    "utilities": {
+      "visually_hidden": ".nbr-u-visually-hidden"
+    },
+    "primitives": {
+      "Surface": ".nbr-surface",
+      "Pressable": ".nbr-pressable or compatibility decision for .nbr-button",
+      "Field": ".nbr-field, conditional on repeated form evidence"
+    },
+    "surface_levels": ["quiet", "outlined", "raised"],
+    "forbidden_defaults": [
+      "broad spacing/color/display/alignment matrix",
+      "raw arbitrary value classes",
+      "important override layer",
+      "global reset",
+      "framework behavior duplication",
+      "stateful composite claims"
+    ]
+  },
+  "html_day_pilot_evidence": {
+    "provenance": "Repository evidence",
+    "source": "/workspace/htmlday-lite/evidence/neobrui-utility-pilot.md",
+    "branch": "spike/neobrui-utility-first",
+    "commit": "28f2a016ee696a444176812c2960138fe5b5521f",
+    "verdict": "INVALIDATED broad standalone utility ownership for the tested slice",
+    "findings": {
+      "added_utility_tokens_vs_baseline": 25,
+      "application_stylesheet_line_delta": 14,
+      "additional_costs": ["package dependency", "vendored archive", "imports", "token bridge", "cascade ownership work", "changed interaction values"],
+      "verification": {
+        "declared_matrix_exercised": ["Chromium", "Firefox", "WebKit", "mobile-chrome", "mobile-safari"],
+        "result": {"passed": 77, "skipped": 7, "flaky_failures": 1},
+        "caveat": "One mobile-Chrome gutter test failed in the full run and passed only when rerun in isolation; the pilot records it as unrelated to Step 3 controls and non-reproducing in isolation.",
+        "clean_suite_claim": false
+      }
+    },
+    "inference": {
+      "force": "SHOULD/default",
+      "provenance": "Recommendation",
+      "rule": "Do not make broad utility ownership the default; utilities remain valid for one-job accessibility helpers and proven repeated signature helpers, while coordinated interaction states belong in a primitive."
+    }
+  },
+  "docs": {
+    "shell": "Starlight",
+    "pages": [
+      "Start / Playground",
+      "Principles",
+      "Foundations / Theming",
+      "Layout / Utilities",
+      "Primitives",
+      "Patterns",
+      "Adoption / AI"
+    ],
+    "required": [
+      "rendered good/bad examples where useful",
+      "asymmetric mixed-span pattern gallery",
+      "same-content comparisons",
+      "one representative full multi-engine gallery matrix"
+    ],
+    "avoid": [
+      "post-build DOM rewriting",
+      "maintained Starlight component forks",
+      "route-theme-state-engine Cartesian test multiplication",
+      "identical-card gallery"
+    ]
+  },
+  "ai_ingestion": {
+    "recommended_location": "skills/neobrui/SKILL.md",
+    "supporting_paths": [
+      "skills/neobrui/references/tokens-and-classes.md",
+      "skills/neobrui/references/examples-and-anti-examples.md",
+      "skills/neobrui/templates/verification-checklist.md"
+    ],
+    "trigger": "Use when an explicit brief asks for Neobrui or Ryan's Neobrutalist design language; do not apply by default.",
+    "profile_installation": false,
+    "required_content": [
+      "scope and opt-out",
+      "precedence",
+      "stepwise design procedure",
+      "class/token lookup",
+      "examples and anti-examples",
+      "accessibility checklist",
+      "verification"
+    ]
+  },
+  "rubric": {
+    "scale": {"0": "fails or unknown", "1": "partial or inconsistent", "2": "clear and evidenced"},
+    "pass_threshold": 15,
+    "maximum": 18,
+    "automatic_fail_zero_dimensions": [
+      "semantic/accessibility quality",
+      "responsive robustness",
+      "interaction consistency"
+    ],
+    "dimensions": [
+      "intentional hierarchy/asymmetry",
+      "visual signature fidelity",
+      "restraint",
+      "semantic/accessibility quality",
+      "product identity preservation",
+      "responsive robustness",
+      "interaction consistency",
+      "ownership clarity",
+      "AI reproducibility"
+    ],
+    "secondary_only": ["raw class count", "LOC", "performance", "package bytes"]
+  },
+  "pending_decisions": [
+    {
+      "id": "naming-density",
+      "recommended": "hybrid semantic",
+      "choose": "Approve nbr compositions/primitives plus nbr-u only for true utilities"
+    },
+    {
+      "id": "primitive-set",
+      "recommended": "Surface and Pressable; Field conditional",
+      "choose": "Pressable public name/class and Field inclusion gate"
+    },
+    {
+      "id": "palette-posture",
+      "recommended": "neutral semantic fallbacks; no required house palette",
+      "choose": "Fallback values versus required consumer definitions"
+    },
+    {
+      "id": "shadow-direction",
+      "recommended": "logical default with fixed physical escape",
+      "choose": "Logical default or fixed-only"
+    },
+    {
+      "id": "skill-location-format",
+      "recommended": "skills/neobrui/SKILL.md with references/templates",
+      "choose": "Canonical path and optional pointer files"
+    },
+    {
+      "id": "migration-treatment",
+      "recommended": "one clean break with no aliases",
+      "choose": "What historical evidence to archive and what to delete"
+    }
+  ],
+  "next_production_plan": {
+    "shape": "one simplification branch plus independent review; no implementation graph",
+    "steps": [
+      "Record the six decisions in one ADR",
+      "Simplify foundations, four Compositions, visually-hidden, Surface/Pressable, and conditional Field",
+      "Reorganize Starlight into seven pages and remove obsolete rewrites/overrides",
+      "Draft repo-owned AI skill only after human-facing authority stabilizes",
+      "Verify opt-in/removal, representative multi-engine gallery, primitive states, build/link smoke, pack/install, and one real consumer",
+      "Have a non-implementing reviewer score two distinct identities with the rubric"
+    ],
+    "excluded": ["npm publication", "deployment", "adopter expansion", "broad task graph"]
+  },
+  "repository_evidence": [
+    "/workspace/neobrui/docs/current-surface.md",
+    "/workspace/neobrui/decisions/ADR-010-cube-migration-contract.md",
+    "/workspace/htmlday-lite/evidence/neobrui-utility-pilot.md",
+    "/workspace/neobrui/apps/docs/astro.config.mjs",
+    "/workspace/neobrui/apps/docs/README.md",
+    "/workspace/dev-vault/Research/Neobrutalist Web Design/Neobrutalist Web Design - History, Practices, Quirks, and Pitfalls.md",
+    "/workspace/dev-vault/Research/Neobrutalist Web Design/Component Library/Neobrutalist Component Library Research.md"
+  ]
+}

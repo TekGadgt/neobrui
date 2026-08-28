@@ -1,68 +1,24 @@
-# neobrui personal-use pilot
+# Neobrui
 
-Neobrui is a validated, private, CSS-only Phase 4 personal-alpha release for Ryan's projects. It is a narrow semantic styling surface—not a public framework, 1.0-stable API, product identity, deployment target, or support promise. The current repository remains local and npm-private by design.
+Neobrui is a small, reset-free, opt-in CSS design system for native HTML. It ships authored CSS only: importing it does not restyle bare elements and it has no browser-runtime JavaScript or assets.
 
-## What exists today
+## API
 
-- Semantic token schema and deterministic generated CSS/DTCG 2025.10 interchange; themes, palettes, fonts, content, and motifs stay product-owned.
-- Product-owned theme selector manifest, bounded DTCG import/round-trip, aliases, types, provenance, and per-theme generated artifacts (see [theme authoring and DTCG](docs/theme-authoring-and-dtcg.md)).
-- Opt-in `Surface`, `Button`, and `Field` blocks plus Stack/Cluster compositions and the initial visually-hidden/wrapper utilities, with standalone and aggregate CSS entries.
-- Native HTML contracts, RTL/nested/fixed shadow behavior, no-shadow safety cues, and explicit cascade-layer coexistence.
-- Plain CSS, CSS Modules, Astro, and Tailwind integration fixtures (evidence, not adapters or blanket compatibility).
-- Zero runtime JavaScript/assets/dependencies in the private CSS release.
-- Automated Chromium, Firefox, and WebKit fixture checks, deterministic archive/consumer size checks, and seeded QA rehearsal.
+```css
+@import 'neobrui';
+```
 
-The current evidence is intentionally narrow. The committed `size-report.json` is the initial design evidence: standalone Button is 2,341 minified bytes and 699 gzip bytes, with a provisional minified-size warning against the 1,800 B ceiling while remaining below the gzip warning/kill limits. This is not a publication signal; rerun `pnpm measure:size` intentionally when changing or expanding the package surface, not required on every CI/build run.
+Use `.nbr-stack`, `.nbr-cluster`, `.nbr-wrapper`, and `.nbr-grid` for layout; `.nbr-surface` with `data-nbr-level="quiet|outlined|raised"`; `.nbr-pressable` on native buttons and links; and `.nbr-u-visually-hidden` for accessible text. Product themes own identity and state.
 
-## Personal-alpha boundaries
-
-The `nbr` classes, data attributes, custom properties, and five-layer names are the accepted CUBE contract. The package is versioned `0.1.0-alpha.0`, remains private and unpublished, and follows the documented semantic `0.x` policy. MIT describes the future source posture; it does not authorize publication, support, or adopter migration.
-
-Native HTML and the application own semantics, keyboard behavior, link navigation, validation, disabled behavior, announcements, routing, and state. Automation does not establish manual assistive-technology, OS forced-colors, physical keyboard/touch, or true browser-UI zoom support. Procedures are documented but unexecuted unless a dated run record says otherwise.
-
-## Local setup and verification
+## Local verification
 
 ```sh
 pnpm install --frozen-lockfile
-pnpm validate:tokens
-pnpm build
 pnpm test
-pnpm verify:size
-# verify the local archive checksum from repository root:
-(cd dist/release && sha256sum -c SHA256SUMS)
-# canonical clean-tree verification:
-pnpm verify:clean
+pnpm --filter neobrui-docs check
+pnpm --filter neobrui-docs build
+PUBLIC_SITE_BASE=/neobrui/ PUBLIC_SITE_URL=https://tekgadgt.github.io/neobrui/ pnpm --filter neobrui-docs build
+npm pack
 ```
 
-`pnpm test` includes unit contracts, token validation, and the configured Chromium/Firefox/WebKit Playwright projects. Browser startup intentionally verifies the built fixture without requiring a fresh size-report comparison. `pnpm verify:size` remains an explicit, fresh, non-mutating size-evidence check; `pnpm measure:size` intentionally regenerates `size-report.json`. The release checksum verifies artifact integrity and identity within this reviewed release flow, not CSS budget or size-report freshness, and not independent authenticity. Future npm staging should add SHA-256 plus SHA-512/SRI for the exact candidate tarball and verify the registry integrity/downloaded tarball after publish; npm provenance is complementary.
-
-## Repository boundaries
-
-- Connected/comparison projects are read-only evidence and are not imported or edited by this repository.
-- Container dependencies live in a container-only Linux `node_modules` volume.
-- Host dependency trees remain separate.
-- The declared darwin/linux and arm64/x64 architecture matrix supports a shared lockfile contract that remains portable, not synchronized dependency directories.
-
-## Formal docs
-
-- [Accepted CUBE migration contract](decisions/ADR-010-cube-migration-contract.md)
-- [ADR-009: accepted architecture direction](decisions/ADR-009-architecture-proposal.md)
-
-- [Current surface](docs/current-surface.md)
-- [Getting started for personal use](docs/getting-started-personal-use.md)
-- [Status and support](docs/status-and-support.md)
-- [Expansion roadmap](docs/expansion-roadmap.md)
-- [ADR-008: personal-use positioning](decisions/ADR-008-personal-use-positioning.md)
-- [Manual accessibility testing procedure](docs/manual-accessibility-testing.md)
-- [Local release workflow](docs/local-release-workflow.md)
-- [Pre-GitHub checklist](docs/pre-github-checklist.md)
-- [GitHub Pages workflow](docs/github-pages.md) — https://tekgadgt.github.io/neobrui/
-- [Accessibility test-run template](docs/templates/accessibility-test-run.md)
-- [Personal-use viability and expansion](docs/personal-use-viability-and-expansion.md)
-- [Historical pre-migration viability assessment](evidence/historical/personal-use-viability-and-expansion.md)
-
-The manual guide and template define cadence for personal-project adoption, affected behavior changes, release-candidate review, and any future public-support gate. They are procedures, not executed results.
-
-## No publication or support promise
-
-This pilot is for controlled local personal use only. Competitive framework positioning, broad accessibility support, outreach, public GitHub source, package publication, and ongoing support are separate future gates. See the roadmap and status docs before making any claim beyond the validated fixture evidence.
+The repository uses pnpm 11.24.0. The Pages workflow builds with `/neobrui/` and uploads only `apps/docs/dist`; it does not publish the package. See `docs/design-system/migration-and-deletion.md` for the current boundary and maintainer flow.

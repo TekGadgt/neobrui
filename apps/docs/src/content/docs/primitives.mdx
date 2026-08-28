@@ -1,0 +1,22 @@
+---
+title: Primitives
+description: Surface and Pressable, with native semantics.
+---
+
+## Surface
+
+Surface levels are `quiet`, `outlined`, and `raised`. A Surface is generic content; it does not become clickable through CSS.
+
+```html
+<article class="nbr-surface" data-nbr-level="raised">A focal region</article>
+```
+
+## Pressable
+
+Use a native `<button>` for actions and a native `<a>` for navigation. `.nbr-pressable` coordinates visible focus, hover, active, disabled, RTL, reduced motion, and forced-colors behavior without claiming the element's semantics.
+
+```html
+<button class="nbr-pressable" type="button">Save changes</button>
+```
+
+Field is explicitly deferred: labels, descriptions, errors, and validation remain application-owned until a coordinated contract proves reusable.

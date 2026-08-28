@@ -1,0 +1,7 @@
+.nbr-stack { display: flex; flex-direction: column; gap: var(--nbr-stack-gap, var(--nbr-space-4)); }
+.nbr-cluster { display: flex; flex-wrap: wrap; align-items: var(--nbr-cluster-align, center); justify-content: var(--nbr-cluster-justify, flex-start); gap: var(--nbr-cluster-gap, var(--nbr-space-3)); }
+.nbr-wrapper { box-sizing: border-box; inline-size: 100%; max-inline-size: var(--nbr-wrapper-max, var(--nbr-content-measure)); margin-inline: auto; padding-inline: var(--nbr-wrapper-gutter, var(--nbr-space-4)); }
+.nbr-grid { display: grid; grid-template-columns: repeat(var(--nbr-grid-columns, 12), minmax(0, 1fr)); gap: var(--nbr-grid-gap, var(--nbr-space-4)); }
+.nbr-grid > :nth-child(1) { grid-column: span var(--nbr-grid-span, 7); }
+.nbr-grid > :nth-child(2) { grid-column: span var(--nbr-grid-span-secondary, 5); }
+@media (max-width: 40rem) { .nbr-grid { grid-template-columns: 1fr; } .nbr-grid > * { grid-column: 1 / -1; } }

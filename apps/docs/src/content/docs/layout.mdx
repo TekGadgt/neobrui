@@ -1,0 +1,24 @@
+---
+title: Layout
+description: Compositions for purposeful flow.
+---
+
+## Four compositions
+
+- **Stack** — vertical flow with one gap hook; it does not reorder or reset child margins.
+- **Cluster** — wrapping inline flow with bounded gap and alignment.
+- **Wrapper** — centered measure with logical inline padding.
+- **Grid** — intrinsic columns with named spans for meaningful emphasis.
+
+Compositions own relationships, not color, typography, borders, or application state.
+
+```html
+<section class="nbr-wrapper nbr-stack">
+  <div class="nbr-grid">
+    <article class="lead">Featured work</article>
+    <aside>Related notes</aside>
+  </div>
+</section>
+```
+
+The only initial utility is `.nbr-u-visually-hidden`, for accessible text and skip links. Source order remains meaningful when CSS is removed.

@@ -1,0 +1,28 @@
+---
+title: Foundations
+description: Semantic roles with tunable geometry.
+---
+
+## Roles, not brand colors
+
+Foundations are authored semantic custom properties. Neutral fallbacks keep examples runnable; products own palette, type, theme switching, and meaning.
+
+```css
+.product-theme {
+  --nbr-color-action: #173322;
+  --nbr-color-on-action: #fff;
+  --nbr-color-shadow: #173322;
+}
+```
+
+## Small tactile defaults
+
+The default grammar uses a 2px rule, 2px small offset, 4px raised offset, and 2px press offset. Product scopes may tune these values without exposing a raw property-per-instance API.
+
+| Role | Default intent |
+| --- | --- |
+| `outlined` | A meaningful boundary without elevation |
+| `raised` | A focal task region or primary card |
+| `quiet` | A first-class low-chroma treatment |
+
+Shadow direction is logical by default, so RTL remains coherent. A fixed physical direction is an explicit scoped product decision.

@@ -15,8 +15,6 @@ concurrency:
 env:
   NODE_VERSION: '26'
   PNPM_VERSION: '11.24.0'
-  PUBLIC_SITE_BASE: /neobrui/
-  PUBLIC_SITE_URL: https://tekgadgt.github.io/neobrui/
 
 jobs:
   verify:
@@ -31,29 +29,15 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
-      - name: Install frozen root dependencies
-        run: pnpm install --frozen-lockfile
-      - name: Verify deterministic release and checksum
-        run: |
-          pnpm release:local
-          (cd dist/release && sha256sum -c SHA256SUMS)
-      - name: Prepare docs artifact
-        run: pnpm prepare:docs
-      - name: Astro type and content check
-        run: pnpm exec astro check --root apps/docs
-      - name: Build root fixtures
-        run: pnpm build:fixtures
-      - name: Build docs with root base
-        run: pnpm build:docs
-      - name: Build and validate Pages output
-        run: |
-          pnpm build:docs:pages
-          pnpm verify:pages
-      - name: Focused contract tests
-        run: pnpm exec node --test tests/*.test.mjs
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
+      - run: pnpm pack:smoke
+      - run: pnpm --filter neobrui-docs check
+      - run: pnpm --filter neobrui-docs build:root
+      - run: PUBLIC_SITE_BASE=/neobrui/ PUBLIC_SITE_URL=https://tekgadgt.github.io/neobrui/ pnpm --filter neobrui-docs build
 
   browsers:
-    name: Playwright (${{ matrix.browser }})
+    name: Docs Playwright (${{ matrix.browser }})
     needs: verify
     runs-on: ubuntu-latest
     strategy:
@@ -69,11 +53,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
-      - name: Install frozen root dependencies
-        run: pnpm install --frozen-lockfile
-      - name: Install Playwright browser
-        run: pnpm exec playwright install --with-deps ${{ matrix.browser }}
-      - name: Build root fixtures before browser tests
-        run: pnpm build:fixtures
-      - name: Run full browser contract matrix
-        run: pnpm exec playwright test --project=${{ matrix.browser }}
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps ${{ matrix.browser }}
+      - run: pnpm --filter neobrui-docs build:pages
+      - run: PUBLIC_SITE_BASE=/neobrui/ pnpm --filter neobrui-docs test --project=${{ matrix.browser }}
