@@ -75,11 +75,26 @@ Verify both light and dark mappings for contrast. Recipes do not alter semantics
 
 ## Integrated example
 
-```html
-<main class="nbr-wrapper nbr-stack">
-  <header class="hero nbr-stack"><p>Issue 04</p><h1>Release desk</h1><p>Evidence before decoration.</p></header>
-  <div class="nbr-grid"><article class="nbr-surface" data-nbr-level="raised"><h2>Editorial lead</h2><p>Primary story.</p><a class="nbr-pressable" href="/case-study">Read the case study</a></article><aside class="nbr-surface" data-nbr-level="quiet"><h2>Callout</h2><p>Supporting note.</p></aside></div>
-</main>
-```
+The two rendered specimens below deliberately share the same semantic anatomy and content. The neutral example is the default; the Coral Ledger example adds only a scoped role mapping, so identity can be removed without changing source order or interaction behavior.
+
+<div class="nbr-specimen nbr-stack" data-specimen="neutral" aria-label="Neutral identity example">
+  <header class="hero nbr-stack"><p>Issue 04</p><h2>Release desk</h2><p class="specimen-marker">Neutral identity: default</p></header>
+  <div class="nbr-grid">
+    <article class="nbr-surface" data-nbr-level="raised"><h3>Editorial lead</h3><p>Primary story with evidence before decoration.</p><a class="nbr-pressable" href="#integrated-example">Open the case study</a></article>
+    <aside class="nbr-surface" data-nbr-level="outlined" aria-label="Neutral supporting callout"><h3>Callout</h3><p>Supporting note stays bounded and readable.</p><span class="status" data-state="in-progress">In progress</span></aside>
+  </div>
+  <nav aria-label="Neutral specimen navigation"><div class="nbr-cluster"><a class="nbr-pressable" href="#integrated-example">Overview</a><a href="#integrated-example">Evidence</a></div></nav>
+  <div class="nbr-cluster" role="toolbar" aria-label="Specimen actions"><button class="nbr-pressable" type="button">Save</button><button type="button">Share</button></div>
+</div>
+
+<div class="nbr-specimen nbr-stack" data-specimen="product" data-nbr-example-theme="product" aria-label="Product identity: Coral Ledger">
+  <header class="hero nbr-stack"><p>Issue 04</p><h2>Release desk</h2><p class="specimen-marker">Product identity: Coral Ledger</p></header>
+  <div class="nbr-grid">
+    <article class="nbr-surface" data-nbr-level="raised"><h3>Editorial lead</h3><p>Primary story with evidence before decoration.</p><a class="nbr-pressable" href="#integrated-example">Open the case study</a></article>
+    <aside class="nbr-surface" data-nbr-level="outlined" aria-label="Coral Ledger supporting callout"><h3>Callout</h3><p>Supporting note stays bounded and readable.</p><span class="status" data-state="in-progress">In progress</span></aside>
+  </div>
+  <nav aria-label="Coral Ledger specimen navigation"><div class="nbr-cluster"><a class="nbr-pressable" href="#integrated-example">Overview</a><a href="#integrated-example">Evidence</a></div></nav>
+  <div class="nbr-cluster" role="toolbar" aria-label="Specimen actions"><button class="nbr-pressable" type="button">Save</button><button type="button">Share</button></div>
+</div>
 
 Test semantics, keyboard, responsive collapse, RTL, forced colors, and reduced motion. To remove a recipe, delete classes/imports and restore any product declarations; content and native controls remain.

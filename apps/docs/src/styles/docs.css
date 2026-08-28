@@ -11,6 +11,9 @@
     --sl-color-black: light-dark(#fbfdfb, #101611);
   }
   .nbr-demo { border: var(--nbr-border-rule, 2px) solid currentColor; padding: 1rem; max-inline-size: 60rem; }
+  .nbr-specimen { box-sizing: border-box; inline-size: 100%; max-inline-size: 70rem; margin-block: 1.5rem; padding: 1rem; background: var(--nbr-color-canvas); color: var(--nbr-color-text); border: 2px solid var(--nbr-color-border); }
+  .nbr-specimen .nbr-grid { min-inline-size: 0; }
+  .sl-markdown-content .nbr-specimen .nbr-pressable { color: var(--nbr-color-on-action); background: var(--nbr-color-action); }
   .nbr-gallery { display: grid; grid-template-columns: 1.7fr 1fr; gap: 1rem; }
   .nbr-gallery > :first-child { grid-row: span 2; }
   .nbr-good { border-inline-start: 4px solid var(--nbr-color-positive, currentColor); }
@@ -46,6 +49,8 @@
   }
   @media (max-width: 40rem) { .nbr-gallery { grid-template-columns: 1fr; } .nbr-gallery > :first-child { grid-row: auto; } }
 }
+
+.sl-markdown-content .nbr-specimen .nbr-pressable { color: var(--nbr-color-on-action); background: var(--nbr-color-action); }
 
 /* Expressive Code owns a named component layer; these local presentation rules
    intentionally sit unlayered so narrow documentation remains reflowable. */
