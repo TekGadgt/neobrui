@@ -14,4 +14,6 @@ apps/docs/.cache/
 .qa-rehearsal/
 dist/size-spike/
 dist/size-spike-second/
-dist/size-spike-consumer/
+.release-rehearsal/
+.release-rehearsal-output/
+.release-rehearsal-tmp-*
