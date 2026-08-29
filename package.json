@@ -1,10 +1,16 @@
 {
-  "name": "neobrui",
-  "version": "1.0.0",
+  "name": "@tekgadgt/neobrui",
+  "version": "0.1.0-alpha.0",
+  "private": true,
   "description": "Opt-in, reset-free Neobrutalist design system",
   "type": "module",
   "license": "MIT",
   "sideEffects": ["*.css"],
+  "repository": {"type": "git", "url": "git+https://github.com/TekGadgt/neobrui.git"},
+  "homepage": "https://tekgadgt.github.io/neobrui/",
+  "bugs": {"url": "https://github.com/TekGadgt/neobrui/issues"},
+  "keywords": ["css", "design-system", "neobrutalism", "semantic-css", "web-accessibility"],
+  "publishConfig": {"registry": "https://registry.npmjs.org/", "access": "public"},
   "exports": {
     ".": { "style": "./src/index.css", "default": "./src/index.css" },
     "./foundations.css": "./src/foundations.css",
@@ -13,7 +19,7 @@
     "./utilities.css": "./src/utilities.css",
     "./package.json": "./package.json"
   },
-  "files": ["src", "README.md", "LICENSE", "docs/design-system/0001-centralized-neobrui-reset.md", "skills/neobrui"],
+  "files": ["src", "README.md", "LICENSE", "skills/neobrui"],
   "scripts": {
     "test": "node --test tests/*.test.mjs",
     "build": "pnpm --filter neobrui-docs build",

@@ -29,7 +29,7 @@ importers:
 
   apps/docs:
     dependencies:
-      neobrui:
+      '@tekgadgt/neobrui':
         specifier: workspace:*
         version: link:../..
 
