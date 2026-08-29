@@ -2,7 +2,9 @@
 
 ## Unreleased
 
-### Planned: 0.1.0-alpha.0 (not yet published)
+### 0.1.0-alpha.0 — release candidate (not yet published)
 
-- Prepare the scoped `@tekgadgt/neobrui` CSS-only package for a future `next` prerelease channel.
-- Publication remains pending explicit approval and exact tarball review.
+- Prepared the public `@tekgadgt/neobrui` CSS-only design-system package for the `next` prerelease channel. The surface includes foundations, layout, primitives, utilities, neutral semantic tokens, and CSS entry-point exports; there is no runtime JavaScript or asset payload.
+- Included developer reference documentation and the `skills/neobrui` AI guidance package, with package smoke, offline consumer, and cross-platform rehearsal evidence.
+- Accessibility and cross-platform responsibilities remain explicit: native semantics and product behavior stay with consumers, and manual keyboard/focus, forced-colors, RTL, reduced-motion, and contrast review remain required.
+- Release-candidate preparation is complete, but publication remains pending explicit human approval and exact tarball review. No release date is claimed.

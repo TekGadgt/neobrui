@@ -8,7 +8,7 @@ hero:
 
 ## Status and support boundary
 
-The public source and design system are live. **An official npm registry install is not launched yet.** Do not use `npm install @tekgadgt/neobrui` as a current setup command; the future package identity is planned, not published.
+The public source and design system are live. **Release candidate prepared; the package is not currently published and is not currently available from the npm registry.** Do not use `npm install @tekgadgt/neobrui` as a current setup command.
 
 ## Choose your entry
 
@@ -19,7 +19,7 @@ The public source and design system are live. **An official npm registry install
 
 The `@tekgadgt/neobrui` package exports its aggregate entry, `foundations.css`, `layout.css`, `primitives.css`, `utilities.css`, and `package.json`. CSS order is foundations, layout, primitives, utilities; the aggregate index preserves that order. The package declares CSS `sideEffects`, so bundlers must retain CSS imports.
 
-## Current reproducible installation
+## Current reproducible source installation
 
 Use a reviewed Git ref (replace the placeholder; pin a commit or reviewed tag in your lockfile):
 
@@ -34,7 +34,13 @@ For Ryan's monorepo projects, a workspace dependency is local-only:
 { "dependencies": { "@tekgadgt/neobrui": "workspace:*" } }
 ```
 
-A non-monorepo local path is also local-only, for example `pnpm add ../neobrui` (commit the resulting lockfile and path policy only when that is intentional). Git refs and lockfiles make builds reproducible; a moving branch does not. Registry publication instructions will be added separately after launch.
+A non-monorepo local path is also local-only, for example `pnpm add ../neobrui` (commit the resulting lockfile and path policy only when that is intentional). Git refs and lockfiles make builds reproducible; a moving branch does not. Registry installation is documented only after publication below; the candidate is not yet available.
+
+### After publication
+
+```sh
+npm install @tekgadgt/neobrui@next
+```
 
 ## Imports
 
