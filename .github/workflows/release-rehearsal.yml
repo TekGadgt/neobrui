@@ -1,0 +1,89 @@
+name: Release rehearsal (no publish)
+
+on:
+  pull_request:
+    paths:
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'src/**'
+      - 'skills/neobrui/**'
+      - 'README.md'
+      - 'LICENSE'
+      - 'tools/release-rehearsal.mjs'
+      - 'tools/npm-pack-result.mjs'
+      - 'tools/compare-release-rehearsal.mjs'
+      - 'tests/npm-pack-result.test.mjs'
+      - 'tests/package-smoke.test.mjs'
+      - 'tests/release-rehearsal.test.mjs'
+      - '.github/workflows/release-rehearsal.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-rehearsal-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '26'
+  PNPM_VERSION: '11.24.0'
+  NPM_VERSION: '12.0.2'
+
+jobs:
+  rehearse:
+    name: Rehearse (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-15]
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - name: Install exact npm
+        run: npm install --global npm@${{ env.NPM_VERSION }}
+      - name: Print platform and tool versions
+        run: node -p "JSON.stringify({platform:process.platform,arch:process.arch,node:process.version,npm:require('child_process').execFileSync('npm',['--version'],{encoding:'utf8'}).trim(),pnpm:require('child_process').execFileSync('pnpm',['--version'],{encoding:'utf8'}).trim()})" && uname -a
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
+      - run: node --test tests/package-metadata.test.mjs
+      - run: node tools/release-rehearsal.mjs --tag v0.1.0-alpha.0 --out release-rehearsal-output
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: release-rehearsal-${{ matrix.os }}
+          path: release-rehearsal-output
+          if-no-files-found: error
+
+  compare:
+    name: Compare platform artifacts
+    needs: rehearse
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: release-rehearsal-ubuntu-latest
+          path: ubuntu
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: release-rehearsal-macos-15
+          path: macos
+      - name: Compare reports and tarballs
+        run: node tools/compare-release-rehearsal.mjs ubuntu/report.json macos/report.json
