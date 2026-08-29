@@ -10,7 +10,10 @@ on:
       - 'README.md'
       - 'LICENSE'
       - 'tools/release-rehearsal.mjs'
+      - 'tools/npm-pack-result.mjs'
       - 'tools/compare-release-rehearsal.mjs'
+      - 'tests/npm-pack-result.test.mjs'
+      - 'tests/package-smoke.test.mjs'
       - 'tests/release-rehearsal.test.mjs'
       - '.github/workflows/release-rehearsal.yml'
   workflow_dispatch:

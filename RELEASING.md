@@ -6,11 +6,15 @@ This document records the Phase 3 boundary and the Phase 4 no-publish rehearsal;
 
 The rehearsal validates the exact package payload and installs its local tarball into a fresh offline consumer. It writes only a tarball and stable JSON report to the output directory, then removes the temporary consumer. It never publishes, stages, tags, creates/uploads a GitHub Release, pushes, authenticates to npm, reserves or mutates a registry package, deploys, triggers another workflow, or reads secrets/environments.
 
-Run locally from the repository root (Node 26, npm 12.0.2, and pnpm 11.24.0 are required):
+Run locally from the repository root (Node 26.x, npm 12.0.2, and pnpm 11.24.0 are required; the tool fails before creating output if these versions differ):
 
 ```sh
+npm --version  # must print 12.0.2
+pnpm --version # must print 11.24.0
 node tools/release-rehearsal.mjs --tag v0.1.0-alpha.0 --out .release-rehearsal
 ```
+
+The rehearsal does not change the installed toolchain. On a machine with another npm version, use an isolated temporary npm 12.0.2 executable (for example, `npx --yes --package=npm@12.0.2 npm --version` for a preflight) or install npm 12.0.2 in a user-managed, non-global prefix before rerunning the checks; do not alter the repository lockfile or add npm as a project dependency.
 
 The command checks the private manifest guard, exact version/tag, `next` prerelease classification, 12-file allowlist, checksums (SHA-256 and SHA-512 SRI), readable CSS and skill payload, and offline consumer installation. `report.json` contains semantic fields (schema, source SHA, expected tag/channel, package metadata, file sizes/modes, archive filename/size/digests, and consumer assertions) plus runner/tool facts. Cross-platform comparison recursively canonicalizes every object and preserves array order; it excludes only these documented informational paths: `runner.platform`, `runner.arch`, `runner.uname`, and `runner.timestamp`. Tool versions and every other field must match exactly. Mismatches report their JSON path.
 

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { classifyTag, validateManifest, compareReports } from '../tools/release-rehearsal.mjs';
+import { classifyTag, validateManifest, compareReports, assertToolchain } from '../tools/release-rehearsal.mjs';
 
 test('classifies the exact prerelease tag as next', () => {
   assert.deepEqual(classifyTag('v0.1.0-alpha.0', '0.1.0-alpha.0'), {
@@ -10,6 +10,13 @@ test('classifies the exact prerelease tag as next', () => {
 
 test('rejects a tag that does not match the package version', () => {
   assert.throws(() => classifyTag('v0.1.0-alpha.1', '0.1.0-alpha.0'), /does not match/);
+});
+
+test('enforces the release rehearsal toolchain versions', () => {
+  assert.equal(assertToolchain({ node: 'v26.5.1', npm: '12.0.2', pnpm: '11.24.0' }), true);
+  assert.throws(() => assertToolchain({ node: 'v25.9.0', npm: '12.0.2', pnpm: '11.24.0' }), /Node 26/);
+  assert.throws(() => assertToolchain({ node: 'v26.5.1', npm: '11.17.0', pnpm: '11.24.0' }), /npm 12\.0\.2/);
+  assert.throws(() => assertToolchain({ node: 'v26.5.1', npm: '12.0.2', pnpm: '10.0.0' }), /pnpm 11\.24\.0/);
 });
 
 test('validates the release safety manifest contract', () => {

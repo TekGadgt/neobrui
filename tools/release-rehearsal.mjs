@@ -6,6 +6,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
+import { parseNpmPackJson } from './npm-pack-result.mjs';
 
 export const EXPECTED_FILES = [
   'LICENSE', 'README.md', 'package.json',
@@ -14,6 +15,13 @@ export const EXPECTED_FILES = [
   'skills/neobrui/templates/verification.md',
 ];
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+
+export function assertToolchain({ node, npm, pnpm }) {
+  if (!/^v26\./.test(node)) throw new Error(`release rehearsal requires Node 26.x (received ${node})`);
+  if (npm !== '12.0.2') throw new Error(`release rehearsal requires npm 12.0.2 (received ${npm})`);
+  if (pnpm !== '11.24.0') throw new Error(`release rehearsal requires pnpm 11.24.0 (received ${pnpm})`);
+  return true;
+}
 
 export function classifyTag(tag, version) {
   if (!/^v\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(tag) || tag.slice(1) !== version) {
@@ -108,11 +116,12 @@ export function compareReports(left, right) {
 async function main() {
   const args = process.argv.slice(2); const tag = args[args.indexOf('--tag') + 1]; const out = path.resolve(args[args.indexOf('--out') + 1] || '.release-rehearsal');
   if (!tag) throw new Error('usage: release-rehearsal.mjs --tag v0.1.0-alpha.0 --out <directory>');
+  assertToolchain({ node: process.version, npm: run('npm', ['--version']), pnpm: run('pnpm', ['--version']) });
   const manifest = JSON.parse(await readFile(path.join(ROOT, 'package.json'), 'utf8')); validateManifest(manifest); const release = classifyTag(tag, manifest.version);
   await mkdir(out, { recursive: true });
   const temp = await mkdtemp(path.join(ROOT, '.release-rehearsal-tmp-')); let archivePath;
   try {
-    const packed = JSON.parse(run('npm', ['pack', '--json', '--ignore-scripts', '--pack-destination', out])); const info = packed[0];
+    const info = parseNpmPackJson(run('npm', ['pack', '--json', '--ignore-scripts', '--pack-destination', out]), manifest.name);
     archivePath = path.join(out, info.filename); const archive = await readFile(archivePath);
     const files = info.files.map(({ path: filePath, size, mode }) => ({ path: filePath.replaceAll('\\', '/'), size, ...(mode === undefined ? {} : { mode }) })).sort((a, b) => a.path.localeCompare(b.path));
     const actualPaths = files.map(file => file.path);

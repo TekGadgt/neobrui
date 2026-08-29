@@ -17,3 +17,9 @@ test('release rehearsal is read-only and runs the native platform matrix', () =>
   assert.match(workflow, /actions\/(?:upload|download)-artifact@[0-9a-f]{40}/);
   assert.doesNotMatch(workflow, /npm\s+publish|npm\s+tag|git\s+push|gh\s+release|id-token|contents:\s*write|secrets\.|environment:|NODE_AUTH_TOKEN|NPM_TOKEN/i);
 });
+
+test('pack parser and smoke changes trigger the release rehearsal', () => {
+  for (const file of ['tools/npm-pack-result.mjs', 'tests/npm-pack-result.test.mjs', 'tests/package-smoke.test.mjs']) {
+    assert.match(workflow, new RegExp(`- '${file}'`));
+  }
+});

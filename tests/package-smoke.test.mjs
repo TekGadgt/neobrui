@@ -5,6 +5,7 @@ import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { parseNpmPackJson } from '../tools/npm-pack-result.mjs';
 
 const root = process.cwd();
 const expected = new Set([
@@ -19,11 +20,11 @@ test('real npm archive is allowlisted and consumable', () => {
   const temp = mkdtempSync(join(tmpdir(), 'neobrui-pack-'));
   let archive;
   try {
-    const result = JSON.parse(execFileSync('npm', ['pack', '--json'], { cwd: root, encoding: 'utf8' }));
-    archive = join(root, result[0].filename);
-    const files = new Set(result[0].files.map(file => file.path));
+    const result = parseNpmPackJson(execFileSync('npm', ['pack', '--json'], { cwd: root, encoding: 'utf8' }), '@tekgadgt/neobrui');
+    archive = join(root, result.filename);
+    const files = new Set(result.files.map(file => file.path));
     assert.deepEqual(files, expected);
-    assert.equal(result[0].size > 0, true);
+    assert.equal(result.size > 0, true);
     const checksum = createHash('sha256').update(readFileSync(archive)).digest('hex');
     console.log(`archive sha256: ${checksum}`);
     assert.match(checksum, /^[a-f0-9]{64}$/);
