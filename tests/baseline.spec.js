@@ -33,7 +33,7 @@ test('fixture makes no external network requests', async ({ page }) => {
 test('repository metadata and references satisfy baseline boundaries', async () => {
   const packageJson = JSON.parse(await fs.readFile(path.join(root, 'package.json'), 'utf8'));
   expect(packageJson.private).toBe(true);
-  expect(packageJson.publishConfig).toBeUndefined();
+  expect(packageJson.publishConfig).toEqual({ access: 'public', registry: 'https://registry.npmjs.org/' });
   const source = await fs.readFile(path.join(root, 'fixtures/plain/index.html'), 'utf8');
   expect(source).toContain('nbr');
   await expect(fs.readFile(path.join(root, 'README.md'), 'utf8')).resolves.toContain('read-only evidence');
