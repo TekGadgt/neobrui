@@ -21,19 +21,29 @@ test('enforces the release rehearsal toolchain versions', () => {
 
 test('validates the release safety manifest contract', () => {
   assert.doesNotThrow(() => validateManifest({
-    name: '@tekgadgt/neobrui', version: '0.1.0-alpha.0', private: true,
-    license: 'MIT', sideEffects: ['*.css'], publishConfig: { registry: 'https://registry.npmjs.org/', access: 'public' },
+    name: '@tekgadgt/neobrui', version: '0.1.0-alpha.0',
+    license: 'MIT', sideEffects: ['*.css'], publishConfig: { registry: 'https://registry.npmjs.org/', access: 'public', tag: 'next' },
     exports: { '.': { style: './src/index.css', default: './src/index.css' }, './foundations.css': './src/foundations.css', './layout.css': './src/layout.css', './primitives.css': './src/primitives.css', './utilities.css': './src/utilities.css', './package.json': './package.json' }, files: ['src', 'README.md', 'LICENSE', 'skills/neobrui'],
     scripts: { test: 'node --test' },
   }));
 });
 
+test('rejects private manifests and non-next publish configuration', () => {
+  const candidate = {
+    name: '@tekgadgt/neobrui', version: '0.1.0-alpha.0', license: 'MIT', sideEffects: ['*.css'],
+    publishConfig: { registry: 'https://registry.npmjs.org/', access: 'public', tag: 'next' },
+    exports: { '.': { style: './src/index.css', default: './src/index.css' }, './foundations.css': './src/foundations.css', './layout.css': './src/layout.css', './primitives.css': './src/primitives.css', './utilities.css': './src/utilities.css', './package.json': './package.json' }, files: ['src', 'README.md', 'LICENSE', 'skills/neobrui'], scripts: {},
+  };
+  assert.throws(() => validateManifest({ ...candidate, private: true }), /private must be absent/);
+  assert.throws(() => validateManifest({ ...candidate, publishConfig: { ...candidate.publishConfig, tag: 'latest' } }), /publishConfig contract/);
+});
+
 function report() {
   return {
-    schema: 'neobrui-release-rehearsal/v1', sourceSha: 'abc',
+    schema: 'neobrui-release-rehearsal/v2', sourceSha: 'abc',
     runner: { platform: 'linux', arch: 'arm64', uname: 'Linux test', timestamp: '2026-01-01T00:00:00.000Z', stable: true },
     tools: { node: 'v26', npm: 'v12', pnpm: '11.24.0' },
-    package: { name: 'x', version: '1.0.0', exports: { '.': './index.css' } }, expected: { tag: 'v1.0.0', channel: 'latest' },
+    package: { name: 'x', version: '1.0.0', private: null, publishable: true, publishConfig: { registry: 'https://registry.npmjs.org/', access: 'public', tag: 'next' }, exports: { '.': './index.css' } }, expected: { tag: 'v1.0.0', channel: 'latest' },
     files: [{ path: 'package.json', size: 10, mode: 0o644 }],
     archive: { filename: 'x.tgz', size: 100, sha256: 'same', sri: 'sha512-same' },
     consumer: { installed: true, assertions: ['css-readable'] },

@@ -1,7 +1,6 @@
 {
   "name": "@tekgadgt/neobrui",
   "version": "0.1.0-alpha.0",
-  "private": true,
   "description": "Opt-in, reset-free Neobrutalist design system",
   "type": "module",
   "license": "MIT",
@@ -10,7 +9,7 @@
   "homepage": "https://tekgadgt.github.io/neobrui/",
   "bugs": {"url": "https://github.com/TekGadgt/neobrui/issues"},
   "keywords": ["css", "design-system", "neobrutalism", "semantic-css", "web-accessibility"],
-  "publishConfig": {"registry": "https://registry.npmjs.org/", "access": "public"},
+  "publishConfig": {"registry": "https://registry.npmjs.org/", "access": "public", "tag": "next"},
   "exports": {
     ".": { "style": "./src/index.css", "default": "./src/index.css" },
     "./foundations.css": "./src/foundations.css",

@@ -38,10 +38,10 @@ export function validateManifest(manifest) {
     './primitives.css': './src/primitives.css', './utilities.css': './src/utilities.css', './package.json': './package.json',
   };
   if (manifest.name !== '@tekgadgt/neobrui' || manifest.version !== '0.1.0-alpha.0') throw new Error('package identity/version mismatch');
-  if (manifest.private !== true) throw new Error('private safety guard must be true');
+  if (Object.hasOwn(manifest, 'private')) throw new Error('private must be absent for release candidate');
   if (manifest.license !== 'MIT') throw new Error('license must be MIT');
   if (JSON.stringify(manifest.sideEffects) !== JSON.stringify(['*.css'])) throw new Error('sideEffects contract mismatch');
-  if (JSON.stringify(manifest.publishConfig) !== JSON.stringify({ registry: 'https://registry.npmjs.org/', access: 'public' })) throw new Error('publishConfig contract mismatch');
+  if (JSON.stringify(manifest.publishConfig) !== JSON.stringify({ registry: 'https://registry.npmjs.org/', access: 'public', tag: 'next' })) throw new Error('publishConfig contract mismatch');
   if (JSON.stringify(manifest.exports) !== JSON.stringify(expectedExports)) throw new Error('exports contract mismatch');
   if (JSON.stringify(manifest.files) !== JSON.stringify(['src', 'README.md', 'LICENSE', 'skills/neobrui'])) throw new Error('files contract mismatch');
   for (const key of ['dependencies', 'optionalDependencies', 'peerDependencies']) if (manifest[key]) throw new Error(`${key} must be absent`);
@@ -133,7 +133,7 @@ async function main() {
     validateManifest(installed);
     for (const css of ['src/index.css', 'src/foundations.css', 'src/layout.css', 'src/primitives.css', 'src/utilities.css']) if (!(await readFile(path.join(installedRoot, css), 'utf8')).trim()) throw new Error(`empty CSS: ${css}`);
     for (const file of ['skills/neobrui/SKILL.md', 'skills/neobrui/references/api.md', 'skills/neobrui/references/examples.md', 'skills/neobrui/templates/verification.md']) if (!(await readFile(path.join(installedRoot, file), 'utf8')).trim()) throw new Error(`missing skill payload: ${file}`);
-    const report = { schema: 'neobrui-release-rehearsal/v1', sourceSha: run('git', ['rev-parse', 'HEAD']), runner: { platform: process.platform, arch: process.arch, uname: run('uname', ['-a'], { cwd: temp }), timestamp: new Date().toISOString() }, tools: { node: run(process.execPath, ['--version'], { cwd: temp }), npm: run('npm', ['--version'], { cwd: temp }), pnpm: run('pnpm', ['--version'], { cwd: temp }) }, package: { name: manifest.name, version: manifest.version, private: manifest.private, publishConfig: manifest.publishConfig, license: manifest.license, exports: manifest.exports, files: manifest.files }, expected: release, files, archive: { filename: info.filename, size: archive.byteLength, sha256: digest(archive, 'sha256'), sri: `sha512-${createHash('sha512').update(archive).digest('base64')}` }, consumer: { installed: true, scriptsIgnored: true, networkFree: true, cssReadable: true, skillsReadable: true } };
+    const report = { schema: 'neobrui-release-rehearsal/v2', sourceSha: run('git', ['rev-parse', 'HEAD']), runner: { platform: process.platform, arch: process.arch, uname: run('uname', ['-a'], { cwd: temp }), timestamp: new Date().toISOString() }, tools: { node: run(process.execPath, ['--version'], { cwd: temp }), npm: run('npm', ['--version'], { cwd: temp }), pnpm: run('pnpm', ['--version'], { cwd: temp }) }, package: { name: manifest.name, version: manifest.version, private: null, publishable: true, publishConfig: manifest.publishConfig, license: manifest.license, exports: manifest.exports, files: manifest.files }, expected: release, files, archive: { filename: info.filename, size: archive.byteLength, sha256: digest(archive, 'sha256'), sri: `sha512-${createHash('sha512').update(archive).digest('base64')}` }, consumer: { installed: true, scriptsIgnored: true, networkFree: true, cssReadable: true, skillsReadable: true, installedManifestPublishable: true, installedPublishConfigTag: 'next' } };
     await writeFile(path.join(out, 'report.json'), `${JSON.stringify(report, null, 2)}\n`);
     console.log(JSON.stringify({ archive: archivePath, report: path.join(out, 'report.json'), sha256: report.archive.sha256, sri: report.archive.sri }, null, 2));
   } finally { await rm(temp, { recursive: true, force: true }); }

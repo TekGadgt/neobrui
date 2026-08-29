@@ -6,11 +6,11 @@ import path from 'node:path';
 const root = process.cwd();
 const packageJson = JSON.parse(await readFile(path.join(root, 'package.json'), 'utf8'));
 
- test('private scoped prerelease metadata has the approved public intent', () => {
+test('release candidate metadata is publishable on the next channel', () => {
   assert.equal(packageJson.name, '@tekgadgt/neobrui');
   assert.equal(packageJson.version, '0.1.0-alpha.0');
-  assert.equal(packageJson.private, true);
-  assert.deepEqual(packageJson.publishConfig, { access: 'public', registry: 'https://registry.npmjs.org/' });
+  assert.equal(Object.hasOwn(packageJson, 'private'), false);
+  assert.deepEqual(packageJson.publishConfig, { access: 'public', registry: 'https://registry.npmjs.org/', tag: 'next' });
   assert.deepEqual(packageJson.repository, { type: 'git', url: 'git+https://github.com/TekGadgt/neobrui.git' });
   assert.equal(packageJson.homepage, 'https://tekgadgt.github.io/neobrui/');
   assert.equal(packageJson.bugs.url, 'https://github.com/TekGadgt/neobrui/issues');

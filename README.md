@@ -2,13 +2,14 @@
 
 ## Package status
 
-The scoped package identity `@tekgadgt/neobrui` is prepared privately at version `0.1.0-alpha.0`. npm publication is pending explicit approval; the package is not currently available from the registry.
+Release candidate `@tekgadgt/neobrui@0.1.0-alpha.0` is prepared for the `next` channel, but it is not currently published or available from the npm registry. Publication remains pending explicit human approval.
 
 Neobrui is a small, reset-free, opt-in CSS design system for native HTML. It ships authored CSS only: importing it does not restyle bare elements and it has no browser-runtime JavaScript or assets.
 
 ## API
 
 ```css
+/* After publication: */
 @import '@tekgadgt/neobrui';
 ```
 
