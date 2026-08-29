@@ -13,10 +13,12 @@ function parseInput(textOrValue) {
   }
 }
 
-function validateRecord(record, expectedName) {
+function validateRecord(record, { expectedName, expectedVersion }) {
   if (record === null || typeof record !== 'object' || Array.isArray(record)) fail('pack record must be an object');
-  if (Object.hasOwn(record, 'name') && record.name !== expectedName) fail(`pack record name must be ${expectedName}`);
-  if (Object.hasOwn(record, 'version') && (typeof record.version !== 'string' || !record.version)) fail('pack record version must be a nonempty string');
+  if (typeof record.name !== 'string' || !record.name.trim()) fail('pack record name must be a nonempty string');
+  if (record.name !== expectedName) fail(`pack record name must be ${expectedName}`);
+  if (typeof record.version !== 'string' || !record.version.trim()) fail('pack record version must be a nonempty string');
+  if (record.version !== expectedVersion) fail(`pack record version must be ${expectedVersion}`);
   if (typeof record.filename !== 'string' || !record.filename) fail('pack record filename must be a nonempty string');
   if (!Number.isFinite(record.size) || record.size <= 0) fail('pack record size must be a positive finite number');
   if (!Array.isArray(record.files) || record.files.length === 0) fail('pack record files must be a nonempty array');
@@ -28,8 +30,11 @@ function validateRecord(record, expectedName) {
   return record;
 }
 
-export function parseNpmPackJson(textOrValue, expectedName) {
-  if (typeof expectedName !== 'string' || !expectedName) fail('expected package name must be a nonempty string');
+export function parseNpmPackJson(textOrValue, options) {
+  if (options === null || typeof options !== 'object') fail('parser options are required');
+  const { expectedName, expectedVersion } = options;
+  if (typeof expectedName !== 'string' || !expectedName.trim()) fail('expected package name must be a nonempty string');
+  if (typeof expectedVersion !== 'string' || !expectedVersion.trim()) fail('expected package version must be a nonempty string');
   const value = parseInput(textOrValue);
   let record;
   if (Array.isArray(value)) {
@@ -43,5 +48,5 @@ export function parseNpmPackJson(textOrValue, expectedName) {
   } else {
     fail('result must be an array or package-keyed object');
   }
-  return validateRecord(record, expectedName);
+  return validateRecord(record, options);
 }

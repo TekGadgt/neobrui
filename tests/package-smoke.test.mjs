@@ -20,7 +20,8 @@ test('real npm archive is allowlisted and consumable', () => {
   const temp = mkdtempSync(join(tmpdir(), 'neobrui-pack-'));
   let archive;
   try {
-    const result = parseNpmPackJson(execFileSync('npm', ['pack', '--json'], { cwd: root, encoding: 'utf8' }), '@tekgadgt/neobrui');
+    const manifest = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'));
+    const result = parseNpmPackJson(execFileSync('npm', ['pack', '--json'], { cwd: root, encoding: 'utf8' }), { expectedName: manifest.name, expectedVersion: manifest.version });
     archive = join(root, result.filename);
     const files = new Set(result.files.map(file => file.path));
     assert.deepEqual(files, expected);

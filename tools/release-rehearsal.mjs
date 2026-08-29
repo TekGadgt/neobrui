@@ -121,7 +121,7 @@ async function main() {
   await mkdir(out, { recursive: true });
   const temp = await mkdtemp(path.join(ROOT, '.release-rehearsal-tmp-')); let archivePath;
   try {
-    const info = parseNpmPackJson(run('npm', ['pack', '--json', '--ignore-scripts', '--pack-destination', out]), manifest.name);
+    const info = parseNpmPackJson(run('npm', ['pack', '--json', '--ignore-scripts', '--pack-destination', out]), { expectedName: manifest.name, expectedVersion: manifest.version });
     archivePath = path.join(out, info.filename); const archive = await readFile(archivePath);
     const files = info.files.map(({ path: filePath, size, mode }) => ({ path: filePath.replaceAll('\\', '/'), size, ...(mode === undefined ? {} : { mode }) })).sort((a, b) => a.path.localeCompare(b.path));
     const actualPaths = files.map(file => file.path);
