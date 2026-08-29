@@ -13,5 +13,5 @@
     "check": "astro check",
     "test": "playwright test --config=playwright.config.js"
   },
-  "dependencies": {"neobrui":"workspace:*"}
+  "dependencies": {"@tekgadgt/neobrui":"workspace:*"}
 }

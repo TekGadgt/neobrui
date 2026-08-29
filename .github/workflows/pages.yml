@@ -40,9 +40,31 @@ jobs:
         with:
           path: apps/docs/dist
 
+  browsers:
+    name: Pages Playwright (${{ matrix.browser }})
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps ${{ matrix.browser }}
+      - run: pnpm --filter neobrui-docs build:pages
+      - run: pnpm --filter neobrui-docs test --project=${{ matrix.browser }}
+
   deploy:
     name: Publish Pages artifact
-    needs: build
+    needs: [build, browsers]
     runs-on: ubuntu-latest
     permissions:
       contents: read

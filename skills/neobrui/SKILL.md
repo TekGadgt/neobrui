@@ -7,7 +7,7 @@ description: Use when an explicit Neobrui or Ryan design-language brief requests
 
 Use the repository's direct CSS API and preserve native HTML semantics. Project identity and the explicit brief take precedence, followed by accessibility/native semantics, Neobrui principles, and recipes.
 
-- Import `neobrui` or an explicit subpath; do not add a reset.
+- Import `@tekgadgt/neobrui` or an explicit subpath; do not add a reset.
 - Use `.nbr-stack`, `.nbr-cluster`, `.nbr-wrapper`, and `.nbr-grid` for layout.
 - Use `.nbr-surface` with `data-nbr-level="quiet|outlined|raised"` and `.nbr-pressable` on native buttons or links.
 - Use `.nbr-u-visually-hidden` only for visually hidden accessible content.

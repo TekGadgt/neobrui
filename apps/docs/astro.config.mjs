@@ -7,7 +7,7 @@ export default defineConfig({
   integrations: [starlight({
     title: 'Neobrui',
     description: 'A small, semantic, opt-in CSS design system.',
-    customCss: ['neobrui', './src/styles/docs.css'],
+    customCss: ['@tekgadgt/neobrui', './src/styles/docs.css'],
     components: { Search: './src/components/Search.astro' },
     sidebar: [
       { label: 'Start', items: [{ label: 'Start', slug: 'index' }] },

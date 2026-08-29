@@ -33,8 +33,6 @@ jobs:
       - run: pnpm test
       - run: pnpm pack:smoke
       - run: pnpm --filter neobrui-docs check
-      - run: pnpm --filter neobrui-docs build:root
-      - run: PUBLIC_SITE_BASE=/neobrui/ PUBLIC_SITE_URL=https://tekgadgt.github.io/neobrui/ pnpm --filter neobrui-docs build
 
   browsers:
     name: Docs Playwright (${{ matrix.browser }})
@@ -55,5 +53,7 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec playwright install --with-deps ${{ matrix.browser }}
-      - run: pnpm --filter neobrui-docs build:pages
-      - run: PUBLIC_SITE_BASE=/neobrui/ pnpm --filter neobrui-docs test --project=${{ matrix.browser }}
+      - name: Build current Starlight artifact
+        run: PUBLIC_SITE_BASE=/neobrui/ PUBLIC_SITE_URL=https://tekgadgt.github.io/neobrui/ pnpm --filter neobrui-docs build:pages
+      - name: Run docs-local Playwright
+        run: PUBLIC_SITE_BASE=/neobrui/ PUBLIC_SITE_URL=https://tekgadgt.github.io/neobrui/ pnpm --filter neobrui-docs test --project=${{ matrix.browser }}
