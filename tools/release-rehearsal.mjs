@@ -42,14 +42,66 @@ export function validateManifest(manifest) {
 }
 
 function run(command, args, options = {}) { return execFileSync(command, args, { cwd: ROOT, encoding: 'utf8', ...options }).trim(); }
-function stable(value) { return JSON.stringify(value, Object.keys(value).sort(), 2); }
 function digest(file, algorithm) { return createHash(algorithm).update(file).digest('hex'); }
 
+// These are the only facts expected to vary between native runner reports.
+export const ALLOWED_REPORT_DIFFERENCES = [
+  'runner.platform', 'runner.arch', 'runner.uname', 'runner.timestamp',
+];
+
+function canonicalize(value, seen = new WeakSet()) {
+  if (value === null || typeof value !== 'object') {
+    if (typeof value === 'undefined' || typeof value === 'function' || typeof value === 'symbol' || typeof value === 'bigint') {
+      throw new TypeError(`unsupported report value: ${typeof value}`);
+    }
+    if (typeof value === 'number' && !Number.isFinite(value)) throw new TypeError('unsupported report value: non-finite number');
+    return value;
+  }
+  if (seen.has(value)) throw new TypeError('cyclic report value');
+  seen.add(value);
+  let result;
+  if (Array.isArray(value)) result = value.map(item => canonicalize(item, seen));
+  else result = Object.fromEntries(Object.keys(value).sort().map(key => [key, canonicalize(value[key], seen)]));
+  seen.delete(value);
+  return result;
+}
+
+function withoutAllowedDifferences(value, path = [], seen = new WeakSet()) {
+  if (value === null || typeof value !== 'object') return value;
+  if (seen.has(value)) throw new TypeError('cyclic report value');
+  seen.add(value);
+  const result = Array.isArray(value) ? value.map((item, index) => withoutAllowedDifferences(item, [...path, index], seen)) : {};
+  if (!Array.isArray(value)) {
+    for (const [key, item] of Object.entries(value)) {
+      const itemPath = [...path, key].join('.');
+      if (!ALLOWED_REPORT_DIFFERENCES.includes(itemPath)) result[key] = withoutAllowedDifferences(item, [...path, key], seen);
+    }
+  }
+  seen.delete(value);
+  return result;
+}
+
+function firstDifference(left, right, path = []) {
+  if (Object.is(left, right)) return null;
+  if (left === null || right === null || typeof left !== 'object' || typeof right !== 'object') return { path: path.join('.') || '<report>', left, right };
+  if (Array.isArray(left) !== Array.isArray(right)) return { path: path.join('.') || '<report>', left, right };
+  const leftKeys = Object.keys(left); const rightKeys = Object.keys(right);
+  if (leftKeys.length !== rightKeys.length) return { path: path.join('.') || '<report>', left, right };
+  for (const key of leftKeys) {
+    if (!Object.hasOwn(right, key)) return { path: [...path, key].join('.'), left: left[key], right: undefined };
+    const difference = firstDifference(left[key], right[key], [...path, key]);
+    if (difference) return difference;
+  }
+  return null;
+}
+
 export function compareReports(left, right) {
-  if (left.archive?.sha256 !== right.archive?.sha256) throw new Error('archive sha256 differs');
-  if (left.archive?.sri !== right.archive?.sri) throw new Error('archive SRI differs');
-  const semantic = report => ({ schema: report.schema, sourceSha: report.sourceSha, package: report.package, files: report.files, archive: report.archive, consumer: report.consumer });
-  if (stable(semantic(left)) !== stable(semantic(right))) throw new Error('semantic report fields differ');
+  const normalizedLeft = canonicalize(withoutAllowedDifferences(left));
+  const normalizedRight = canonicalize(withoutAllowedDifferences(right));
+  if (JSON.stringify(normalizedLeft) !== JSON.stringify(normalizedRight)) {
+    const difference = firstDifference(normalizedLeft, normalizedRight);
+    throw new Error(`semantic report mismatch at ${difference.path}: ${JSON.stringify(difference.left)} !== ${JSON.stringify(difference.right)}`);
+  }
   return true;
 }
 
@@ -72,7 +124,7 @@ async function main() {
     validateManifest(installed);
     for (const css of ['src/index.css', 'src/foundations.css', 'src/layout.css', 'src/primitives.css', 'src/utilities.css']) if (!(await readFile(path.join(installedRoot, css), 'utf8')).trim()) throw new Error(`empty CSS: ${css}`);
     for (const file of ['skills/neobrui/SKILL.md', 'skills/neobrui/references/api.md', 'skills/neobrui/references/examples.md', 'skills/neobrui/templates/verification.md']) if (!(await readFile(path.join(installedRoot, file), 'utf8')).trim()) throw new Error(`missing skill payload: ${file}`);
-    const report = { schema: 'neobrui-release-rehearsal/v1', sourceSha: run('git', ['rev-parse', 'HEAD']), platform: process.platform, arch: process.arch, runner: { uname: run('uname', ['-a'], { cwd: temp }) }, tools: { node: run(process.execPath, ['--version'], { cwd: temp }), npm: run('npm', ['--version'], { cwd: temp }), pnpm: run('pnpm', ['--version'], { cwd: temp }) }, package: { name: manifest.name, version: manifest.version, private: manifest.private, publishConfig: manifest.publishConfig, license: manifest.license, exports: manifest.exports, files: manifest.files }, expected: release, files, archive: { filename: info.filename, size: archive.byteLength, sha256: digest(archive, 'sha256'), sri: `sha512-${createHash('sha512').update(archive).digest('base64')}` }, consumer: { installed: true, scriptsIgnored: true, networkFree: true, cssReadable: true, skillsReadable: true } };
+    const report = { schema: 'neobrui-release-rehearsal/v1', sourceSha: run('git', ['rev-parse', 'HEAD']), runner: { platform: process.platform, arch: process.arch, uname: run('uname', ['-a'], { cwd: temp }), timestamp: new Date().toISOString() }, tools: { node: run(process.execPath, ['--version'], { cwd: temp }), npm: run('npm', ['--version'], { cwd: temp }), pnpm: run('pnpm', ['--version'], { cwd: temp }) }, package: { name: manifest.name, version: manifest.version, private: manifest.private, publishConfig: manifest.publishConfig, license: manifest.license, exports: manifest.exports, files: manifest.files }, expected: release, files, archive: { filename: info.filename, size: archive.byteLength, sha256: digest(archive, 'sha256'), sri: `sha512-${createHash('sha512').update(archive).digest('base64')}` }, consumer: { installed: true, scriptsIgnored: true, networkFree: true, cssReadable: true, skillsReadable: true } };
     await writeFile(path.join(out, 'report.json'), `${JSON.stringify(report, null, 2)}\n`);
     console.log(JSON.stringify({ archive: archivePath, report: path.join(out, 'report.json'), sha256: report.archive.sha256, sri: report.archive.sri }, null, 2));
   } finally { await rm(temp, { recursive: true, force: true }); }

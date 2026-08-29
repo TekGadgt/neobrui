@@ -21,10 +21,44 @@ test('validates the release safety manifest contract', () => {
   }));
 });
 
-test('compares semantic reports while allowing platform fields to differ', () => {
-  const base = { schema: 'neobrui-release-rehearsal/v1', sourceSha: 'abc', platform: 'linux', arch: 'arm64', tools: { node: 'v26' }, package: { name: 'x' }, files: ['a'], archive: { sha256: 'same' }, consumer: { installed: true } };
-  const other = structuredClone(base); other.platform = 'darwin'; other.arch = 'x64';
-  assert.doesNotThrow(() => compareReports(base, other));
-  other.archive.sha256 = 'different';
-  assert.throws(() => compareReports(base, other), /archive sha256/);
+function report() {
+  return {
+    schema: 'neobrui-release-rehearsal/v1', sourceSha: 'abc',
+    runner: { platform: 'linux', arch: 'arm64', uname: 'Linux test', timestamp: '2026-01-01T00:00:00.000Z', stable: true },
+    tools: { node: 'v26', npm: 'v12', pnpm: '11.24.0' },
+    package: { name: 'x', version: '1.0.0', exports: { '.': './index.css' } }, expected: { tag: 'v1.0.0', channel: 'latest' },
+    files: [{ path: 'package.json', size: 10, mode: 0o644 }],
+    archive: { filename: 'x.tgz', size: 100, sha256: 'same', sri: 'sha512-same' },
+    consumer: { installed: true, assertions: ['css-readable'] },
+  };
+}
+
+test('allows only documented runner platform facts and informational timestamp to differ', () => {
+  const other = report();
+  other.runner = { ...other.runner, platform: 'darwin', arch: 'x64', uname: 'Darwin test', timestamp: '2026-01-02T00:00:00.000Z' };
+  assert.doesNotThrow(() => compareReports(report(), other));
 });
+
+for (const [label, expectedPath, change] of [
+  ['package.name', 'package.name', r => { r.package.name = 'different'; }],
+  ['package.version', 'package.version', r => { r.package.version = '2.0.0'; }],
+  ['package.exports', 'package.exports', r => { r.package.exports['./x'] = './x.css'; }],
+  ['files[].size', 'files', r => { r.files[0].size = 11; }],
+  ['files[].mode', 'files', r => { r.files[0].mode = 0o600; }],
+  ['files order/content', 'files', r => { r.files.reverse(); r.files.push({ path: 'README.md', size: 1, mode: 0o644 }); }],
+  ['archive.filename', 'archive.filename', r => { r.archive.filename = 'other.tgz'; }],
+  ['archive.size', 'archive.size', r => { r.archive.size = 101; }],
+  ['archive.sha256', 'archive.sha256', r => { r.archive.sha256 = 'different'; }],
+  ['archive.sri', 'archive.sri', r => { r.archive.sri = 'sha512-different'; }],
+  ['consumer assertion', 'consumer', r => { r.consumer.assertions = ['wrong']; }],
+  ['expected channel', 'expected', r => { r.expected.channel = 'next'; }],
+  ['schema', 'schema', r => { r.schema = 'other/v1'; }],
+  ['source SHA', 'sourceSha', r => { r.sourceSha = 'different'; }],
+  ['tool version', 'tools', r => { r.tools.node = 'v27'; }],
+  ['unallowlisted runner field', 'runner', r => { r.runner.stable = false; }],
+]) {
+  test(`rejects ${label} mismatch with a useful path`, () => {
+    const other = report(); change(other);
+    assert.throws(() => compareReports(report(), other), error => error.message.includes(expectedPath));
+  });
+}
