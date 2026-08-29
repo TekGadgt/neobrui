@@ -20,8 +20,11 @@ Use `.nbr-stack`, `.nbr-cluster`, `.nbr-wrapper`, and `.nbr-grid` for layout; `.
 pnpm install --frozen-lockfile
 pnpm test
 pnpm --filter neobrui-docs check
-pnpm --filter neobrui-docs build
-PUBLIC_SITE_BASE=/neobrui/ PUBLIC_SITE_URL=https://tekgadgt.github.io/neobrui/ pnpm --filter neobrui-docs build
+pnpm --filter neobrui-docs build:root
+PUBLIC_SITE_BASE=/neobrui/ PUBLIC_SITE_URL=https://tekgadgt.github.io/neobrui/ pnpm --filter neobrui-docs build:pages
+pnpm --filter neobrui-docs test --project=chromium
+PUBLIC_SITE_BASE=/neobrui/ pnpm --filter neobrui-docs test --project=firefox
+PUBLIC_SITE_BASE=/neobrui/ pnpm --filter neobrui-docs test --project=webkit
 npm pack
 ```
 

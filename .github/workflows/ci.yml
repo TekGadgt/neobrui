@@ -34,15 +34,16 @@ jobs:
       - run: pnpm pack:smoke
       - run: pnpm --filter neobrui-docs check
       - run: pnpm --filter neobrui-docs build:root
-      - run: PUBLIC_SITE_BASE=/neobrui/ PUBLIC_SITE_URL=https://tekgadgt.github.io/neobrui/ pnpm --filter neobrui-docs build
+      - run: PUBLIC_SITE_BASE=/neobrui/ PUBLIC_SITE_URL=https://tekgadgt.github.io/neobrui/ pnpm --filter neobrui-docs build:pages
 
   browsers:
-    name: Docs Playwright (${{ matrix.browser }})
+    name: Docs Playwright (${{ matrix.site }}, ${{ matrix.browser }})
     needs: verify
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
+        site: [root, pages]
         browser: [chromium, firefox, webkit]
     steps:
       - uses: actions/checkout@v7
@@ -55,5 +56,17 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec playwright install --with-deps ${{ matrix.browser }}
-      - run: pnpm --filter neobrui-docs build:pages
-      - run: PUBLIC_SITE_BASE=/neobrui/ pnpm --filter neobrui-docs test --project=${{ matrix.browser }}
+      - name: Build current Starlight artifact
+        run: |
+          if [ "${{ matrix.site }}" = "pages" ]; then
+            PUBLIC_SITE_BASE=/neobrui/ PUBLIC_SITE_URL=https://tekgadgt.github.io/neobrui/ pnpm --filter neobrui-docs build:pages
+          else
+            pnpm --filter neobrui-docs build:root
+          fi
+      - name: Run docs-local Playwright
+        run: |
+          if [ "${{ matrix.site }}" = "pages" ]; then
+            PUBLIC_SITE_BASE=/neobrui/ pnpm --filter neobrui-docs test --project=${{ matrix.browser }}
+          else
+            pnpm --filter neobrui-docs test --project=${{ matrix.browser }}
+          fi
