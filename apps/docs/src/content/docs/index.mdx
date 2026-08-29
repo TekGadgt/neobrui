@@ -14,10 +14,10 @@ The public source and design system are live. **An official npm registry install
 
 | Entry | Use when | Import |
 | --- | --- | --- |
-| Aggregate | You want every public module in a small consumer | `import 'neobrui'` or `@import 'neobrui';` |
-| Selected modules | You want explicit CSS ownership and a smaller cascade | `@import 'neobrui/foundations.css';` then selected modules |
+| Aggregate | You want every public module in a small consumer | `import '@tekgadgt/neobrui'` or `@import '@tekgadgt/neobrui';` |
+| Selected modules | You want explicit CSS ownership and a smaller cascade | `@import '@tekgadgt/neobrui/foundations.css';` then selected modules |
 
-The source package exports `neobrui`, `foundations.css`, `layout.css`, `primitives.css`, `utilities.css`, and `package.json`. CSS order is foundations, layout, primitives, utilities; the aggregate index preserves that order. The package declares CSS `sideEffects`, so bundlers must retain CSS imports.
+The `@tekgadgt/neobrui` package exports its aggregate entry, `foundations.css`, `layout.css`, `primitives.css`, `utilities.css`, and `package.json`. CSS order is foundations, layout, primitives, utilities; the aggregate index preserves that order. The package declares CSS `sideEffects`, so bundlers must retain CSS imports.
 
 ## Current reproducible installation
 
@@ -31,7 +31,7 @@ npm install 'github:TekGadgt/neobrui#<commit-or-tag>'
 For Ryan's monorepo projects, a workspace dependency is local-only:
 
 ```json
-{ "dependencies": { "neobrui": "workspace:*" } }
+{ "dependencies": { "@tekgadgt/neobrui": "workspace:*" } }
 ```
 
 A non-monorepo local path is also local-only, for example `pnpm add ../neobrui` (commit the resulting lockfile and path policy only when that is intentional). Git refs and lockfiles make builds reproducible; a moving branch does not. Registry publication instructions will be added separately after launch.
@@ -40,17 +40,17 @@ A non-monorepo local path is also local-only, for example `pnpm add ../neobrui` 
 
 ```css
 /* app.css: explicit order */
-@import 'neobrui/foundations.css';
-@import 'neobrui/layout.css';
-@import 'neobrui/primitives.css';
-@import 'neobrui/utilities.css';
+@import '@tekgadgt/neobrui/foundations.css';
+@import '@tekgadgt/neobrui/layout.css';
+@import '@tekgadgt/neobrui/primitives.css';
+@import '@tekgadgt/neobrui/utilities.css';
 ```
 
 ```js
 // CSS bundler entry; the import is intentionally side-effectful.
-import 'neobrui';
+import '@tekgadgt/neobrui';
 // Or select a module:
-import 'neobrui/layout.css';
+import '@tekgadgt/neobrui/layout.css';
 ```
 
 ## Minimal runnable native HTML
